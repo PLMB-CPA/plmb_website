@@ -1,0 +1,9 @@
+<ul class="file-list">
+  {{#each files}}
+    <li class="file-item">
+      <strong>{{originalName}}</strong>
+      <span class="meta"> - {{status}} - {{uploadedAt}}</span>
+      <a href="/api/files/{{id}}/download">Download</a>
+    </li>
+  {{/each}}
+</ul>

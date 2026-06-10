@@ -1,0 +1,17 @@
+<main class="dashboard">
+    <h1>Welcome, {{user.firstName}}</h1>
+
+    {{#if isAdmin}}
+        {{> adminControls}}
+    {{/if}}
+
+    <section id="client-area">
+        <h2>Your Files</h2>
+
+        {{#if files.length}}
+            {{> fileList files=files}}
+        {{else}}
+            <p>No files available.</p>
+        {{/if}}
+    </section>
+</main>
