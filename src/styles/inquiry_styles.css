@@ -1,0 +1,57 @@
+/* Inquiry specific styles - temporary location*/
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 10px;
+}
+
+.inquiry-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inquiry-view {
+  text-decoration: none;
+  color: inherit;
+}
+
+.inquiry-field {
+  border: 1px black solid;
+  border-radius: 12px; 
+}
+
+.inquiry-submit {
+  border-radius: 12px;
+  border: 0px;
+  padding: 8px;
+  width: 25%;
+}
+
+.inquiry-contact {
+  display: flex;
+  align-items: center;
+  border: 1px black solid;
+  border-radius: 12px;
+  padding: 8px;
+  width: 40%;
+}
+
+#inquiry-email {
+  margin-left: 2px;
+  display: flex;
+  outline: none;
+  border: 0px;
+  
+}
+
+#subject-field {
+  height: 32px;
+  padding: 8px;
+}
+
+#message-field {
+  height: 256px;
+  padding: 8px;
+}
+

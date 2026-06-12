@@ -1,0 +1,17 @@
+/* NEWSLETTER specific styles - temporary location*/
+.newsletter-container{
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+.newsletter-card {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 1%;
+  margin-top: 2%;
+}
+
+.newsletter-date {
+  color: rgb(63, 63, 63);
+  font-style: italic;
+}
