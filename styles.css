@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* DEFAULT STYLE */
+
+body {
+  font-family: "Raleway", sans-serif;
+  margin: 30px;
+}
+
+.top {
+  text-align: center;
+  font-weight: normal;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.navbar h3 {
+  margin: 0;
+  cursor: pointer;
+}
