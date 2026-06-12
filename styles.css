@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* DEFAULT STYLE */
 
@@ -8,7 +9,11 @@ body {
   margin: 0px;
 }
 
-.top {
+main {
+  flex: 1;
+}
+
+.header {
   text-align: center;
   line-height: 15px;
   font-weight: normal;
@@ -18,10 +23,25 @@ body {
   padding-bottom: 1px;
 }
 
-.top p {
+.header p {
   font-style:italic;
   font-weight: normal;
   font-size: 20px;
+}
+
+.footer {
+  text-align: center;
+  line-height: 15px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #ebf3eb;
+  background-color: #3D7A40;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .navbar {
@@ -50,14 +70,36 @@ body {
 
   text-align: left;
   font-size: 15px;
-
 }
 
 /* SERVICES STYLE */
 
+.container {
+  width: 20%;
+  max-width: 120px;
+  margin: 0 auto;
+  padding: 20px;
+
+  border: 2px solid black;
+  border-radius: 15px;
+  background-color: #dfe7df;
+
+  text-align: center;
+  color: black;
+  font-size: 15px;
+  font-family: "montserrat", sans serif;
+
+  transition: 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
 .service-container {
   margin-left: 10px;
   margin-right: 10px;
+  padding-bottom: 50px;
 }
 
 .view-more {
@@ -68,16 +110,18 @@ body {
 }
 
 .view-more h2 {
-  font-size: 20px;
+  font-size: 30px;
 }
 
-.view-more p {
+.view-more p:hover {
   cursor: pointer;
 }
 
 .services {
+  padding-top: 10px;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 20px;
 }
+
