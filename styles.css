@@ -53,9 +53,9 @@ main {
   padding-bottom: 10px;
 }
 
-.navbar h3 {
-  margin: 0;
+.navbar h3:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .container {
@@ -115,6 +115,7 @@ main {
 
 .view-more p:hover {
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .services {
