@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Po Lao Marquez Benedictos & Co.</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    /* HEADER */
+    .header {
+      background-color: #3D7A40;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .header p {
+      font-style: italic;
+      font-size: 15px;
+      margin-top: 4px;
+    }
+
+    /* NAV */
+    nav {
+      background-color: white;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 12px 0;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    nav a:hover { text-decoration: underline; }
+    nav a.active { color: #3D7A40; }
+
+    /* MAIN */
+    .main {
+      max-width: 960px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* ABOUT INTRO */
+    .about-intro {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .about-intro h2 {
+      font-size: 22px;
+      color: #2C4A2E;
+      margin-bottom: 12px;
+    }
+    .about-intro p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    /* MISSION */
+    .mv-grid {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .mv-card {
+      flex: 1;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .mv-card h3 {
+      font-size: 16px;
+      color: #3D7A40;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #EBF3EB;
+      padding-bottom: 6px;
+    }
+    .mv-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* PARTNERS */
+    .section-title {
+      font-size: 20px;
+      color: #2C4A2E;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .partners-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .partner-card {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      width: calc(50% - 8px);
+    }
+    .partner-card .name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2C4A2E;
+      margin-bottom: 2px;
+    }
+    .partner-card .title {
+      font-size: 13px;
+      color: #3D7A40;
+      margin-bottom: 8px;
+    }
+    .partner-card p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ACCREDITATIONS */
+    .accred {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .accred h2 {
+      font-size: 20px;
+      color: #2C4A2E;
+      margin-bottom: 14px;
+      font-weight: bold;
+    }
+    .accred-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .accred-pill {
+      background: #EBF3EB;
+      border: 1px solid #c0dac0;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #2C4A2E;
+    }
+
+    /* CONTACT */
+    .contact {
+      background: #3D7A40;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .contact h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .contact p {
+      color: #c8e6c9;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .contact a {
+      display: inline-block;
+      background: white;
+      color: #3D7A40;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 10px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+    .contact a:hover { background: #EBF3EB; }
+
+    /* FOOTER */
+    footer {
+      background-color: #3D7A40;
+      color: white;
+      text-align: center;
+      padding: 14px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Po Lao Marquez Benedictos & Co.</h1>
+    <p>Certified Public Accountants</p>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="service-page.html">Services</a>
+    <a href="about_us.html" class="active">About Us</a>
+    <a href="insights.html">Insights</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <div class="main">
+
+    <div class="about-intro">
+      <h2>About the Firm</h2>
+      <p>
+        Po Lao Marquez Benedictos & Co. is a Philippine accounting firm established in 1984 in Quezon City.
+        We provide audit, tax, and advisory services to a wide range of clients — from publicly listed corporations
+        to small and medium enterprises navigating their first statutory audit.
+      </p>
+    </div>
+
+    <div class="mv-grid">
+      <div class="mv-card">
+        <h3>Our Mission</h3>
+      </div>
+    </div>
+
+    <p class="section-title">Meet the Partners</p>
+    <div class="partners-grid">
+
+      <div class="partner-card">
+        <div class="name">Jennifer Rose K. Po</div>
+        <div class="title">Managing Partner · CPA</div>
+        <p>
+         [Add here information about partner]
+        </p>
+      </div>
+
+      <div class="partner-card">
+        <div class="name">Geraldine Benedictos</div>
+        <div class="title">Partner · CPA</div>
+        <p>
+         [Add here information about partner]
+        </p>
+      </div>
+
+      <div class="partner-card">
+        <div class="name">Mina Marie Villaroya</div>
+        <div class="title">Partner · CPA</div>
+        <p>
+         [Add here information about partner]
+        </p>
+      </div>
+
+    </div>
+
+    <div class="accred">
+      <h2>Accreditations & Memberships</h2>
+      <div class="accred-list">
+        <span class="accred-pill"> [Add accreditations here] </span>
+      </div>
+    </div>
+
+    <div class="contact">
+      <h2>Work with us</h2>
+      <p>Get in touch for a consultation on your audit, tax, or advisory needs.</p>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; Po Lao Marquez Benedictos & Co. | All Rights Reserved
+  </footer>
+
+</body>
+</html>
