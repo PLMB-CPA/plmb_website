@@ -10,4 +10,4 @@ const announcementSchema = new mongoose.Schema({
   isBlasted: {type: Boolean, required: true, default: false}
 });
 
-module.exports = mongoose.model('Announcements', announcementSchema);
+module.exports = mongoose.model('Announcement', announcementSchema);
