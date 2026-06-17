@@ -1,4 +1,8 @@
 /* Inquiry specific styles - temporary location*/
+body{
+  margin: 15px;
+}
+
 .inquiry-form {
   display: flex;
   flex-direction: column;
