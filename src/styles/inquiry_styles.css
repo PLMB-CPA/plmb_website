@@ -1,7 +1,55 @@
-/* Inquiry specific styles - temporary location*/
-body{
-  margin: 15px;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
 }
+
+/* HEADER */
+.header {
+  background-color: #3D7A40;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+.header p {
+  font-style: italic;
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+/* NAV */
+nav {
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 12px 0;
+}
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  font-weight: bold;
+}
+nav a:hover { text-decoration: underline; }
+nav a.active { color: #3D7A40; }
+
+/* FOOTER */
+.footer {
+  background-color: #3D7A40;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  font-size: 13px;
+}
+
+/* Inquiry specific styles - temporary location*/
 
 .inquiry-form {
   display: flex;
