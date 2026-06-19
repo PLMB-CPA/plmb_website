@@ -4,22 +4,30 @@
         <meta charset = "UTF-8">
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
         <title> Po Lao Marquez Benedictos Online Portal </title>
-        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="stylesheet" href="../styles/login_styles.css">
     </head>
     
     <body>        
         <div class = "index">
-            <div class = "index-content">
-                <h1> Welcome to Po Lao Marquez Benedictos Online Portal </h1>
-                <p> Please log-in or sign-up to continue. </p>
+            <div class = "welcome">
+                <h1> Welcome!</h1>
+                <p> The Po Lao Marquez Benedictos Online Portal </p>
             </div>
-            <div class = "index-image">
-                <img src = "/assets/images/index.png" alt = "Po Lao Marquez Benedictos Online Portal" />
-            </div>
-            <div class = "index-actions">
-                <a href = "/login"> Log-in </a>
-                <a href = "/signup"> Register </a>
-                <a href = "/about"> About </a>
+            <div class = "get-info">
+                <h1 class> Log-in </h1>
+
+                <div class="info-form">
+                    <form>
+                        <h3> Email </h3>
+                        <input type="email" id="username" placeholder="user@gmail.com"/>
+                        <h3> Password </h3>
+                        <input type="password" id="password" placeholder="••••••••"/>
+                        <button type="submit">Log In</button>
+                    </form>
+
+                    <a> Don't have an account yet? Sign-in <a> <br>
+                    <a> Or continue as guest </a>
+                </div>
             </div>
         </div>
     </body>
