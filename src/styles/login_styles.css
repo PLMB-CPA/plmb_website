@@ -28,6 +28,9 @@ body {
 .bg-container {
   width: 90%;
   max-width: 1000px;
+  height: 85vh;
+  max-height: 800px;
+  min-height: 550px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -35,8 +38,13 @@ body {
 
 .index {
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
+  height: 100%;
+}
+
+.welcome,
+.get-info {
+    flex: 1;
 }
 
 .welcome {
@@ -75,6 +83,8 @@ body {
   min-width: 300px;
   padding: 40px 20px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .get-info h1 {
@@ -82,6 +92,23 @@ body {
   font-size: 50px;
   color: #F5F5F2;
   margin-top: 0;
+}
+
+.get-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.get-info::-webkit-scrollbar-track {
+  background: #315433;
+}
+
+.get-info::-webkit-scrollbar-thumb {
+  background: #6ea86b;
+  border-radius: 10px;
+}
+
+.get-info::-webkit-scrollbar-thumb:hover {
+  background: #8bc985;
 }
 
 .info-form {
