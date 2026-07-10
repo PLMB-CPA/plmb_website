@@ -82,9 +82,7 @@ nav a.active { color: #3D7A40; }
   border: none;
   border-radius: 18px;
   padding: 30px;
-
   box-shadow: 0 6px 20px rgba(0,0,0,.08);
-
   transition: .3s;
   position: relative;
   overflow: hidden;

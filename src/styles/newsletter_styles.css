@@ -91,7 +91,17 @@ nav a.active { color: #3D7A40; }
   border: 1px solid #ccc;
   border-radius: 8px;
   animation: fadeUp 0.8s ease forwards;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
 
+  transition: .3s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.8s ease;
+}
+
+.newsletter-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
 }
 
 .newsletter-card h2 {
