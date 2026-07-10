@@ -9,6 +9,7 @@
 
   <body>
     <div class="header">
+      <img id="logo" src="../image/logo.png">
       <h1> Po Lao Marquez Benedictos & Co. </h1>
       <p> Certified Public Accountants </p>
     </div>
@@ -21,22 +22,23 @@
         <a href="inquiry-page.html" class="active">Contact Us</a>
     </nav>
 
-    <section class="inquiry-nav">
+    <div class="inquiry-nav">
       <h3>Send Inquiry</h3>
-      <a href="#" class="inquiry-view"><p>View All →</p></a>
-    </section>
+    </div>
 
-    <section class="inquiry-form">
-      <input type="text" class="inquiry-field" id="subject-field" placeholder="Subject">
-      <textarea class="inquiry-field" id="message-field" placeholder="Send us a message..."></textarea>
-      
-      <div class="inquiry-contact">
-        <label for="inquiry-email">Email: </label>
-        <input type="text" placeholder="name@email.com" id="inquiry-email">
-      </div>
+    <div class="inquiry-container">
+      <form class="inquiry-form">
+        <input type="text" class="inquiry-field" id="subject-field" placeholder="Subject">
+        <textarea class="inquiry-field" id="message-field" placeholder="Send us a message..."></textarea>
+        
+        <div class="inquiry-contact">
+          <label for="inquiry-email">Email: </label>
+          <input type="text" placeholder="name@email.com" id="inquiry-email">
+        </div>
 
-      <input type="submit" class="inquiry-submit">
-    </section>
+        <input type="submit" class="inquiry-submit">
+      </form>
+    </div>
 
     <div class="footer">
       <p> © Po Lao Marquez Benedictos & Co.   |   All Rights Reserved </p>

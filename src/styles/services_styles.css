@@ -1,8 +1,20 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background: linear-gradient(to bottom, #f8faf8, #eef5ee);
   color: #333;
 }
 
@@ -25,12 +37,15 @@ body {
 
 /* NAV */
 nav {
-  background-color: white;
-  border-bottom: 1px solid #ccc;
+  background: white;
   display: flex;
   justify-content: space-evenly;
-  padding: 12px 0;
+  align-items: center;
+
+  padding: 18px 40px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.08);
 }
+
 nav a {
   text-decoration: none;
   color: #333;
@@ -39,6 +54,10 @@ nav a {
 }
 nav a:hover { text-decoration: underline; }
 nav a.active { color: #3D7A40; }
+
+#logo {
+  width: 70px;
+}
 
 /* FOOTER */
 .footer {
@@ -59,29 +78,47 @@ nav a.active { color: #3D7A40; }
 /* SERVICES STYLE */
 
 .container {
-  min-width: 100%;
-  min-height: 50%;
-  margin: 0 auto;
-  padding: 20px;
+  background: white;
+  border: none;
+  border-radius: 18px;
+  padding: 30px;
 
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
 
-  text-align: left;
-  font-family: Arial, sans-serif;
+  transition: .3s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.8s ease forwards;
+}
 
-  transition: 0.3s ease;
+.container::before {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 6px;
+
+  background: #3D7A40;
+}
+
+.container p {
+  line-height: 1.8;
+  color: #666;
+  font-size: 16px;
 }
 
 .container:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
 }
 
 .container h3 {
   color: #2C4A2E;
-  font-size: 30px;
   padding-bottom: 70px;
+  font-size: 28px;
 }
 
 .service-container {
@@ -89,30 +126,16 @@ nav a.active { color: #3D7A40; }
   margin-bottom: 24px;
 }
 
-.view-more {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: wrap;
-}
-
-.view-more h2 {
-  font-size: 40px;
-  color: black;
+.service-container h2 {
+  font-size: 42px;
+  color: #2C4A2E;
   padding-bottom:8px;
-
-}
-
-.view-more p:hover {
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 .services {
-  padding-top: 10px;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
 }
 
