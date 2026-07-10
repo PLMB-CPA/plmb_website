@@ -88,7 +88,7 @@ nav a.active { color: #3D7A40; }
   transition: .3s;
   position: relative;
   overflow: hidden;
-  animation: fadeUp 0.8s ease forwards;
+  animation: fadeUp 0.8s ease;
 }
 
 .container::before {
