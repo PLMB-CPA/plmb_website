@@ -1,96 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    }
+    
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    }
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Red Hat Display", sans-serif;
   color: #333;
   margin: 0;
 }
 
+.bg {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: hsla(123, 33%, 36%, 1);
+  background: linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
+  background: -moz-linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
+  background: -webkit-linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3D7A40", endColorstr="#59BE54", GradientType=1 );
+}
+
+.bg-container {
+  width: 90%;
+  max-width: 1000px;
+  height: 85vh;
+  max-height: 800px;
+  min-height: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeUp 0.8s ease forwards;
+}
+
 .index {
   display: flex;
-  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome,
+.get-info {
+    flex: 1;
 }
 
 .welcome {
-  background-color: #EBF3EB;
-  flex-grow: 1;
-  width: 50%;
-  height: 100vh;
+  background-image: url('../image/Login.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
 }
 
 .welcome h1 {
-  padding-top: 30%;
   text-align: center;
-  padding-bottom: 10%;
   font-size: 70px;
   color: #2C4A2E;
 }
 
 .welcome p {
-  padding-left: 28%;
-  padding-right: 20%;
+  padding-left: 15%;
+  padding-right: 15%;
   font-size: 20px;
   font-style: italic;
   color: #2C4A2E;
+  text-align: center;
 }
 
 .get-info {
-  background-color: #3D7A40;
-  flex-grow: 1;
-  width: 50%;
-  height: 100v
+  background-color: #315433;
+  flex: 1 1 50%;
+  min-width: 300px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .get-info h1 {
   padding-left: 10%;
   font-size: 50px;
   color: #F5F5F2;
+  margin-top: 0;
+}
+
+.get-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.get-info::-webkit-scrollbar-track {
+  background: #315433;
+}
+
+.get-info::-webkit-scrollbar-thumb {
+  background: #6ea86b;
+  border-radius: 10px;
+}
+
+.get-info::-webkit-scrollbar-thumb:hover {
+  background: #8bc985;
 }
 
 .info-form {
-  background-color: #5C9460;
+  background-color: #F5F5F2;
   padding: 10%;
-  padding-bottom: 20%;
-  padding-top: 10px;
+  border-radius: 8px;
 }
 
 .info-form h3 {
-  font-size: 30px;
-  color: #F5F5F2;
+  font-size: 24px;
+  color: #2C4A2E;
   font-weight: lighter;
-  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .info-form input {
-  width: 90%;
+  width: 100%;
+  box-sizing: border-box;
   height: 40px;
-  margin-bottom: 20px;
-  border-radius: 8px;
+  margin-bottom: 40px;
+  border-radius: 15px;
   border: 1px solid #ccc;
   padding-left: 20px;
 }
 
 .info-form button {
-  margin-top: 20px;
-  width: 90px;
+  margin-top: 10px;
+  width: 100%;
   height: 40px;
   border-radius: 20px;
-  border: 1px solid #ccc;
-  background-color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: hsla(108, 45%, 58%, 1);
+  background: linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
+  background: -moz-linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
+  background: -webkit-linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#75C462", endColorstr="#3D7D4A", GradientType=1 );
 }
 
 .info-form button:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background-color: #f5f5f5;
+}
+
+.info-form input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(44, 74, 46, 0.4);
 }
 
 .info-form a {
-  color: #F5F5F2;
+  color: #2C4A2E;
   line-height: 30px;
+  text-decoration: none;
+  margin-top: 10px;
 }
 
-.info-form a:hover { 
+.info-form a:hover {
   text-decoration: underline; 
 }
 
 form {
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
+#username {
+  background-image: url('../image/user-icon.png');
+  background-position: 12px center;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  padding-left: 40px;
+  margin-right: 5px;
+}
+
+#password {
+  background-image: url('../image/password-icon.png');
+  background-position: 12px center;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  padding-left: 40px;
+  margin-right: 5px;
+}
