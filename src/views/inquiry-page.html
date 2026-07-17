@@ -26,18 +26,40 @@
   </div>
 
   <div class="inquiry-container">
-    <form class="inquiry-form">
-      <input type="text" class="inquiry-field" id="subject-field" placeholder="Subject">
-      <textarea class="inquiry-field" id="message-field" placeholder="Send us a message..."></textarea>
-        
-      <div class="inquiry-contact">
-        <label for="inquiry-email">Email: </label>
-        <input type="text" placeholder="name@email.com" id="inquiry-email">
-      </div>
+  <form class="inquiry-form" id="inquiry-form">
+    <div class="inquiry-name-row">
+      <input type="text" class="inquiry-field" id="first-name-field" name="firstName" placeholder="First Name" required>
+      <input type="text" class="inquiry-field" id="last-name-field" name="lastName" placeholder="Last Name" required>
+    </div>
 
-      <input type="submit" class="inquiry-submit">
-    </form>
-  </div>
+    <select class="inquiry-field" id="category-field" name="category" required>
+      <option value="" disabled selected>Select Inquiry Category</option>
+      <option value="New Client General Inquiry">New Client General Inquiry</option>
+      <option value="Audit & Assurance">Audit & Assurance</option>
+      <option value="Tax Services">Tax Services</option>
+      <option value="Accounting & Bookkeeping">Accounting & Bookkeeping</option>
+      <option value="Business Advisory">Business Advisory</option>
+      <option value="Payroll Services">Payroll Services</option>
+      <option value="Comments & Complaints">Comments & Complaints</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <input type="text" class="inquiry-field" id="subject-field" name="subject" placeholder="Subject" required>
+    <textarea class="inquiry-field" id="message-field" name="message" placeholder="Send us a message..." required></textarea>
+
+    <div class="inquiry-contact">
+      <label for="inquiry-email">Email:</label>
+      <input type="email" placeholder="name@email.com" id="inquiry-email" name="email" required>
+    </div>
+
+    <div id="form-status"></div>
+
+    <input type="submit" class="inquiry-submit" value="Send Inquiry">
+  </form>
+</div>
+
+<script src="../public/js/inquiry.js"></script>
+
 
   <div class="footer">
     <p> © Po Lao Marquez Benedictos & Co.   |   All Rights Reserved </p>

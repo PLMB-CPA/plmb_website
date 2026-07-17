@@ -106,6 +106,15 @@ nav a.active { color: #3D7A40; }
   border-radius: 10px;
 }
 
+.inquiry-name-row {
+  display: flex;
+  gap: 14px;
+}
+
+.inquiry-name-row .inquiry-field {
+  flex: 1;
+}
+
 .inquiry-view {
   text-decoration: none;
   color: inherit;
