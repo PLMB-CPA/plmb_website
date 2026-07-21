@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const Inquiry = require('../models/Inquiry');
+const Consultation = require('../models/Consultation');
 const Announcement = require('../models/Announcement');
 const Subscriber = require('../models/Subscriber');
 const Admin = require('../models/Admin');
@@ -38,6 +39,40 @@ router.patch('/inquiries/:id', async (req, res) => {
   try {
     const inquiry = await Inquiry.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.status(200).json({message: 'Inquiry updated', inquiry});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+});
+
+// CONSTULATION ROUTES 
+router.post('/consultation', async (req, res) => { 
+  try { 
+    const count = await Consultation.countDocuments();
+    const ticketNumber = `CNS-${String(count + 1).padStart(2, '0')}`;
+    const consultation = await Consultation.create(req.body); 
+    res.status(201).json({message: 'Your consultation has been recorded.', consultation});
+  } catch (err) { 
+    res.status(400).json({error: err.message}); 
+  } 
+});
+
+router.get('/consultation', async (req, res) => {
+  try {
+    const filter = {isAnswered: false};
+    if (req.query.isArchived) filter.isArchived = true;
+    if (req.query.isRead) filter.isRead = true;
+    if (req.query.isAnswered) filter.isAnswered = true;
+    const consultation = await Constulation.find(filter).sort({date: 1});
+    res.status(200).json({message: 'Consultation found', consultation});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+});
+
+router.patch('/consultation/:id', async (req, res) => {
+  try {
+    const consultation = await Consultation.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    res.status(200).json({message: 'Consultation updated', consultation});
   } catch (err) {
     res.status(400).json({error: err.message});
   }
@@ -106,4 +141,6 @@ router.post('/admin/login', async (req, res) => {
     res.status(400).json({error: err.message});
   }
 });
+
+module.exports = router;
             
