@@ -15,7 +15,7 @@ router.post('/inquiries', async (req, res) => {
   try { 
     const count = await Inquiry.countDocuments();
     const ticketNumber = `INQ-${String(count + 1).padStart(4, '0')}`;
-    const inquiry = await Inquiry.create(req.body); 
+    const inquiry = await Inquiry.create({...req.body, ticketNumber}); 
     res.status(201).json({message: 'Your inquiry has been recorded.', inquiry});
   } catch (err) { 
     res.status(400).json({error: err.message}); 
@@ -49,7 +49,7 @@ router.post('/consultation', async (req, res) => {
   try { 
     const count = await Consultation.countDocuments();
     const ticketNumber = `CNS-${String(count + 1).padStart(2, '0')}`;
-    const consultation = await Consultation.create(req.body); 
+    const consultation = await Consultation.create({...req.body, ticketNumber}); 
     res.status(201).json({message: 'Your consultation has been recorded.', consultation});
   } catch (err) { 
     res.status(400).json({error: err.message}); 
