@@ -25,9 +25,9 @@ router.post('/inquiries', async (req, res) => {
 router.get('/inquiries', async (req, res) => {
   try {
     const filter = {isAnswered: false};
-    if (req.query.isArchived) filter.isArchived = true;
-    if (req.query.isRead) filter.isRead = true;
-    if (req.query.isAnswered) filter.isAnswered = true;
+    if (req.query.isArchived !== undefined) filter.isArchived = true;
+    if (req.query.isRead !== undefined) filter.isRead = true;
+    if (req.query.isAnswered !== undefined) filter.isAnswered = true;
     const inquiries = await Inquiry.find(filter).sort({date: 1});
     res.status(200).json({message: 'Inquiries found', inquiries});
   } catch (err) {
@@ -44,7 +44,7 @@ router.patch('/inquiries/:id', async (req, res) => {
   }
 });
 
-// CONSTULATION ROUTES 
+// CONSULTATION ROUTES 
 router.post('/consultation', async (req, res) => { 
   try { 
     const count = await Consultation.countDocuments();
@@ -59,10 +59,10 @@ router.post('/consultation', async (req, res) => {
 router.get('/consultation', async (req, res) => {
   try {
     const filter = {isAnswered: false};
-    if (req.query.isArchived) filter.isArchived = true;
-    if (req.query.isRead) filter.isRead = true;
-    if (req.query.isAnswered) filter.isAnswered = true;
-    const consultation = await Constulation.find(filter).sort({date: 1});
+    if (req.query.isArchived !== undefined) filter.isArchived = true;
+    if (req.query.isRead !== undefined) filter.isRead = true;
+    if (req.query.isAnswered !== undefined) filter.isAnswered = true;
+    const consultation = await Consultation.find(filter).sort({date: 1});
     res.status(200).json({message: 'Consultation found', consultation});
   } catch (err) {
     res.status(400).json({error: err.message});
