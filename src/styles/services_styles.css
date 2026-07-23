@@ -105,10 +105,12 @@ nav a.active { color: #3D7A40; }
 .container ul {
   padding-left: 20px;
   margin-top: 8px;
+  color: #666;
 }
 
 .container li {
   margin-bottom: 12px;
+  color: #666;
 }
 
 .container:hover {
