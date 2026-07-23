@@ -4,34 +4,107 @@
     <meta charset = "UTF-8">
     <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     <title> Po Lao Marquez Benedictos Online Portal </title>
-    <link rel="stylesheet" href="../styles/login_styles.css">
+    <link rel="stylesheet" href="../styles/index_styles.css">
 </head>
-<body>        
-    <div class="bg">
-        <div class="bg-container">
-            <div class = "index">
-                <div class = "welcome">
-                    <h1> Welcome!</h1>
-                    <p> The Po Lao Marquez Benedictos Online Portal </p>
-                </div>
-                <div class = "get-info">
-                    <h1 class> User Log-in </h1>
 
-                    <div class="info-form">
-                        <form action="services.html" method="get">
-                            <h3> Email </h3>
-                            <input type="email" id="username" placeholder="user@gmail.com"/>
-                            <h3> Password </h3>
-                            <input type="password" id="password" placeholder="••••••••"/>
-                            <button type="submit">Log In</button>
-                        </form>
+<body>
+  <div class="header">
+    <img id="logo" src="../image/logo.png">
+    <h1> Po Lao Marquez Benedictos & Co. </h1>
+    <p> Certified Public Accountants </p>
+  </div>
 
-                        <a href=""> Don't have an account yet? Sign-in <a> <br>
-                        <a href="services.html"> Or continue as guest </a>
-                    </div>
-                </div>
-            </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="about_us.html">About Us</a>
+    <a href="newsletter-page.html">Newsletter</a>
+    <a href="inquiry-page.html">Contact Us</a>
+  </nav>
+
+  <div class="home">
+      <h2> Home </h2>
+
+    <div class="highlights">
+      <div class="container">
+        <h3> Decades of Experience </h3>
+        <p> Serving clients since 1984, Po Lao Marquez Benedictos & Co. has built over four decades 
+          of trust in Philippine accounting. 
+        </p>
+      </div>
+      <div class="container">
+        <h3> Full-Service Expertise </h3>
+        <p> Our team handles the full spectrum of accounting needs: audit, tax, and advisory services, 
+          all backed by licensed CPAs who understand your business.
+        </p>
+      </div>
+      <div class="container">
+        <h3> Every Business at Every Stage </h3>
+        <p> We work with clients across every stage of growth. From small and medium enterprises undergoing 
+          their first statutory audit to publicly listed corporations with complex reporting needs.
+        </p>
+      </div>
+    </div>
+
+    <div class = "latest-announcements">
+        <div class="container">
+        <h3> Latest Announcements </h3>
+        <div id = "announcements-list" class = "announcements-grid"> </div>
+        <a href="newsletter-page.html" class="view-all-link">View All Announcements</a>
         </div>
-     </div>
+    </div>
+       
+    <div class = "map">
+        <div class="container">
+        <h3> Where to Find Us </h3>
+        <h4> Business Address </h4>
+        <p> 18A Villa Soccoro St., Brgy. Bahay Toro, Quezon City, Philippines </p>
+        <p> Mondays to Fridays, 9:00 AM to 5:00 PM </p>
+        <div class = "map-wrapper">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.86355125473!2d121.01689137510729!3d14.663683885830219!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b6e8e391e6f1%3A0x99eec18209208637!2s18a%20Villa%20Socorro%20St%2C%20Project%208%2C%20Quezon%20City%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1784770933197!5m2!1sen!2sph" 
+            width="600" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </div>
+        <h4> Facebook Page </h4>
+        <a href="https://facebook.com/p/Po-Lao-Marquez-Benedictos-Company"> Po Lao Marquez Benedictos </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p><a href ="admin_login.html">© Po Lao Marquez Benedictos & Co.</a>   |   All Rights Reserved </p>
+  </div>
+
+  <script>
+    fetch('https://plmb-website.onrender.com/api/announcements')
+      .then(response => response.json())
+      .then(data => {
+        const announcementsList = document.getElementById('announcements-list');
+        const latest = data.announcements.slice(0, 3); // Get the latest 3 announcements
+
+        if (latest.length === 0) {
+          announcementsList.innerHTML = '<p>No announcements available.</p>';
+          return;
+        }
+
+        latest.forEach(item => {
+          const announcementDiv = document.createElement('div');
+          announcementDiv.className = 'announcement';
+          announcementDiv.innerHTML = `
+            <h4>${item.title}</h4>
+            <p>${item.content}</p>
+            <p><em>${new Date(item.date).toLocaleDateString()}</em></p>
+          `;
+          announcementsList.appendChild(announcementDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching announcements:', error));
+  </script>
 </body>
 </html>
