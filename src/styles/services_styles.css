@@ -95,7 +95,9 @@ nav a.active { color: #3D7A40; }
   background: #3D7A40;
 }
 
-.container p {
+.container p,
+.container ul,
+.container li {
   line-height: 1.8;
   color: #666;
   font-size: 16px;
@@ -105,17 +107,10 @@ nav a.active { color: #3D7A40; }
 .container ul {
   padding-left: 20px;
   margin-top: 8px;
-  color: #666;
 }
 
 .container li {
   margin-bottom: 12px;
-  color: #666;
-}
-
-.container:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.18);
 }
 
 .container > h3 {
