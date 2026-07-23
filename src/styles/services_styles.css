@@ -68,13 +68,6 @@ nav a.active { color: #3D7A40; }
   font-size: 13px;
 }
 
-/* MAIN */
-.main {
-  max-width: 960px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
-
 /* SERVICES STYLE */
 
 .container {
@@ -106,6 +99,16 @@ nav a.active { color: #3D7A40; }
   line-height: 1.8;
   color: #666;
   font-size: 16px;
+  text-align: justify;
+}
+
+.container ul {
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+.container li {
+  margin-bottom: 12px;
 }
 
 .container:hover {
@@ -113,27 +116,41 @@ nav a.active { color: #3D7A40; }
   box-shadow: 0 18px 40px rgba(0,0,0,.18);
 }
 
-.container h3 {
+.container > h3 {
   color: #2C4A2E;
-  padding-bottom: 70px;
   font-size: 28px;
+  padding-bottom: 12px;
+}
+
+.small-container {
+  background: #f8faf8;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-top: 16px;
+}
+
+.small-container h3 {
+  color: #2C4A2E;
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 
 .service-container {
+  max-width: 960px;
+  margin: 30px auto 24px;
   padding: 24px;
-  margin-bottom: 24px;
 }
 
 .service-container h2 {
   font-size: 42px;
   color: #2C4A2E;
-  padding-bottom:8px;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .services {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
-  margin-top: 20px;
+  margin: 20px 0 40px;
 }
-
