@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 // add routes here when developed
 
-app.use(express.static(path.join(__dirname, 'src/views')));
-app.use('/styles', express.static(path.join(__dirname, '/styles')));
-app.use('/image', express.static(path.join(__dirname, '/image')));
+app.use(express.static(path.join(__dirname, 'views')));
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+app.use('/image', express.static(path.join(__dirname, 'image')));
 
 app.get('/', (req, res) => {
   res.send('PLMB API is running');
