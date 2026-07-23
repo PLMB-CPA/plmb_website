@@ -64,10 +64,7 @@ nav a.active { color: #3D7A40; }
   font-size: 16px; 
   text-align: justify;
 }
-.container:hover { 
-  transform: translateY(-8px); 
-  box-shadow: 0 18px 40px rgba(0,0,0,.18); 
-}
+
 .container h3 { 
   color: #2C4A2E; 
   font-size: 22px; 
