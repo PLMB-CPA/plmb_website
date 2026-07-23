@@ -83,7 +83,7 @@ nav a.active { color: #3D7A40; }
 }
 
 /* LATEST ANNOUNCEMENTS */
-.latest.announcements { margin-bottom: 40px; }
+.latest.announcements { margin-bottom: 70px; }
 .announcements-grid { display: grid; gap: 16px; margin-top: 20px; }
 .announcement {
   background: #f4f8f3;
