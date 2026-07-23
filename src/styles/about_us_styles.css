@@ -188,6 +188,15 @@ nav a.active { color: #3D7A40; }
       color: #2C4A2E;
     }
 
+    .accred-pill ul {
+      padding-left: 18px;
+      margin: 4px 0 12px;
+    }
+    
+    .accred-pill li {
+      margin-bottom: 2px;
+    }
+
     /* CONTACT */
     .contact {
       background: #3D7A40;
