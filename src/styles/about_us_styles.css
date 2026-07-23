@@ -177,24 +177,37 @@ nav a.active { color: #3D7A40; }
     .accred-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 16px;
     }
+    
     .accred-pill {
       background: #EBF3EB;
       border: 1px solid #c0dac0;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      color: #2C4A2E;
+      border-radius: 10px;
+      padding: 16px 20px;
+      flex: 1 1 220px;
     }
-
+    
+    .accred-pill b {
+      display: block;
+      color: #2C4A2E;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    
     .accred-pill ul {
       padding-left: 18px;
-      margin: 4px 0 12px;
+      margin: 0;
     }
     
     .accred-pill li {
-      margin-bottom: 2px;
+      font-size: 13px;
+      color: #2C4A2E;
+      margin-bottom: 4px;
+    }
+    
+    .accred-pill li:last-child {
+      margin-bottom: 0;
     }
 
     /* CONTACT */
