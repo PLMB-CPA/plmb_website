@@ -57,13 +57,19 @@
     <input type="submit" class="inquiry-submit" value="Send Inquiry">
   </form>
 </div>
-
-<script src="/public/js/inquiry.js"></script>
-
-
   <div class="footer">
         <p><a href ="admin_login.html">© Po Lao Marquez Benedictos & Co.</a>   |   All Rights Reserved </p>
   </div>
 
+  <div id="success-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>Inquiry sent!</h3>
+    <p>Your ticket number is <strong id="modal-ticket"></strong>.</p>
+    <p>Check your email for a confirmation.</p>
+    <button id="modal-close">Close</button>
+  </div>
+
+  <script src="/public/js/inquiry.js"></script>
+</div>
 </body>
 </html>

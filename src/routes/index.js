@@ -10,9 +10,10 @@ const AuthController = require('../controllers/auth_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
+router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
 router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
-           
+
 // ANNOUNCEMENT ROUTES
 router.post('/announcements', requireAuth, async (req, res) => {
   try {

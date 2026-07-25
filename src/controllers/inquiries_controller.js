@@ -1,5 +1,5 @@
 const Inquiry = require('../models/Inquiry');
-const sendInquiryNotification = require('../utils/email').sendInquiryNotification;
+const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../utils/email').sendInquiryNotification;
 
 
 exports.createInquiry = async (req, res) => {
@@ -9,6 +9,7 @@ exports.createInquiry = async (req, res) => {
     const inquiry = await Inquiry.create({...req.body, ticketNumber});
 
     sendInquiryNotification(inquiry).catch(err => console.error('Inquiry saved, email failed', err));
+    sendConfirmation(inquiry).catch(err => console.error('Inquiry saved, confirmation email failed', err));
 
     res.status(201).json({message: 'Your inquiry has been recorded.', inquiry});
   } catch (err) {
@@ -38,3 +39,21 @@ exports.updateInquiry = async (req, res) => {
   }
 };
 
+exports.replyToInquiry = async (req, res) => {
+  try {
+    const inquiry = await Inquiry.findById(req.params.id);
+    if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
+
+    await sendReplyEmail(inquiry, req.body.reply);
+
+    const updated = await Inquiry.findByIdAndUpdate(
+      req.params.id,
+      { reply: req.body.reply, repliedAt: new Date(), isAnswered: true },
+      { new: true }
+    );
+
+    res.status(200).json({message: 'Reply sent', inquiry: updated});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+};
