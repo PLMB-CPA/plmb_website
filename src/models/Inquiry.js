@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const inquirySchema = new mongoose.Schema({
   ticketNumber: {type: String},
-  name: {type: String, required: true},
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
   businessName: {type: String, required: true},
   email: {type: String, required: true},
   number: {type: String, required: true},

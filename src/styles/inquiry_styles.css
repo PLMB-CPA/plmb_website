@@ -59,15 +59,9 @@ nav a.active { color: #3D7A40; }
 }
 
 /* FOOTER */
-.footer {
-  background-color: #3D7A40;
-  color: white;
-  text-align: center;
-  padding: 14px;
-  font-size: 13px;
-}
-
-/* Inquiry specific styles - temporary location*/
+.footer { background-color: #3D7A40; color: white; text-align: center; padding: 14px; font-size: 13px; }
+.footer a { color: white; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
 
 .inquiry-container {
   display: flex;
@@ -201,3 +195,19 @@ nav a.active { color: #3D7A40; }
   resize: none;
 }
 
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 320px;
+}
