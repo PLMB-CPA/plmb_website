@@ -62,4 +62,4 @@ async function sendConfirmation(inquiry) {
     });
 }
 
-module.exports = { sendInquiry, sendReply, sendConfirmation };
+module.exports = { sendInquiryNotification, sendReply, sendConfirmation };
