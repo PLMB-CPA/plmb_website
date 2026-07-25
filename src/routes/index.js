@@ -65,6 +65,7 @@ router.get('/unsubscribe', async (req, res) => {
 //ADMIN ROUTES
 router.post('/admin/login', AuthController.postAdminLogin);
 router.get('/admin/logout', AuthController.getAdminLogout);
+router.post('/admin/users', requireAuth, AuthController.addAdmin);
 
 module.exports = router;
             
