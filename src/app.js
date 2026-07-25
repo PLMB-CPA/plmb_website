@@ -25,6 +25,7 @@ app.get('/admin_dashboard.html', requireAdminPage, (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname, 'views')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/image', express.static(path.join(__dirname, 'image')));
 
