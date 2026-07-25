@@ -32,6 +32,12 @@ form {
   max-width: 380px;
 }
 
+.login_inputs {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
 .login_block {
   background-color: #F5F5F2;
   padding: 45px 40px;
@@ -83,6 +89,7 @@ form {
 }
 
 .remember {
+  margin-top: 20px;
   margin-bottom: 25px;
   font-size: 14px;
   color: #2C4A2E;
@@ -130,4 +137,33 @@ form {
 
 .login_action .btn:hover {
   text-decoration: underline;
+}
+
+#pw-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.password input {
+  margin-bottom: 0px; 
+  padding-right: 40px; 
+}
+
+#pw-button {
+  position: absolute;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  background-color: transparent;
+  background-image: url('/image/eye-closed.svg');
+  background-position: center;
+  background-size: 18px 18px;
+  border: 0;
+  cursor: pointer;
+  transition: transform .25s ease, background-image .25s ease;
+}
+
+#pw-button:active {
+  background-image: url('/image/eye-open.svg');
 }
