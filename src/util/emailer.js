@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-async function sendInquiry(inquiry) {
+async function sendInquiryNotification(inquiry) {
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: process.env.PLMB_EMAIL,
