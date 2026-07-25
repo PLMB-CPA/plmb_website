@@ -1,8 +1,28 @@
-document.getElementById("login-form").addEventListener("submit", function (e) {
+const form = document.getElementById('login-form');
+const params = new URLSearchParams(location.search);
+const error = params.get('error');
+const errorMsg = document.getElementById('login-error');
+const {requireAdminPage} = require('./middleware/auth');
+
+if (error === 'invalid') alert('Invalid username or password');
+else if (error ==='server') alert('Something went wrong, please try again.');
+
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-    const email = document.getElementById("username").value;
+    const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password})
+    });
 
-    console.log(email);
-    // Just checking so the email is right
+    const data = await res.json();
+
+    sessionStorage.setItem('token', data.token);
+
+
 });
