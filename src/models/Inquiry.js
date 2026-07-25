@@ -29,7 +29,6 @@ const inquirySchema = new mongoose.Schema({
                       'Comments & Complaints',
                       'Other'
                     ],
-            default: 'Other',
             required: true
             },
   subject: {type: String, required: true},
