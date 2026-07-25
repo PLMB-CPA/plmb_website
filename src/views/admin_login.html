@@ -12,13 +12,16 @@
     <form class = "login_form" id = "login-form" method = "POST" action = "/api/admin/login">
         <div class = "login_block">
             <h2 class = "login_header"> User Sign-In </h2>
-            <div class = "username">
-                <input type="text" placeholder="Username" id="username" name="username" required>
-            </div>
+			<div class = "login_inputs">
+				<div class = "username">
+					<input type="text" placeholder="Username" id="username" name="username" required>
+				</div>
 
-            <div class = "password">
-                <input type = "password" placeholder="Password" id = "password" name = "password" required>
-            </div>
+                <div class = "password" id="pw-container">
+                    <input type = "password" placeholder="Password" id = "password" name = "password" required>
+                    <button class="show-password" id="pw-button" type="button"></button>
+                </div>           
+            </div>  
 
             <div class = "remember">
                 <label> <input type = "checkbox" id = "remember" name = "remember"> Remember Me </label>
@@ -37,6 +40,6 @@
 </div>
 
 <script src="/public/js/login.js"></script>
-
+<script src="/public/js/password-toggle.js"></script>
 </body>
 </html>
