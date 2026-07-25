@@ -3,8 +3,20 @@ const mongoose = require('mongoose');
 const inquirySchema = new mongoose.Schema({
   ticketId: {type: String},
   name: {type: String, required: true},
+  businessName: {type: String, required: true},
   email: {type: String, required: true},
   number: {type: String, required: true},
+  industrySector: {type: String,
+              enum: [
+                'Healthcare',
+                'Real Estate',
+                'Retail',
+                'Professional Services',
+                'Non-Profit',
+                'Other'
+              ],
+              required: true
+  },
   category: {type: String, 
              enum: [
                       'New Client General Inquiry',
@@ -13,10 +25,10 @@ const inquirySchema = new mongoose.Schema({
                       'Accounting & Bookkeeping',
                       'Business Advisory',
                       'Payroll Services',
+                      'Billing Concerns',
                       'Comments & Complaints',
                       'Other'
                     ],
-            default: 'Other',
             required: true
             },
   subject: {type: String, required: true},

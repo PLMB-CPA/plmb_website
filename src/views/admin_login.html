@@ -7,10 +7,9 @@
 </head>
 
 <body>
-
 <div class = "main">
 
-    <form>
+    <form class = "login_form" id = "login-form" method = "POST" action = "/api/admin/login">
         <div class = "login_block">
             <h2 class = "login_header"> User Sign-In </h2>
             <div class = "username">
@@ -22,8 +21,10 @@
             </div>
 
             <div class = "remember">
-                <label> <input type = "checkbox" id = "remember"> Remember Me </label>
+                <label> <input type = "checkbox" id = "remember" name = "remember"> Remember Me </label>
             </div>
+
+            <p id = "login-error" class = "login-error"></p>
 
             <div class = "login_action">
                 <button type = "submit" id = "login_btn"> LOG-IN </button>
@@ -34,5 +35,8 @@
     </form>
 
 </div>
+
+<script src="/public/js/login.js"></script>
+
 </body>
 </html>
