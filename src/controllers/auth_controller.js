@@ -16,7 +16,7 @@ exports.postAdminLogin =async (req, res) => {
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
     }
 
-    res.redirect('/admin_dashboard.html');
+    res.json({redirect: '/admin_dashboard.html'});
   } catch (err) {
     res.status(500).json({error: 'An error occurred.'});
   }
