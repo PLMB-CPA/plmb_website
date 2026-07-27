@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const announcementSchema = new mongoose.Schema({
+const newsletterSchema = new mongoose.Schema({
   title: {type: String, required: true},
   author: {type: String},
   date: {type: Date, default: Date.now},
@@ -10,4 +10,4 @@ const announcementSchema = new mongoose.Schema({
   isBlasted: {type: Boolean, required: true, default: false}
 });
 
-module.exports = mongoose.model('Announcement', announcementSchema);
+module.exports = mongoose.model('Newsletter', newsletterSchema);
