@@ -6,7 +6,6 @@ const inquirySchema = new mongoose.Schema({
   lastName: {type: String, required: true},
   businessName: {type: String, required: true},
   email: {type: String, required: true},
-  number: {type: String, required: true},
   industrySector: {type: String,
               enum: [
                 'Healthcare',
