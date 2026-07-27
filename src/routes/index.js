@@ -3,45 +3,35 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const {requireAuth, requireAdminPage} = require('../middleware/auth');
 
-const Announcement = require('../models/Announcement');
 const Subscriber = require('../models/Subscriber');
 
 const AuthController = require('../controllers/auth_controller');
 const inquiryController = require('../controllers/inquiry_controller');
+const newsletterController = require('../controllers/newsletter_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
 router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
 
-// ANNOUNCEMENT ROUTES
-router.post('/announcements', requireAuth, async (req, res) => {
-  try {
-    const announcements = await Announcement.create(req.body);
-    res.status(201).json({message: 'Announcement created', announcements});
-  } catch (err) {
-    res.status(400).json({error: err.message});
-  }
-});
+// NEWSLETTER ROUTES
+// Public: used by index.html to show published newsletters
+router.get('/announcements', newsletterController.getPublishedNewsletters);
 
-router.get('/announcements', async (req, res) => {
-  try {
-    const announcements = await Announcement.find({isPublished: true}).sort({date: -1});
-    res.status(200).json({message: 'Announcement found', announcements});
-  } catch (err) {
-    res.status(400).json({error: err.message});
-  }
-});
+// Admin: full list regardless of publish status
+router.get('/announcements/all', requireAuth, newsletterController.getAllNewsletters);
+            
+// Admin: single newsletter, for an edit form 
+router.get('/announcements/:id', requireAuth, newsletterController.getNewsletterById);
 
-router.patch('/announcements/:id', requireAuth, async (req, res) => {
-  try {
-    const announcements = await Announcement.findByIdAndUpdate(req.params.id, req.body, {new: true});
-    res.status(200).json({message: 'Announcement updated', announcements});
-  } catch (err) {
-    res.status(400).json({error: err.message});
-  }
-});
-             
+// Admin: create a new newsltter (draft or published)
+router.post('/announcements', requireAuth, newsletterController.createNewsletter);
+
+// Admin: edit/publish/unpublish
+router.patch('/announcements/:id', requireAuth, newsletterController.updateNewsletter);
+
+// Admin: delete a newsltter
+router.delete('/announcements/:id', requireAuth, newsletterController.deleteNewsletter);
 // SUBSCRIBER ROUTES
 
 router.post('/subscribers', async (req, res) => {
