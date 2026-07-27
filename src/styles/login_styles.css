@@ -89,8 +89,8 @@ form {
 }
 
 .remember {
-  margin-top: 20px;
-  margin-bottom: 25px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   font-size: 14px;
   color: #2C4A2E;
 }
@@ -166,4 +166,11 @@ form {
 
 #pw-button:active {
   background-image: url('/image/eye-open.svg');
+}
+
+.login-error {
+  color: red;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 14px;
 }
