@@ -2,7 +2,6 @@ const form = document.getElementById('login-form');
 const params = new URLSearchParams(location.search);
 const error = params.get('error');
 const errorMsg = document.getElementById('login-error');
-const {requireAdminPage} = require('./middleware/auth');
 
 if (error === 'invalid') alert('Invalid username or password');
 else if (error ==='server') alert('Something went wrong, please try again.');
@@ -22,6 +21,17 @@ form.addEventListener('submit', async (e) => {
 
     const data = await res.json();
 
+    if (data.error){
+        errorMsg.textContent = data.error;
+        errorMsg.style.display = 'block';
+        setTimeout(() => {
+            errorMsg.style.display = 'none';
+            errorMsg.textContent = '';
+        }, 4000);
+    }
+    if (data.redirect)
+        window.location.href = data.redirect;
+    
     sessionStorage.setItem('token', data.token);
 
 
