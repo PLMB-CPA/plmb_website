@@ -6,11 +6,14 @@ document.getElementById("inquiry-form").addEventListener("submit", async functio
   const lastName = document.getElementById("last-name-field").value;
 
   const payload = {
-    name: `${firstName} ${lastName}`,
-    category: document.getElementById("category-field").value,
-    subject: document.getElementById("subject-field").value,
-    message: document.getElementById("message-field").value,
-    email: document.getElementById("inquiry-email").value
+  firstName: document.getElementById("first-name-field").value,
+  lastName: document.getElementById("last-name-field").value,
+  businessName: document.getElementById("business-name-field").value,
+  industrySector: document.getElementById("industry-sector-field").value,
+  category: document.getElementById("category-field").value,
+  subject: document.getElementById("subject-field").value,
+  message: document.getElementById("message-field").value,
+  email: document.getElementById("inquiry-email").value
   };
 
   try {
