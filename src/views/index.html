@@ -86,7 +86,7 @@
       .then(response => response.json())
       .then(data => {
         const announcementsList = document.getElementById('announcements-list');
-        const latest = data.announcements.slice(0, 3); // Get the latest 3 announcements
+        const latest = data.newsletter.slice(0, 3); // Get the latest 3 announcements
 
         if (latest.length === 0) {
           announcementsList.innerHTML = '<p>No announcements available.</p>';
