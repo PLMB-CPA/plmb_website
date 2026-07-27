@@ -52,10 +52,13 @@ router.get('/unsubscribe', async (req, res) => {
   }
 });
 
-//ADMIN ROUTES
+//ADMIN LOGIN/LOGOUTROUTES
 router.post('/admin/login', AuthController.postAdminLogin);
 router.get('/admin/logout', AuthController.getAdminLogout);
+// ADMIN MANAGEMENT ROUTES
 router.post('/admin/users', requireAuth, AuthController.addAdmin);
+router.get('/admin/users', requireAuth, AuthController.getAdmins);
+router.delete('/admin/users/:id', requireAuth, AuthController.deleteAdmin);
 
 module.exports = router;
             
