@@ -31,6 +31,8 @@
       <input type="text" class="inquiry-field" id="first-name-field" name="firstName" placeholder="First Name" required>
       <input type="text" class="inquiry-field" id="last-name-field" name="lastName" placeholder="Last Name" required>
     </div>
+    
+    <input type="text" class="inquiry-field" id="business-name-field" name="businessName" placeholder="Business Name" required>
 
     <select class="inquiry-field" id="category-field" name="category" required>
       <option value="" disabled selected>Select Inquiry Category</option>
@@ -40,8 +42,19 @@
       <option value="Accounting & Bookkeeping">Accounting & Bookkeeping</option>
       <option value="Business Advisory">Business Advisory</option>
       <option value="Payroll Services">Payroll Services</option>
+      <option value="Billing Concerns">Billing Concerns</option>
       <option value="Comments & Complaints">Comments & Complaints</option>
       <option value="Other">Other</option>
+    </select>
+
+    <select class="inquiry-field" id="industry-sector-field" name="industrySector" required>
+    <option value="" disabled selected>Select Industry Sector</option>
+    <option value="Healthcare">Healthcare</option>
+    <option value="Real Estate">Real Estate</option>
+    <option value="Retail">Retail</option>
+    <option value="Professional Services">Professional Services</option>
+    <option value="Non-Profit">Non-Profit</option>
+    <option value="Other">Other</option>
     </select>
 
     <input type="text" class="inquiry-field" id="subject-field" name="subject" placeholder="Subject" required>
