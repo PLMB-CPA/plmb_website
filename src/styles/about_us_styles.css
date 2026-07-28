@@ -240,12 +240,7 @@ nav a.active { color: #3D7A40; }
     }
     .contact a:hover { background: #EBF3EB; }
 
-    /* FOOTER */
-    footer {
-      background-color: #3D7A40;
-      color: white;
-      text-align: center;
-      padding: 14px;
-      font-size: 13px;
-    }
-  
+/* FOOTER */
+.footer { background-color: #3D7A40; color: white; text-align: center; padding: 14px; font-size: 13px; }
+.footer a { color: white; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
