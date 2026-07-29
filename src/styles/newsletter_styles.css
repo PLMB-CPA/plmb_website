@@ -59,13 +59,9 @@ nav a.active { color: #3D7A40; }
 }
 
 /* FOOTER */
-.footer {
-  background-color: #3D7A40;
-  color: white;
-  text-align: center;
-  padding: 14px;
-  font-size: 13px;
-}
+.footer { background-color: #3D7A40; color: white; text-align: center; padding: 14px; font-size: 13px; }
+.footer a { color: white; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
 
 /* NEWSLETTER specific styles - temporary location*/
 

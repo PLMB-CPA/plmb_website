@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
+  <link rel="stylesheet" href="/styles/admin_management_styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-container">
+    <div class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img id="logo" src="/image/logo.png">
+          <h1>PLMB</h1>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="admin_dashboard.html" class="dash-side">
+            <img class="menu-icon" src="/image/menu.png">
+            <span>Dashboard</span>
+          </a>
+
+          <a href="#" class="dash-side">
+            <img class="menu-icon" src="/image/newsletter-icon.png">
+            <span>Newsletters</span>
+          </a>
+
+          <a href="#" class="dash-side">
+            <img class="menu-icon" src="/image/inquiries-icon.png">
+            <span>Inquiries</span>
+          </a>
+
+          <a href="admin_management.html" class="dash-side active">
+            <img class="menu-icon" src="/image/user.png">
+            <span>Manage</span>
+          </a>
+        </nav>
+        <a href="/api/admin/logout" class="dash-side logout">
+          <img class="menu-icon" src="/image/logout.png">
+          <span>Logout</span>
+        </a>
+      </aside>
+
+      <main class="main-content">
+        <div class="header">
+          <div class="manage-search">
+            <img src="/image/search-icon.png" class="search-icon">
+            <input type="text" id="manage-search" placeholder="Search...">
+          </div>
+          
+          <div class="divider"></div>
+
+          <div class="welcome-right">
+            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+            <div class="admin-info">
+              <h3>Admin Name</h3>
+              <p>Admin Job Role</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-header">
+          <div class="labels">
+            <div class="labels-text">
+              <h1> Manage </h1>
+              <p>Add, delete, track, update users and admins.</p>
+            </div>
+          </div>
+
+          <div class="user-tabs">
+            <button class="tab active">
+                All
+                <span>156</span>
+            </button>
+        
+            <button class="tab">
+                Active
+                <span>142</span>
+            </button>
+        
+            <button class="tab">
+                Inactive
+                <span>14</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-content">
+
+          <h1> All Users </h1>
+
+          <div class="cards">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/user.png" class="card-icon">
+                        <span>Subscribers</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Total number of users subscribed to receive newsletters.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>123</h2>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/admin-icon.png" class="card-icon">
+                        <span>Admins</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Number of administrator accounts with dashboard access.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>4</h2>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/newsletter-icon.png" class="card-icon">
+                        <span>Newsletters</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Total newsletters currently published on the website.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>58</h2>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/newsletter-review.png" class="card-icon">
+                        <span>Pending Newsletters</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Newsletters waiting for administrator approval.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>5</h2>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/inquiries-icon.png" class="card-icon">
+                        <span>Pending Inquiries</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Client inquiries that have not yet received a response.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>12</h2>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <img src="/image/read.png" class="card-icon">
+                        <span>Answered Inquiries</span>
+                    </div>
+    
+                    <div class="tooltip">
+                        <img class="info-icon" src="/image/info.png">
+    
+                        <span class="tooltip-text">
+                            Total inquiries successfully answered by administrators.
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    <h2>214</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="overview-section">
+
+          <div class="overview-card">
+            <h2>Inquiry Overview</h2>
+          </div>
+      
+          <div class="overview-card">
+            <h2>Newsletter Overview</h2>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
