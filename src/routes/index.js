@@ -59,6 +59,7 @@ router.get('/admin/logout', AuthController.getAdminLogout);
 router.post('/admin/users', requireAuth, AuthController.addAdmin);
 router.get('/admin/users', requireAuth, AuthController.getAdmins);
 router.delete('/admin/users/:id', requireAuth, AuthController.deleteAdmin);
+router.put('/admin/users/:id/password', requireAuth, AuthController.changeAdminPassword);
 
 module.exports = router;
             
