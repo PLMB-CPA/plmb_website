@@ -117,3 +117,22 @@ exports.deleteAdmin = async (req, res) => {
     res.status(500).json({error: 'An error has occurred, please try again'});
   }
 }
+
+exports.changeAdminPassword = async (req, res) => {
+  try {
+    const { password } = req.body;
+    if (!password) 
+      return res.status(400).json({error: 'Password field cannot be empty'});
+
+    const passwordError = checkPasswordStrength(password);
+    if (passwordError) 
+      return res.status(400).json({error: passwordError});
+
+    const bcrypt_password = await bcrypt.hash(password, 10);
+    const admin = await Admin.findByIdAndUpdate(req.params.id, {password: bcrypt_password});
+    res.status(200).json({message: 'Password updated'});
+
+  } catch (err) {
+    res.status(500).json({error: 'An error has occurred'});
+  }
+}
