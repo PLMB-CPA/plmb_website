@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
+  <link rel="stylesheet" href="/styles/admin_newsletter_styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+  <div class="bg-container">
+    <div class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img id="logo" src="/image/logo.png">
+          <h1>PLMB</h1>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="admin_dashboard.html" class="dash-side">
+            <img class="menu-icon" src="/image/menu.png">
+            <span>Dashboard</span>
+          </a>
+
+          <a href="#" class="dash-side active">
+            <img class="menu-icon" src="/image/newsletter-icon.png">
+            <span>Newsletters</span>
+          </a>
+
+          <a href="#" class="dash-side">
+            <img class="menu-icon" src="/image/inquiries-icon.png">
+            <span>Inquiries</span>
+          </a>
+
+          <a href="admin_management.html" class="dash-side">
+            <img class="menu-icon" src="/image/user.png">
+            <span>Manage</span>
+          </a>
+        </nav>
+        <a href="/api/admin/logout" class="dash-side logout">
+          <img class="menu-icon" src="/image/logout.png">
+          <span>Logout</span>
+        </a>
+      </aside>
+
+      <main class="main-content">
+        <div class="welcome-message">
+          <div class="welcome-left">
+            <h1>Admin Dashboard</h1>
+          </div>
+          
+          <div class="divider"></div>
+
+          <div class="welcome-right">
+            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+            <div class="admin-info">
+              <h3>Admin Name</h3>
+              <p>Admin Job Role</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-header">
+          <div class="labels">
+            <div class="labels-text">
+              <h1> Newsletters </h1>
+              <p>Check the currently published and pending newsletters.</p>
+            </div>
+          </div>
+
+          <div class="approve">
+            <button class="new-newsletter-btn">
+              <i class="fa-solid fa-plus"></i>
+              <span>New Newsletter</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-content">
+          <div class="content-header">
+            <h1> Pending </h1>
+
+            <div class="manage-search">
+              <img src="/image/search-icon.png" class="search-icon">
+              <input type="text" id="manage-search" placeholder="Search...">
+            </div>
+          </div>
+
+          <div class="newsletter-list">
+            <div class="newsletter-row">
+              <div class="newsletter-info">
+                <h3>Newsletter Title</h3>
+                <p>Short description...</p>
+              </div>
+        
+              <button class="action-circle approve">
+                <i class="fa-solid fa-check"></i>
+              </button>
+              
+              <button class="action-circle reject">
+                  <i class="fa-solid fa-xmark"></i>
+              </button>
+              
+              <button class="action-circle pending">
+                  <i class="fa-solid fa-ellipsis"></i>
+              </button>
+
+            </div>
+          </div>
+
+          <div class="published-section">
+            <div class="content-header">
+              <h1> Published Newsletters </h1>
+            
+              <div class="manage-search">
+                <img src="/image/search-icon.png" class="search-icon">
+                <input type="text" id="manage-search" placeholder="Search...">
+              </div>
+            </div>
+
+            <div class="newsletter-list">
+              <div class="newsletter-row">
+                <div class="newsletter-info">
+                  <h3>Newsletter Title</h3>
+                  <p>Short description...</p>
+                </div>
+          
+                <div class="user-stat">
+                  <h3>12</h3>
+                  <p>Views</p>
+                </div>
+          
+                <div class="user-stat">
+                  <h3>Jul 12, 2026</h3>
+                  <p>Date Published</p>
+                </div>
+          
+                <button class="more-btn">⋮</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

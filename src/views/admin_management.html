@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
+  <link rel="stylesheet" href="/styles/admin_management_styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-container">
+    <div class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img id="logo" src="/image/logo.png">
+          <h1>PLMB</h1>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="admin_dashboard.html" class="dash-side">
+            <img class="menu-icon" src="/image/menu.png">
+            <span>Dashboard</span>
+          </a>
+
+          <a href="admin_newsletter.html" class="dash-side">
+            <img class="menu-icon" src="/image/newsletter-icon.png">
+            <span>Newsletters</span>
+          </a>
+
+          <a href="#" class="dash-side">
+            <img class="menu-icon" src="/image/inquiries-icon.png">
+            <span>Inquiries</span>
+          </a>
+
+          <a href="admin_management.html" class="dash-side active">
+            <img class="menu-icon" src="/image/user.png">
+            <span>Manage</span>
+          </a>
+        </nav>
+        <a href="/api/admin/logout" class="dash-side logout">
+          <img class="menu-icon" src="/image/logout.png">
+          <span>Logout</span>
+        </a>
+      </aside>
+
+      <main class="main-content">
+        <div class="welcome-message">
+          <div class="welcome-left">
+            <h1>Admin Dashboard</h1>
+          </div>
+          
+          <div class="divider"></div>
+
+          <div class="welcome-right">
+            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+            <div class="admin-info">
+              <h3>Admin Name</h3>
+              <p>Admin Job Role</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-header">
+          <div class="labels">
+            <div class="labels-text">
+              <h1> Manage </h1>
+              <p>Add, delete, track, update users and admins.</p>
+            </div>
+          </div>
+
+          <div class="user-tabs">
+            <button class="tab active">
+                All
+                <span>156</span>
+            </button>
+        
+            <button class="tab">
+                Active
+                <span>142</span>
+            </button>
+        
+            <button class="tab">
+                Inactive
+                <span>14</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-content">
+          <div class="content-header">
+            <h1> All Users </h1>
+
+            <div class="manage-search">
+              <img src="/image/search-icon.png" class="search-icon">
+              <input type="text" id="manage-search" placeholder="Search...">
+            </div>
+          </div>
+
+          <div class="user-list">
+            <div class="user-row">
+              <div class="user-info">
+                <h3>User Name</h3>
+                <p>User Email</p>
+              </div>
+        
+              <div class="status active">
+                <p> ● Active </p>
+              </div>
+        
+              <div class="user-stat">
+                <h3>12</h3>
+                <p>Inquiries Sent</p>
+              </div>
+        
+              <div class="user-stat">
+                <h3>Jul 12, 2026</h3>
+                <p>Date Joined</p>
+              </div>
+        
+              <button class="more-btn">⋮</button>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <div class="content-header">
+              <h1> All Admins </h1>
+
+              <div class="manage-search">
+                <img src="/image/search-icon.png" class="search-icon">
+                <input type="text" id="manage-search" placeholder="Search...">
+              </div>
+            </div>
+
+            <div class="user-list admin-list">
+              <div class="user-row">
+                <div class="user-info">
+                  <h3>Admin Name</h3>
+                  <p>Admin Email</p>
+                </div>
+          
+                <div class="status active">
+                  <p> ● Active </p>
+                </div>
+          
+                <div class="user-stat">
+                  <h3>12</h3>
+                  <p>Inquiries Answered</p>
+                </div>
+          
+                <div class="user-stat">
+                  <h3>2</h3>
+                  <p>Newsletters Reviewed</p>
+                </div>
+
+                <div class="user-stat">
+                  <h3>1</h3>
+                  <p>Newsletters Published</p>
+                </div>
+
+                <div class="user-stat">
+                  <h3>Jul 12, 2026</h3>
+                  <p>Date Joined</p>
+                </div>
+          
+                <button class="more-btn">⋮</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
