@@ -1,5 +1,5 @@
 const Inquiry = require('../models/Inquiry');
-const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer').sendInquiryNotification;
+const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer');
 
 
 exports.createInquiry = async (req, res) => {
