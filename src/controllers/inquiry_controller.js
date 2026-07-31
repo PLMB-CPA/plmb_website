@@ -8,9 +8,14 @@ exports.createInquiry = async (req, res) => {
     const ticketNumber = `INQ-${String(count + 1).padStart(4, '0')}`;
     const inquiry = await Inquiry.create({...req.body, ticketNumber});
 
-    sendInquiryNotification(inquiry).catch(err => console.error('Inquiry saved, email failed', err));
-    sendConfirmation(inquiry).catch(err => console.error('Inquiry saved, confirmation email failed', err));
-
+    sendInquiryNotification(inquiry)
+      .then(() => console.log('Notification sent'))
+      .catch(err => console.error('Inquiry saved, email failed', err));
+    
+    sendConfirmation(inquiry)
+        .then(() => console.log('Confirmation sent'))
+        .catch(err => console.error('Inquiry saved, confirmation email failed', err));
+    
     res.status(201).json({message: 'Your inquiry has been recorded.', inquiry});
   } catch (err) {
     res.status(400).json({error: err.message});
