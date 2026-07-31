@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> PLMB Admin Management </title>
+    <link rel="stylesheet" href="/styles/admin_creation.css">
+</head>
+
+<body>
+<div class = "main">
+
+    <form class = "admin_form" id = "admin-form">
+        <div class = "admin_block">
+            <h2 class = "admin_header" id="form-header"> Admin Management </h2>
+			<div class = "admin_inputs">
+				<div class = "username">
+					<input type="text" placeholder="Username" id="username" name="username" required>
+				</div>
+
+                <div class = "password" id="pw-container-1">
+                    <input type = "password" placeholder="Password" id = "password" name = "password" required>
+                    <button class="show-password" id="pw-button" type="button"></button>
+                </div>   
+                <div class = "password" id="pw-container-2">
+                    <input type = "password" placeholder="Confirm Password" id = "confirm-password" name = "confirm-password" required>
+                    <button class="show-password" id="pw-button-confirm" type="button"></button>
+                </div> 
+            </div>  
+
+            <p id = "input-error" class = "input-error"></p>
+
+            <div class = "admin_action">
+                <button type = "submit" id = "submit_btn"> Submit </button>
+                <a href = "admin_management.html" class = "btn">Return to Dashboard</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<script src="/public/js/admin_creation.js"></script>
+<script src="/public/js/password-toggle.js"></script>
+</body>
+</html>
