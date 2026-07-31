@@ -130,8 +130,11 @@ exports.changeAdminPassword = async (req, res) => {
 
     const bcrypt_password = await bcrypt.hash(password, 10);
     const admin = await Admin.findByIdAndUpdate(req.params.id, {password: bcrypt_password});
-    res.status(200).json({message: 'Password updated'});
+    
+    if (!admin)
+      return res.status(404).json({error: 'Admin not found'});
 
+    res.status(200).json({message: 'Password updated'});
   } catch (err) {
     res.status(500).json({error: 'An error has occurred'});
   }
