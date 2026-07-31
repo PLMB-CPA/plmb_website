@@ -24,6 +24,14 @@ app.get('/admin_dashboard.html', requireAdminPage, (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin_dashboard.html'));
 });
 
+app.get('/admin_management.html', requireAdminPage, function(req, res) {
+    res.sendFile(path.join(__dirname, 'views', 'admin_management.html'));
+});
+
+app.get('/admin_creation.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin_creation.html'));
+});
+
 app.use(express.static(path.join(__dirname, 'views')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
