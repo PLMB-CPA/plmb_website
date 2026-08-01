@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
+  <link rel="stylesheet" href="/styles/admin_inquiry_styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+  <div class="bg-container">
+    <div class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <img id="logo" src="/image/logo.png">
+          <h1>PLMB</h1>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="admin_dashboard.html" class="dash-side">
+            <img class="menu-icon" src="/image/menu.png">
+            <span>Dashboard</span>
+          </a>
+
+          <a href="admin_newsletter.html" class="dash-side">
+            <img class="menu-icon" src="/image/newsletter-icon.png">
+            <span>Newsletters</span>
+          </a>
+
+          <a href="admin_inquiry_management.html" class="dash-side active">
+            <img class="menu-icon" src="/image/inquiries-icon.png">
+            <span>Inquiries</span>
+          </a>
+
+          <a href="admin_management.html" class="dash-side">
+            <img class="menu-icon" src="/image/user.png">
+            <span>Manage</span>
+          </a>
+        </nav>
+        <a href="/api/admin/logout" class="dash-side logout">
+          <img class="menu-icon" src="/image/logout.png">
+          <span>Logout</span>
+        </a>
+      </aside>
+
+      <main class="main-content">
+        <div class="welcome-message">
+          <div class="welcome-left">
+            <h1>Admin Dashboard</h1>
+          </div>
+          
+          <div class="divider"></div>
+
+          <div class="welcome-right">
+            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+            <div class="admin-info">
+              <h3>Admin Name</h3>
+              <p>Admin Job Role</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-header">  
+          <div class="labels">
+            <div class="labels-text">
+              <h1> Inquiries </h1>
+              <p>Check and review user inquiries.</p>
+            </div>
+          </div>
+
+          <div class="inquiry-tabs">
+            <button class="tab active">
+                All
+                <span>N/A</span>
+            </button>
+        
+            <button class="tab">
+                Resolved
+                <span>N/A</span>
+            </button>
+        
+            <button class="tab">
+                Unresolved
+                <span>N/A</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-content">
+          <div class="published-section">
+            <div class="content-header">
+            </div>
+
+            <div class="inquiry-list">
+              <div class="inquiry-container">
+                
+                <p class="inquiry-ticket-id">INQ01</p>
+                
+                <div class="inquiry-labels">
+                    <p class="inquiry-category-bubble">New Client General Inquiry</p>
+                    <p class="inquiry-subcat-bubble">Professional Services</p>
+                </div>
+                
+                <div class="divider" id="divider-left"></div>
+
+                <div class="text-content">
+                  <div class="inquiry-top-text">
+                    <p class="inquiry-business">Sio Pao</p>
+                    <p class="dash-divider">-</p>
+                    <p class="inquiry-title">Concern with Ea-Nasir's copper</p>
+                  </div>
+                  <div class="inquiry-bottom-text">
+                    <p class="inquiry-content">Hey there, I wanna know how to get around filing a complaint against a business for selling low-quality copper? There is this business ran by Ea-nasir who..</p>
+                  </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="inquiry-right-side">
+                  <p class="inquiry-date">9999-99-99</p>
+                  <p class="inquiry-status resolved">Resolved</p>
+                  <a href="inquiry-management.html" class="manage-btn">Manage</a>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
