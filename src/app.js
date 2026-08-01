@@ -32,6 +32,22 @@ app.get('/admin_creation.html', requireAdminPage, (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin_creation.html'));
 });
 
+app.get('/admin_newsletter.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin_newsletter.html'));
+});
+
+app.get('/admin_inquiry_management.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin_inquiry_management.html'));
+});
+
+app.get('/inquiry-full.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'inquiry-full.html'));
+});
+
+app.get('/post-newsletter.html', requireAdminPage, (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'post-newsletter.html'));
+});
+
 app.use(express.static(path.join(__dirname, 'views')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
