@@ -11,6 +11,7 @@ exports.postAdminLogin =async (req, res) => {
 
     req.session.isAdmin = true;
     req.session.adminId = admin._id;
+    req.session.username = admin.username;
 
     if (req.body.remember) {
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
@@ -136,6 +137,21 @@ exports.changeAdminPassword = async (req, res) => {
 
     res.status(200).json({message: 'Password updated'});
   } catch (err) {
+    res.status(500).json({error: 'An error has occurred'});
+  }
+}
+
+exports.getAdminUsername = async (req, res) => {
+  try {
+    const adminId = req.session.adminId;
+    const admin = await Admin.findById(adminId).select('username');
+    
+    if (!admin)
+      return res.status(404).json({error: 'Admin not found, cant retrieve username'});
+    
+    res.status(200).json({username: admin.username});
+  } 
+  catch (err) {
     res.status(500).json({error: 'An error has occurred'});
   }
 }
