@@ -8,6 +8,7 @@ const Subscriber = require('../models/Subscriber');
 const AuthController = require('../controllers/auth_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
+const dashboardController = require('../controllers/dashboard_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
@@ -52,9 +53,13 @@ router.get('/unsubscribe', async (req, res) => {
   }
 });
 
+//ADMIN DASHBOARD ROUTES
+router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
+
 //ADMIN LOGIN/LOGOUTROUTES
 router.post('/admin/login', AuthController.postAdminLogin);
 router.get('/admin/logout', AuthController.getAdminLogout);
+router.get('/admin/username', requireAuth, AuthController.getAdminUsername);
 // ADMIN MANAGEMENT ROUTES
 router.post('/admin/users', requireAuth, AuthController.addAdmin);
 router.get('/admin/users', requireAuth, AuthController.getAdmins);
