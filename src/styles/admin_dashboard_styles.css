@@ -156,6 +156,11 @@ body {
   color:#8a8a8a;
 }
 
+.welcome-text {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
 .divider {
   width: 1px;
   height: 55px;
