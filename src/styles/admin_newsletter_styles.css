@@ -1,5 +1,17 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   font-family: "Inter", sans-serif;
   background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
@@ -405,6 +417,7 @@ body {
   padding:22px 28px;
   box-shadow:0 2px 8px rgba(0,0,0,.04);
   transition:.2s;
+  animation: fadeUp 0.8s ease;
 }
 
 .newsletter-info {

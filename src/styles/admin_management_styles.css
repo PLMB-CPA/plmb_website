@@ -1,5 +1,17 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   font-family: "Inter", sans-serif;
   background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
@@ -438,6 +450,7 @@ body {
 .admin-list .user-row {
   gap: 18px;
   padding: 18px 24px;
+  animation: fadeUp 0.8s ease;
 }
 
 .admin-list .user-info {

@@ -1,5 +1,16 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 body {
   font-family: "Inter", sans-serif;
@@ -256,15 +267,23 @@ body {
 }
 
 /* INQUIRY LIST */
+.text-content {
+  flex: 1;
+  min-width: 0;
+}
+
 .inquiry-container {
   display: flex;
   align-items: center; 
-  gap: 20px; 
+  gap: 20px;
+  flex-wrap: wrap;
   background: white;
   box-shadow: 0 5px 18px rgba(0,0,0,.08);
   border-radius: 15px;
   padding: 15px 25px; 
   transition: .2s ease;
+  margin-bottom: 18px;
+  animation: fadeUp 0.8s ease;
 }
 
 .inquiry-ticket-id {
@@ -274,33 +293,42 @@ body {
 
 .inquiry-labels {
   display: flex;
-  align-items: left;
-  text-align: center;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  min-width: 190px;
 }
 
 .inquiry-business {
   font-size: 15px; 
   font-weight: 800; 
   color: #333; 
-  display: flex;
-  margin-left: -12px;
-  margin-right: -6px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .inquiry-title { 
+  flex: 1;
+  min-width: 0;
   font-size: 15px;
-  margin-right: -14px;
+  margin: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 .inquiry-category-bubble, .inquiry-subcat-bubble {
-  border-radius: 30px;
-  padding: 4px 12px;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 600;
-  color: #5c5c5c;
+  letter-spacing: 0.2px;
+  border: 1px solid transparent;
 }
 
 .inquiry-category-bubble { 
@@ -313,16 +341,17 @@ body {
 
 .inquiry-top-text {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 22px;
+  gap: 10px;
   margin-bottom: 6px;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .dash-divider {
   color: #777;
   font-size: 14px;
-  margin-right: -6px;
+  margin: 0;
 }
 
 #divider-left {
@@ -333,11 +362,12 @@ body {
 .inquiry-content {
   flex: 1; 
   color: #777;
-  margin-left: -12px;
+  margin: 0;
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
 }
 
 
@@ -352,8 +382,15 @@ body {
   font-size: 12px; 
   color: #636363; 
 }
+
 .inquiry-status.resolved { 
   color: #2d8f3f; 
+  font-weight: 800; 
+  font-size: 13px; 
+}
+
+.inquiry-status.unresolved { 
+  color: #d32f2f; 
   font-weight: 800; 
   font-size: 13px; 
 }
