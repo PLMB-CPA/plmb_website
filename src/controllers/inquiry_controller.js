@@ -62,3 +62,13 @@ exports.replyToInquiry = async (req, res) => {
     res.status(400).json({error: err.message});
   }
 };
+
+exports.getInquiryById = async (req, res) => {
+  try {
+    const inquiry = await Inquiry.findById(req.params.id);
+    if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
+    res.status(200).json({message: 'Inquiry found', inquiry});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+};

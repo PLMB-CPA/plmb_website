@@ -14,6 +14,7 @@ router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
 router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
+router.get('/inquiries/:id', requireAuth, inquiryController.getInquiryById);
 
 // NEWSLETTER ROUTES
 // Public: used by index.html to show published newsletters
