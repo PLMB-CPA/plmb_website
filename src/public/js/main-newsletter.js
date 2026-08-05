@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const response = await fetch("/announcements");
+        const response = await fetch("/api/announcements");
         const data = await response.json();
 
         console.log(data);
