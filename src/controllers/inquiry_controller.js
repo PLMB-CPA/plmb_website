@@ -24,7 +24,7 @@ exports.createInquiry = async (req, res) => {
 
 exports.getInquiries = async (req, res) => {
   try {
-    const filter = {isArchived: false};
+    const filter = {};
     if (req.query.isArchived !== undefined) filter.isArchived = req.query.isArchived === 'true';
     if (req.query.isRead !== undefined) filter.isRead = req.query.isRead === 'true';
     if (req.query.isAnswered !== undefined) filter.isAnswered = req.query.isAnswered === 'true';
@@ -73,3 +73,12 @@ exports.replyToInquiry = async (req, res) => {
   }
 };
 
+exports.deleteInquiry = async (req, res) => {
+  try {
+    const inquiry = await Inquiry.findByIdAndDelete(req.params.id);
+    if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
+    res.status(200).json({message: 'Inquiry deleted', inquiry});
+  } catch (err) {
+    res.status(400).json({error: err.message});
+  }
+};

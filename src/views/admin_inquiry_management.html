@@ -71,22 +71,28 @@
             </div>
           </div>
 
-          <div class="inquiry-tabs">
-            <button class="tab active" data-filter="all">
-                All
-                <span>N/A</span>
+          <div class="filter-dropdown">
+            <button class="filter-btn" id="filter-toggle" type="button">
+              <i class="fa-solid fa-filter"></i> Filter <i class="fa-solid fa-chevron-down"></i>
             </button>
 
-            <button class="tab" data-filter="resolved">
-                Resolved
-                <span>N/A</span>
-            </button>
+            <div class="filter-dropdown-content" id="filter-menu">
+              <p class="filter-group-title">Answered</p>
+              <label class="filter-option"><input type="radio" name="answeredFilter" value="all" checked> All</label>
+              <label class="filter-option"><input type="radio" name="answeredFilter" value="answered"> Answered</label>
+              <label class="filter-option"><input type="radio" name="answeredFilter" value="unanswered"> Unanswered</label>
 
-            <button class="tab" data-filter="unresolved">
-                Unresolved
-                <span>N/A</span>
-            </button>
-        </div>
+              <p class="filter-group-title">Read status</p>
+              <label class="filter-option"><input type="radio" name="readFilter" value="all" checked> All</label>
+              <label class="filter-option"><input type="radio" name="readFilter" value="read"> Read</label>
+              <label class="filter-option"><input type="radio" name="readFilter" value="unread"> Unread</label>
+
+              <p class="filter-group-title">Archived</p>
+              <label class="filter-option"><input type="radio" name="archiveFilter" value="all" checked> All</label>
+              <label class="filter-option"><input type="radio" name="archiveFilter" value="archived"> Archived only</label>
+              <label class="filter-option"><input type="radio" name="archiveFilter" value="unarchived"> Not archived</label>
+            </div>
+          </div>
         </div>
 
         <div class="dashboard-content">

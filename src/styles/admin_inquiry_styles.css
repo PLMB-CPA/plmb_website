@@ -456,3 +456,28 @@ body {
 .tab.active span {
   color: #255f20;
 }
+
+.inquiry-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: #fdeaea;
+  color: #d32f2f;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+  color: white;
+}

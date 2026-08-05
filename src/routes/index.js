@@ -13,8 +13,9 @@ const dashboardController = require('../controllers/dashboard_controller');
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
-router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
 router.get('/inquiries/:id', requireAuth, inquiryController.getInquiryById);
+router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
+router.delete('/inquiries/:id', requireAuth, inquiryController.deleteInquiry);
 
 // NEWSLETTER ROUTES
 // Public: used by index.html to show published newsletters
