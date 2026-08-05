@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('/api/newsletter')
+    fetch('/api/announcements')
         .then(response => response.json())
         .then(newsletters => {
             const container = document.getElementById("newsletterContainer");
