@@ -85,62 +85,29 @@
 
             <div class="manage-search">
               <img src="/image/search-icon.png" class="search-icon">
-              <input type="text" id="manage-search" placeholder="Search...">
+              <input type="text" id="pending-search" data-target="pending-list" placeholder="Search...">
             </div>
           </div>
 
-          <div class="newsletter-list">
-            <div class="newsletter-row">
-              <div class="newsletter-info">
-                <h3>Newsletter Title</h3>
-                <p>Short description...</p>
-              </div>
-        
-              <button class="action-circle approve">
-                <i class="fa-solid fa-check"></i>
-              </button>
-              
-              <button class="action-circle reject">
-                  <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-          </div>
+          <div class="newsletter-list" id="pending-list"></div>
 
           <div class="published-section">
             <div class="content-header">
               <h1> Published Newsletters </h1>
-            
+
               <div class="manage-search">
                 <img src="/image/search-icon.png" class="search-icon">
-                <input type="text" id="manage-search" placeholder="Search...">
+                <input type="text" id="published-search" data-target="published-list" placeholder="Search...">
               </div>
             </div>
 
-            <div class="newsletter-list">
-              <div class="newsletter-row">
-                <div class="newsletter-info">
-                  <h3>Newsletter Title</h3>
-                  <p>Short description...</p>
-                </div>
-          
-                <div class="user-stat">
-                  <h3>12</h3>
-                  <p>Views</p>
-                </div>
-          
-                <div class="user-stat">
-                  <h3>Jul 12, 2026</h3>
-                  <p>Date Published</p>
-                </div>
-          
-                <button class="more-btn">⋮</button>
-              </div>
-            </div>
+            <div class="newsletter-list" id="published-list"></div>
           </div>
         </div>
       </main>
     </div>
   </div>
   <script src="/public/js/admin_headname.js"></script>
+  <script src="/public/js/admin_newsletter.js"></script>
 </body>
 </html>
