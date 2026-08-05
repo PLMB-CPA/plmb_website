@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch("/announcements");
         const data = await response.json();
 
+        console.log(data);
+
         const container = document.getElementById("newsletterContainer");
 
         data.newsletters.forEach(newsletter => {
