@@ -240,6 +240,30 @@ body {
   border-radius:10px;
 }
 
+.news-image{
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  padding: 8px;
+  max-width: 95%;
+  border-radius:10px;
+  border: 1px solid #d9d9d9;
+  color: #333;
+}
+
+.news-status{
+  margin-left: 20px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #8a8a8a;
+  min-height: 16px;
+}
+
+.news-status.error{
+  color: #d14343;
+}
+
 .news-submit{
   background-color: #255f20;
   padding: 10px;
@@ -249,4 +273,11 @@ body {
   border-radius:15px;
   margin: 20px;
   border-style: none;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.news-submit:disabled{
+  opacity: .6;
+  cursor: default;
 }
