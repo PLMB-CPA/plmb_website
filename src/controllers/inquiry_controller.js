@@ -1,6 +1,6 @@
 const Inquiry = require('../models/Inquiry');
 const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer');
-
+const {isValidInquiryEmail} = require('../util/emailValidator');
 
 exports.createInquiry = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ exports.createInquiry = async (req, res) => {
     if (!emailCheck.valid) {
       return res.status(400).json({error: emailCheck.reason});
     }
-    
+
     const count = await Inquiry.countDocuments();
     const ticketNumber = `INQ-${String(count + 1).padStart(4, '0')}`;
     const inquiry = await Inquiry.create({...req.body, ticketNumber});
