@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const id = new URLSearchParams(window.location.search).get("id");
 
-        const response = await fetch("/api/newsletter/${id}");
+        const response = await fetch(`/api/announcements/${id}`);
         const data = await response.json();
         const newsletter = data.newsletter;
         
