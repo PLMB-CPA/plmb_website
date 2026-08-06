@@ -80,3 +80,7 @@ nav a.active { color: #3D7A40; }
 .labels p {
   padding-bottom: 40px;
 }
+
+#date {
+  margin-top: 0;
+}
