@@ -16,6 +16,7 @@ body {
   font-family: Arial, sans-serif;
   background: linear-gradient(to bottom, #f8faf8, #eef5ee);
   color: #333;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
