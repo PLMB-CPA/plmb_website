@@ -1,165 +1,167 @@
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
-
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 body {
-  font-family: "Red Hat Display", sans-serif;
-  color: #333;
-  margin: 0;
+    font-family: "Red Hat Display", sans-serif;
+    color: #333;
+    margin: 0;
 }
 
 .main {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: hsla(123, 33%, 36%, 1);
-  background: linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: hsla(123, 33%, 36%, 1);
+    background: linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
 }
 
 form {
-  width: 90%;
+    width: 90%;
 }
 
 .admin_form {
-  max-width: 380px;
+    max-width: 380px;
 }
 
 .admin_inputs {
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
 }
 
 .admin_block {
-  background-color: #F5F5F2;
-  padding: 45px 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  animation: fadeUp 0.8s ease forwards;
+    background-color: #F5F5F2;
+    padding: 45px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    animation: fadeUp 0.8s ease forwards;
 }
 
 .admin_header {
-  text-align: center;
-  font-size: 26px;
-  font-weight: lighter;
-  color: #2C4A2E;
-  margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: lighter;
+    color: #2C4A2E;
+    margin: 0 0 30px;
 }
 
 .username input,
 .password input {
-  width: 100%;
-  box-sizing: border-box;
-  height: 40px;
-  border-radius: 15px;
-  border: 1px solid #ccc;
-  padding-left: 40px;
-  font-family: "Red Hat Display", sans-serif;
-  font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    padding-left: 40px;
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 14px;
 }
 
 .username input:focus,
 .password input:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(44, 74, 46, 0.4);
+    outline: none;
+    box-shadow: 0 0 8px rgba(44, 74, 46, 0.4);
 }
 
 #username {
-  background-image: url('../image/user-icon.png');
-  background-position: 12px center;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
+    background-image: url('../image/user-icon.png');
+    background-position: 12px center;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
 }
 
-#password, #confirm-password {
-  background-image: url('../image/password-icon.png');
-  background-position: 12px center;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
+#password,
+#confirm-password {
+    background-image: url('../image/password-icon.png');
+    background-position: 12px center;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
 }
 
 .admin_action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #submit_btn {
-  width: 100%;
-  height: 40px;
-  border-radius: 20px;
-  border: none;
-  font-weight: bold;
-  font-size: 15px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: hsla(108, 45%, 58%, 1);
-  background: linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: hsla(108, 45%, 58%, 1);
+    background: linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
 }
 
 #submit_btn:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  background-color: #f5f5f5;
-  color: #2C4A2E;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    background-color: #f5f5f5;
+    color: #2C4A2E;
 }
 
 .admin_action .btn {
-  margin-top: 15px;
-  color: #2C4A2E;
-  font-size: 14px;
-  text-decoration: none;
+    margin-top: 15px;
+    color: #2C4A2E;
+    font-size: 14px;
+    text-decoration: none;
 }
 
 .admin_action .btn:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-#pw-container-1, #pw-container-2 {
-  display: flex;
-  position: relative;
-  align-items: center;
+#pw-container-1,
+#pw-container-2 {
+    display: flex;
+    position: relative;
+    align-items: center;
 }
 
 .password input {
-  margin-bottom: 0px; 
-  padding-right: 40px; 
+    margin-bottom: 0px;
+    padding-right: 40px;
 }
 
-#pw-button, #pw-button-confirm {
-  position: absolute;
-  right: 12px;
-  width: 18px;
-  height: 18px;
-  background-color: transparent;
-  background-image: url('/image/eye-closed.svg');
-  background-position: center;
-  background-size: 18px 18px;
-  border: 0;
-  cursor: pointer;
-  transition: transform .25s ease, background-image .25s ease;
+#pw-button,
+#pw-button-confirm {
+    position: absolute;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+    background-image: url('/image/eye-closed.svg');
+    background-position: center;
+    background-size: 18px 18px;
+    border: 0;
+    cursor: pointer;
+    transition: transform .25s ease, background-image .25s ease;
 }
 
-#pw-button:active, #pw-button-confirm:active {
-  background-image: url('/image/eye-open.svg');
+#pw-button:active,
+#pw-button-confirm:active {
+    background-image: url('/image/eye-open.svg');
 }
-
 
 .input-error {
-  color: red;
-  text-align: center;
-  margin-bottom: 24px;
-  font-size: 14px;
+    color: red;
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 14px;
 }

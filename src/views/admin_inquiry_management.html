@@ -1,114 +1,115 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
-  <link rel="stylesheet" href="/styles/admin_inquiry_styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Management - Po Lao Marquez Benedictos & Co.</title>
+    <link rel="stylesheet" href="/styles/admin_inquiry_styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
+
 <body>
-  <div class="bg-container">
-    <div class="dashboard">
-      <aside class="sidebar">
-        <div class="sidebar-brand">
-          <img id="logo" src="/image/logo.png">
-          <h1>PLMB</h1>
+    <div class="bg-container">
+        <div class="dashboard">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <img id="logo" src="/image/logo.png">
+                    <h1>PLMB</h1>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="admin_dashboard.html" class="dash-side">
+                        <img class="menu-icon" src="/image/menu.png">
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a href="admin_newsletter.html" class="dash-side">
+                        <img class="menu-icon" src="/image/newsletter-icon.png">
+                        <span>Newsletters</span>
+                    </a>
+
+                    <a href="admin_inquiry_management.html" class="dash-side active">
+                        <img class="menu-icon" src="/image/inquiries-icon.png">
+                        <span>Inquiries</span>
+                    </a>
+
+                    <a href="admin_management.html" class="dash-side">
+                        <img class="menu-icon" src="/image/user.png">
+                        <span>Manage</span>
+                    </a>
+                </nav>
+                <a href="/api/admin/logout" class="dash-side logout">
+                    <img class="menu-icon" src="/image/logout.png">
+                    <span>Logout</span>
+                </a>
+            </aside>
+
+            <main class="main-content">
+                <div class="welcome-message">
+                    <div class="welcome-left">
+                        <h1>Admin Dashboard</h1>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="welcome-right">
+                        <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+                        <div class="admin-info">
+                            <h3></h3>
+                            <p>Admin Job Role</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-header">
+                    <div class="labels">
+                        <div class="labels-text">
+                            <h1> Inquiries </h1>
+                            <p>Check and review user inquiries.</p>
+                        </div>
+                    </div>
+
+                    <div class="filter-dropdown">
+                        <button class="filter-btn" id="filter-toggle" type="button">
+                          <i class="fa-solid fa-filter"></i> Filter <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div class="filter-dropdown-content" id="filter-menu">
+                            <p class="filter-group-title">Answered</p>
+                            <label class="filter-option"><input type="radio" name="answeredFilter" value="all" checked> All</label>
+                            <label class="filter-option"><input type="radio" name="answeredFilter" value="answered"> Answered</label>
+                            <label class="filter-option"><input type="radio" name="answeredFilter" value="unanswered"> Unanswered</label>
+
+                            <p class="filter-group-title">Read status</p>
+                            <label class="filter-option"><input type="radio" name="readFilter" value="all" checked> All</label>
+                            <label class="filter-option"><input type="radio" name="readFilter" value="read"> Read</label>
+                            <label class="filter-option"><input type="radio" name="readFilter" value="unread"> Unread</label>
+
+                            <p class="filter-group-title">Archived</p>
+                            <label class="filter-option"><input type="radio" name="archiveFilter" value="all" checked> All</label>
+                            <label class="filter-option"><input type="radio" name="archiveFilter" value="archived"> Archived only</label>
+                            <label class="filter-option"><input type="radio" name="archiveFilter" value="unarchived"> Not archived</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="published-section">
+                        <div class="content-header">
+                        </div>
+                        <div class="inquiry-list" id="inquiry-list">
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-        <nav class="sidebar-nav">
-          <a href="admin_dashboard.html" class="dash-side">
-            <img class="menu-icon" src="/image/menu.png">
-            <span>Dashboard</span>
-          </a>
-
-          <a href="admin_newsletter.html" class="dash-side">
-            <img class="menu-icon" src="/image/newsletter-icon.png">
-            <span>Newsletters</span>
-          </a>
-
-          <a href="admin_inquiry_management.html" class="dash-side active">
-            <img class="menu-icon" src="/image/inquiries-icon.png">
-            <span>Inquiries</span>
-          </a>
-
-          <a href="admin_management.html" class="dash-side">
-            <img class="menu-icon" src="/image/user.png">
-            <span>Manage</span>
-          </a>
-        </nav>
-        <a href="/api/admin/logout" class="dash-side logout">
-          <img class="menu-icon" src="/image/logout.png">
-          <span>Logout</span>
-        </a>
-      </aside>
-
-      <main class="main-content">
-        <div class="welcome-message">
-          <div class="welcome-left">
-            <h1>Admin Dashboard</h1>
-          </div>
-          
-          <div class="divider"></div>
-
-          <div class="welcome-right">
-            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
-
-            <div class="admin-info">
-              <h3></h3>
-              <p>Admin Job Role</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="dashboard-header">  
-          <div class="labels">
-            <div class="labels-text">
-              <h1> Inquiries </h1>
-              <p>Check and review user inquiries.</p>
-            </div>
-          </div>
-
-          <div class="filter-dropdown">
-            <button class="filter-btn" id="filter-toggle" type="button">
-              <i class="fa-solid fa-filter"></i> Filter <i class="fa-solid fa-chevron-down"></i>
-            </button>
-
-            <div class="filter-dropdown-content" id="filter-menu">
-              <p class="filter-group-title">Answered</p>
-              <label class="filter-option"><input type="radio" name="answeredFilter" value="all" checked> All</label>
-              <label class="filter-option"><input type="radio" name="answeredFilter" value="answered"> Answered</label>
-              <label class="filter-option"><input type="radio" name="answeredFilter" value="unanswered"> Unanswered</label>
-
-              <p class="filter-group-title">Read status</p>
-              <label class="filter-option"><input type="radio" name="readFilter" value="all" checked> All</label>
-              <label class="filter-option"><input type="radio" name="readFilter" value="read"> Read</label>
-              <label class="filter-option"><input type="radio" name="readFilter" value="unread"> Unread</label>
-
-              <p class="filter-group-title">Archived</p>
-              <label class="filter-option"><input type="radio" name="archiveFilter" value="all" checked> All</label>
-              <label class="filter-option"><input type="radio" name="archiveFilter" value="archived"> Archived only</label>
-              <label class="filter-option"><input type="radio" name="archiveFilter" value="unarchived"> Not archived</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="dashboard-content">
-          <div class="published-section">
-            <div class="content-header">
-            </div>
-            <div class="inquiry-list" id="inquiry-list">
-            </div>
-          </div>
-        </div>
-
-        </div>
-      </main>
     </div>
-  </div>
-  <script src="/public/js/admin_headname.js"></script>
-  <script src="/public/js/admin_inquiry_management.js"></script>
+    <script src="/public/js/admin_headname.js"></script>
+    <script src="/public/js/admin_inquiry_management.js"></script>
 </body>
+
 </html>
