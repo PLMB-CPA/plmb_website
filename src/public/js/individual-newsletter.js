@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const newsletter = data.newsletter;
         
         document.getElementById("title").textContent = newsletter.title;
-        document.getElementById("author").textContent = newsletter.author;
+        document.getElementById("author").textContent = `Author: ${newsletter.author}`;
         document.getElementById("date").textContent = new Date(newsletter.date).toLocaleDateString();
         document.getElementById("text").innerHTML = newsletter.content;
     } catch (error) {
