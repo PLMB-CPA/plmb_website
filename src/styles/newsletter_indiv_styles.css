@@ -20,6 +20,10 @@ body {
   flex-direction: column;
 }
 
+main {
+    flex: 1;
+}
+
 /* HEADER */
 .header {
   background-color: #3D7A40;
