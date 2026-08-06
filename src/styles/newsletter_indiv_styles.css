@@ -100,5 +100,9 @@ h1 {
 }
 
 #text {
+    color: black;
     margin-top: 20px;
+    border-radius: 8px;
+    border-color: black;
+    background-color: white;
 }
