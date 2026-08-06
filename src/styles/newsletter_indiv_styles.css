@@ -81,10 +81,15 @@ nav a.active { color: #3D7A40; }
   padding-bottom: 40px;
 }
 
+h1 {
+    margin-bottom: 0.2rem;
+}
+
 #author {
-  margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0.2rem;
 }
 
 #date {
-  margin-top: 0;
+    margin-top: 0;
 }

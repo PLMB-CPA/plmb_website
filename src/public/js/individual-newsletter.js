@@ -9,7 +9,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("title").textContent = newsletter.title;
         document.getElementById("author").textContent = `Author: ${newsletter.author}`;
         document.getElementById("date").textContent = "Published: " + new Date(newsletter.date).toLocaleDateString();
+        
+        const image = document.getElementById("image");
+
+        if (newsletter.image)
+            image.src = newsletter.image;
+        else
+            image.style.display = "none";
+        
         document.getElementById("text").innerHTML = newsletter.content;
+        
     } catch (error) {
         console.error("Error loading newsletter:", error);
     }
