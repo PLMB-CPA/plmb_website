@@ -3,8 +3,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const id = new URLSearchParams(window.location.search).get("id");
 
         const response = await fetch(`/api/announcements/${id}`);
-        const newsletter = await response.json();
-
+        const data = await response.json();
+        const newsletter = data.newsletter;
+        
         document.getElementById("title").textContent = newsletter.title;
         document.getElementById("date").textContent = new Date(newsletter.date).toLocaleDateString();
         document.getElementById("content").innerHTML = newsletter.content;
