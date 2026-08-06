@@ -21,6 +21,9 @@ router.delete('/inquiries/:id', requireAuth, inquiryController.deleteInquiry);
 // Public: used by index.html to show published newsletters
 router.get('/announcements', newsletterController.getPublishedNewsletters);
 
+// Public: used by newsletter.html to show specific newsletters
+router.get('/newsletter/:id', newsletterController.getNewsletterById);
+
 // Admin: full list regardless of publish status
 router.get('/announcements/all', requireAuth, newsletterController.getAllNewsletters);
             
