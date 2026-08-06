@@ -14,11 +14,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (newsletter.image)
             image.src = newsletter.image;
-        else
+        else{
             image.style.display = "none";
-        
+            console.log("NO IMAGE LMAO");
+        }
         document.getElementById("text").innerHTML = newsletter.content;
-        
+
     } catch (error) {
         console.error("Error loading newsletter:", error);
     }

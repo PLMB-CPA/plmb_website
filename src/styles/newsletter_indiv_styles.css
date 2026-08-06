@@ -77,10 +77,6 @@ nav a.active { color: #3D7A40; }
   color: #2C4A2E;
 }
 
-.labels p {
-  padding-bottom: 40px;
-}
-
 h1 {
     margin-bottom: 0.2rem;
 }
@@ -92,4 +88,13 @@ h1 {
 
 #date {
     margin-top: 0;
+}
+
+#image {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px auto;
 }
