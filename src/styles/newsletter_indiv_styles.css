@@ -16,6 +16,13 @@ body {
   font-family: Arial, sans-serif;
   background: linear-gradient(to bottom, #f8faf8, #eef5ee);
   color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 /* HEADER */
@@ -106,4 +113,5 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
     line-height: 1.7;
+    white-space: pre-line;
 }
