@@ -196,31 +196,28 @@ body {
   padding: 0px;
 }
 
-.inquiry-message {
-  background: white;
-  box-shadow: 0 5px 18px rgba(0,0,0,.08);
-  border-radius: 15px;
-  padding: 30px 35px;
-  margin: 20px;
-  max-width: 900px;
+.inquiry-message{
+    background: white;
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+    border-radius:15px;
+    padding: 30px 35px;
+    margin: 20px;
 }
 
-.ticket-header {
+.message-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.ticket-id {
-  font-weight: 700;
-  color: #255f20;
-  font-size: 14px;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
 }
 
 .status-badges {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .status-badge {
@@ -230,6 +227,7 @@ body {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .status-badge.read { background: #d5eaff; color: #1a5fa8; }
@@ -239,23 +237,27 @@ body {
 .status-badge.archived { background: #eee3fb; color: #6b3fa0; }
 
 .title {
-  margin: 15px 0 8px;
-  color: #202020;
-  font-size: 26px;
-  font-weight: 700;
+    color: #202020;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
 }
 
 .tags {
   display: flex;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .category, .industry {
-  border-radius: 999px;
-  padding: 6px 14px;
+  border-radius:30px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  background-color: rgb(255, 231, 193);
   font-weight: 700;
-  font-size: 12px;
+  max-height: 30px;
 }
 
 .category { background-color: rgb(255, 231, 193); }
@@ -287,6 +289,7 @@ body {
   line-height: 1.7;
   color: #3a3a3a;
   text-align: justify;
+  margin: 0 0 24px;
   margin-bottom: 28px;
 }
 
@@ -335,4 +338,19 @@ body {
 
 .delete-button:hover {
   background-color: #a52323;
+}
+
+.contact-container{
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    color: #565656;
+    padding: 14px 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 24px;
+}
+
+.contact{
+    font-weight: 700;
+    color: #333;
 }
