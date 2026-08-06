@@ -4,6 +4,11 @@ const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../
 
 exports.createInquiry = async (req, res) => {
   try {
+    const emailCheck = await isValidInquiryEmail(req.body.email);
+    if (!emailCheck.valid) {
+      return res.status(400).json({error: emailCheck.reason});
+    }
+    
     const count = await Inquiry.countDocuments();
     const ticketNumber = `INQ-${String(count + 1).padStart(4, '0')}`;
     const inquiry = await Inquiry.create({...req.body, ticketNumber});
