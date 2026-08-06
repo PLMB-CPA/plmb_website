@@ -20,12 +20,10 @@ function applyStatus(inquiry) {
   readBadge.textContent = inquiry.isRead ? "Read" : "Unread";
   readBadge.className = "status-badge read-badge " + (inquiry.isRead ? "read" : "unread");
   readBtn.textContent = inquiry.isRead ? "Read" : "Mark as Read";
-  readBtn.disabled = inquiry.isRead;
 
   answeredBadge.textContent = inquiry.isAnswered ? "Answered" : "Unanswered";
   answeredBadge.className = "status-badge answered-badge " + (inquiry.isAnswered ? "answered" : "unanswered");
   answeredBtn.textContent = inquiry.isAnswered ? "Answered" : "Mark as Answered";
-  answeredBtn.disabled = inquiry.isAnswered;
 
   archivedBadge.style.display = inquiry.isArchived ? "inline-flex" : "none";
   archiveBtn.textContent = inquiry.isArchived ? "Unarchive" : "Archive";
@@ -84,11 +82,11 @@ async function loadInquiry() {
 }
 
 readBtn.addEventListener("click", function () {
-  updateInquiry({ isRead: true });
+  updateInquiry({  isRead: readBtn.textContent === "Mark as Read" });
 });
 
 answeredBtn.addEventListener("click", function () {
-  updateInquiry({ isAnswered: true });
+  updateInquiry({ isAnswered: answeredBtn.textContent === "Mark as Answered" });
 });
 
 archiveBtn.addEventListener("click", function () {

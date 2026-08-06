@@ -355,3 +355,18 @@ body {
     font-weight: 700;
     color: #333;
 }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 20px 0;
+  color: #255f20;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
