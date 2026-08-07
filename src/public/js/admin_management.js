@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     '</div>' +
                     */
                     '<div class="user-stat">' +
-                    '    <h3>N/A</h3>' +
                     '    <p>Date Joined</p>' +
                     '</div>' +
                     '<div class="dropdown-btn">' +
