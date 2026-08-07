@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   var listEl = document.getElementById('inquiry-list');
+  var searchInput = document.getElementById('ticket-search');
   var filterToggle = document.getElementById('filter-toggle');
   var filterMenu = document.getElementById('filter-menu');
   var answeredRadios = document.querySelectorAll('input[name="answeredFilter"]');
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentAnsweredFilter = 'all';
   var currentReadFilter = 'all';
   var currentArchiveFilter = 'all';
+  var currentSearchTerm = '';
 
   function formatDate(dateStr) {
     var d = new Date(dateStr);
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (currentReadFilter === 'unread' && inq.isRead) return false;
       if (currentArchiveFilter === 'archived' && !inq.isArchived) return false;
       if (currentArchiveFilter === 'unarchived' && inq.isArchived) return false;
+      if (currentSearchTerm && (inq.ticketNumber || '').toLowerCase().indexOf(currentSearchTerm) === -1) return false;
       return true;
     });
 
@@ -138,6 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(function () {
         alert('Could not reach the server.');
         });
+    });
+
+    searchInput.addEventListener('input', function () {
+      currentSearchTerm = searchInput.value.trim().toLowerCase();
+      renderInquiries();
     });
   
   fetchInquiries();
