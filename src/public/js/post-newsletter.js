@@ -196,7 +196,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // gives no way to run a long item onto a second line without numbering it. In
   // a paragraph it likewise starts a new one. Browsers differ on whether they do
   // this by default inside contenteditable, so handle it explicitly.
-  // True when nothing in this list item comes before the caret.
+  // True when no text in this list item comes before the caret.
+  //
+  // Splitting an item with Enter can leave the new one starting with a <br>
+  // carried over from the split. That is an artifact, not content, so a leading
+  // <br> must not stop the merge. Text is the only thing that counts: with
+  // "abc<br>sdsdd", a caret before "sdsdd" still has "abc" ahead of it and is
+  // correctly not treated as the start.
   function caretAtStartOfItem(item) {
     var selection = window.getSelection();
     if (!selection.rangeCount) return false;
@@ -208,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) {
       return false;
     }
-    return probe.toString().length === 0 && !probe.cloneContents().querySelector('br');
+    return probe.toString().trim().length === 0;
   }
 
   // Backspace at the start of a list item joins it to the item above, the way a
