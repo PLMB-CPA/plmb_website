@@ -61,6 +61,12 @@ document.body.addEventListener('click', function(event) {
         if (dropdown)
             dropdown.classList.toggle('show');
     }
+    else {
+        let dropdowns = document.querySelectorAll('.dropdown-content.show');
+        dropdowns.forEach(function(dropdown) {
+            dropdown.classList.remove('show');
+        });
+    }
 });
 
 
