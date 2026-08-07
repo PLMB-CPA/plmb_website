@@ -127,6 +127,21 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.activeElement === contentEl) refreshToolbar();
   });
 
+  // Shift+Enter inserts a line break instead of ending the block.
+  //
+  // Inside a list, plain Enter starts the next item, which is usually right but
+  // gives no way to run a long item onto a second line without numbering it. In
+  // a paragraph it likewise starts a new one. Browsers differ on whether they do
+  // this by default inside contenteditable, so handle it explicitly.
+  contentEl.addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter' || !event.shiftKey) return;
+    event.preventDefault();
+    if (!document.execCommand('insertLineBreak')) {
+      document.execCommand('insertHTML', false, '<br>');
+    }
+    rememberSelection();
+  });
+
   // Paste as plain text. Copying out of Word or a browser drags in a large amount
   // of markup that the sanitizer would strip anyway
   contentEl.addEventListener('paste', function (event) {
