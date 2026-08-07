@@ -324,22 +324,9 @@ body {
 .archive-btn { background: #7a4fb0; }
 .archive-btn:hover { background: #613c8d; }
 
-.delete-button {
-  background-color: #d32f2f;
-  padding: 10px;
-  font-size: medium;
-  color: #f8f8f8;
-  font-weight: 400;
-  border-radius: 15px;
-  margin-top: 20x;
-  margin-left: 10px;
-  margin-bottom: 15px;
-  border-style: none;
-}
+.delete-button { background: #d32f2f; }
+.delete-button:hover:not(:disabled) { background: #a52323; }
 
-.delete-button:hover {
-  background-color: #a52323;
-}
 
 .contact-container{
     display: flex;
