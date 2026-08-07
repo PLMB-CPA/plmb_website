@@ -186,8 +186,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // selectionchange is the authoritative signal that the caret moved: mouseup
+  // and keyup can both fire before the browser has finished updating the
+  // selection, which left savedRange one interaction behind. A toolbar click
+  // then restored the previous position, so formatting landed on the word
+  // before the one the caret was actually in, and the lit buttons described
+  // that stale position too.
   document.addEventListener('selectionchange', function () {
-    if (document.activeElement === contentEl) refreshToolbar();
+    if (document.activeElement !== contentEl) return;
+    rememberSelection();
+    refreshToolbar();
   });
 
   // Shift+Enter inserts a line break instead of ending the block.
