@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var statusLabel = inq.isAnswered ? 'Resolved' : 'Unresolved';
 
       var row = document.createElement('div');
-      row.className = 'inquiry-container';
+      row.className = 'inquiry-container' + (!inq.isRead ? ' unread' : '') + (inq.isArchived ? ' archived' : '');
       row.setAttribute('data-id', inq._id);
 
       row.innerHTML = '' +
@@ -89,10 +89,19 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  filterToggle.addEventListener('click', function (e) {
-    e.stopPropagation();
-    filterMenu.classList.toggle('show');
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      currentSearchTerm = searchInput.value.trim().toLowerCase();
+      renderInquiries();
+    });
+  }
+
+  if (filterToggle) {
+    filterToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      filterMenu.classList.toggle('show');
+    });
+  }
 
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.filter-dropdown')) {
@@ -151,17 +160,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  resetFiltersBtn.addEventListener('click', function () {
-    currentAnsweredFilter = 'all';
-    currentReadFilter = 'all';
-    currentArchiveFilter = 'all';
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener('click', function () {
+      currentAnsweredFilter = 'all';
+      currentReadFilter = 'all';
+      currentArchiveFilter = 'all';
+      currentSearchTerm = '';
 
-    document.querySelector('input[name="answeredFilter"][value="all"]').checked = true;
-    document.querySelector('input[name="readFilter"][value="all"]').checked = true;
-    document.querySelector('input[name="archiveFilter"][value="all"]').checked = true;
+      document.querySelector('input[name="answeredFilter"][value="all"]').checked = true;
+      document.querySelector('input[name="readFilter"][value="all"]').checked = true;
+      document.querySelector('input[name="archiveFilter"][value="all"]').checked = true;
+      if (searchInput) searchInput.value = '';
 
-    renderInquiries();
-  });
+      renderInquiries();
+    });
+  }
 
   fetchInquiries();
 });
