@@ -5,13 +5,147 @@ document.addEventListener('DOMContentLoaded', function () {
   var toggleImageEl = document.getElementById('toggle-image');
   var submitEl = document.getElementById('news-submit');
   var statusEl = document.getElementById('news-status');
+  var toolbarEl = document.getElementById('news-toolbar');
+  var blockSelect = document.getElementById('tb-block');
+  var sizeSelect = document.getElementById('tb-size');
+  var linkBtn = document.getElementById('tb-link');
+  var backBtn = document.getElementById('news-back');
 
   var editId = new URLSearchParams(window.location.search).get('id');
+
+  // Baseline for the unsaved-changes check on the back button. Reset once an
+  // existing newsletter finishes loading, so opening an edit and leaving it
+  // untouched does not count as a change.
+  var savedTitle = '';
+  var savedContent = '';
+  var savedImage = '';
+
+  function hasUnsavedChanges() {
+    return subjectEl.value.trim() !== savedTitle ||
+           contentEl.innerHTML.trim() !== savedContent ||
+           imageEl.value.trim() !== savedImage;
+  }
 
   function setStatus(message, isError) {
     statusEl.textContent = message;
     statusEl.className = 'news-status' + (isError ? ' error' : '');
   }
+
+  // TEXT EDITOR
+  //
+  // The content box is a contenteditable div driven by document.execCommand.
+  // execCommand is formally deprecated but still works everywhere and needs no
+  // library.
+
+  // Ask the browser for <b>/<i>/<u> tags rather than inline style spans, which
+  // keeps the saved markup small and easy for the sanitizer to allow.
+  try {
+    document.execCommand('styleWithCSS', false, false);
+  } catch (e) {
+    // Not supported in this browser; tags below still work.
+  }
+
+  // Toolbar clicks would otherwise move focus out of the editor and collapse the
+  // selection
+  var savedRange = null;
+
+  function rememberSelection() {
+    var selection = window.getSelection();
+    if (!selection.rangeCount) return;
+    var range = selection.getRangeAt(0);
+    // Clone it: the live range from getRangeAt is collapsed by the
+    // removeAllRanges() in restoreSelection, which would lose the highlight.
+    if (contentEl.contains(range.commonAncestorContainer)) savedRange = range.cloneRange();
+  }
+
+  function restoreSelection() {
+    if (!savedRange) {
+      contentEl.focus();
+      return;
+    }
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(savedRange);
+    contentEl.focus();
+  }
+
+  function run(command, value) {
+    restoreSelection();
+    document.execCommand(command, false, value || null);
+    rememberSelection();
+    refreshToolbar();
+  }
+
+  contentEl.addEventListener('keyup', rememberSelection);
+  contentEl.addEventListener('mouseup', rememberSelection);
+  contentEl.addEventListener('focus', rememberSelection);
+
+  // Keep the caret where it is when a toolbar button is pressed.
+  toolbarEl.addEventListener('mousedown', function (event) {
+    if (event.target.classList.contains('tb-btn')) event.preventDefault();
+  });
+
+  toolbarEl.addEventListener('click', function (event) {
+    var button = event.target.closest('.tb-btn');
+    if (!button || !button.dataset.command) return;
+    run(button.dataset.command);
+  });
+
+  blockSelect.addEventListener('change', function () {
+    run('formatBlock', '<' + blockSelect.value + '>');
+  });
+
+  sizeSelect.addEventListener('change', function () {
+    if (!sizeSelect.value) return;
+    run('fontSize', sizeSelect.value);
+    sizeSelect.value = '';
+  });
+
+  linkBtn.addEventListener('click', function () {
+    rememberSelection();
+    var url = window.prompt('Link address:', 'https://');
+    if (!url) return;
+    run('createLink', url);
+  });
+
+  // Show which of bold/italic/underline apply at the caret.
+  function refreshToolbar() {
+    ['bold', 'italic', 'underline'].forEach(function (command) {
+      var button = toolbarEl.querySelector('[data-command="' + command + '"]');
+      if (!button) return;
+      var active = false;
+      try {
+        active = document.queryCommandState(command);
+      } catch (e) {
+        active = false;
+      }
+      button.classList.toggle('active', active);
+    });
+  }
+
+  document.addEventListener('selectionchange', function () {
+    if (document.activeElement === contentEl) refreshToolbar();
+  });
+
+  // Paste as plain text. Copying out of Word or a browser drags in a large amount
+  // of markup that the sanitizer would strip anyway
+  contentEl.addEventListener('paste', function (event) {
+    event.preventDefault();
+    var text = (event.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
+
+  // BACK BUTTON
+  //
+  // The only other ways off this page are submitting or a sidebar link, both of
+  // which discard a half-written newsletter without warning. Ask first.
+  backBtn.addEventListener('click', function () {
+    if (hasUnsavedChanges() &&
+        !window.confirm('You have unsaved changes. Leave without saving?')) {
+      return;
+    }
+    window.location.href = '/admin_newsletter.html';
+  });
 
   // IMAGE FIELD (no file upload endpoint yet, so this takes a URL)
   toggleImageEl.addEventListener('click', function () {
@@ -40,13 +174,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         subjectEl.value = data.newsletter.title || '';
-        contentEl.value = data.newsletter.content || '';
+        contentEl.innerHTML = data.newsletter.content || '';
 
         if (data.newsletter.image) {
           imageEl.value = data.newsletter.image;
           imageEl.hidden = false;
           toggleImageEl.textContent = 'Hide image';
         }
+
+        // Treat the freshly loaded newsletter as the unmodified baseline.
+        savedTitle = subjectEl.value.trim();
+        savedContent = contentEl.innerHTML.trim();
+        savedImage = imageEl.value.trim();
       })
       .catch(function () {
         setStatus('Could not load this newsletter.', true);
@@ -55,7 +194,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function save() {
     var title = subjectEl.value.trim();
-    var content = contentEl.value.trim();
+    var content = contentEl.innerHTML.trim();
+
+    // An "empty" contenteditable still holds <br>
+    var hasText = contentEl.textContent.trim().length > 0;
 
     if (!title) {
       setStatus('Please add a subject.', true);
@@ -63,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    if (!content) {
+    if (!hasText) {
       setStatus('Please add some content.', true);
       contentEl.focus();
       return;

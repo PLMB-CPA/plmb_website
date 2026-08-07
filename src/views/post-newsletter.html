@@ -66,9 +66,50 @@
                 </div>
 
                 <div class="newsletter-container">
+                    <button type="button" id="news-back" class="news-back">&#8592; Back to newsletters</button>
+
                     <input type="text" id="news-subject" class="news-subject" placeholder="Subject">
 
-                    <textarea id="news-content" class="news-content" placeholder="Type your text here..."></textarea>
+                    <div class="news-toolbar" id="news-toolbar">
+                        <select class="tb-select" id="tb-block" title="Paragraph style">
+                            <option value="p">Normal text</option>
+                            <option value="h2">Heading</option>
+                            <option value="h3">Subheading</option>
+                        </select>
+
+                        <select class="tb-select" id="tb-size" title="Font size">
+                            <option value="">Size</option>
+                            <option value="2">Small</option>
+                            <option value="3">Normal</option>
+                            <option value="5">Large</option>
+                            <option value="6">Extra large</option>
+                        </select>
+
+                        <span class="tb-divider"></span>
+
+                        <button type="button" class="tb-btn tb-bold" data-command="bold" title="Bold">B</button>
+                        <button type="button" class="tb-btn tb-italic" data-command="italic" title="Italic">I</button>
+                        <button type="button" class="tb-btn tb-underline" data-command="underline" title="Underline">U</button>
+
+                        <span class="tb-divider"></span>
+
+                        <button type="button" class="tb-btn" data-command="insertUnorderedList" title="Bulleted list">&bull; List</button>
+                        <button type="button" class="tb-btn" data-command="insertOrderedList" title="Numbered list">1. List</button>
+
+                        <span class="tb-divider"></span>
+
+                        <button type="button" class="tb-btn" data-command="justifyLeft" title="Align left">&#8676;</button>
+                        <button type="button" class="tb-btn" data-command="justifyCenter" title="Align center">&#8596;</button>
+                        <button type="button" class="tb-btn" data-command="justifyRight" title="Align right">&#8677;</button>
+
+                        <span class="tb-divider"></span>
+
+                        <button type="button" class="tb-btn" id="tb-link" title="Insert link">Link</button>
+                        <button type="button" class="tb-btn" data-command="removeFormat" title="Clear formatting">Clear</button>
+                    </div>
+
+                    <div id="news-content" class="news-content" contenteditable="true"
+                         data-placeholder="Type your text here..."></div>
 
                     <input type="url" id="news-image" class="news-image" placeholder="Image URL (https://...)" hidden>
                     <button type="button" id="toggle-image" class="upload-img">Add image</button>
