@@ -253,12 +253,16 @@ body {
 }
 
 .card {
+    display: block;
     background: #fff;
     border: 1px solid #ececec;
     border-radius: 18px;
     padding: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
     transition: .25s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 .card-header {
