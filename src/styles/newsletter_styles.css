@@ -81,7 +81,7 @@ nav a.active { color: #3D7A40; }
 .newsletter-container{
   display: flex;
   flex-direction: column;
-  padding: 2%;
+  padding: 0 2% 2%;
   flex: 1;
 }
 
@@ -93,7 +93,7 @@ nav a.active { color: #3D7A40; }
 
 .newsletter-card {
   padding: 20px;
-  margin-top: 2%;
+  margin-top: 20px;
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
