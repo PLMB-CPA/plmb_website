@@ -391,6 +391,10 @@ body {
 .news-content ol { margin: 0 0 10px; padding-left: 24px; }
 .news-content a { color: #255f20; }
 
+/* Tab indents by wrapping the block in a blockquote, so it reads as an indent
+   rather than a quotation. Nesting them compounds the indent. */
+.news-content blockquote { margin: 0 0 10px 40px; }
+
 .news-image {
     margin-left: 20px;
     margin-right: 20px;

@@ -196,6 +196,88 @@ document.addEventListener('DOMContentLoaded', function () {
   // gives no way to run a long item onto a second line without numbering it. In
   // a paragraph it likewise starts a new one. Browsers differ on whether they do
   // this by default inside contenteditable, so handle it explicitly.
+  // True when nothing in this list item comes before the caret.
+  function caretAtStartOfItem(item) {
+    var selection = window.getSelection();
+    if (!selection.rangeCount) return false;
+    var range = selection.getRangeAt(0);
+    var probe = document.createRange();
+    probe.selectNodeContents(item);
+    try {
+      probe.setEnd(range.startContainer, range.startOffset);
+    } catch (e) {
+      return false;
+    }
+    return probe.toString().length === 0 && !probe.cloneContents().querySelector('br');
+  }
+
+  // Backspace at the start of a list item joins it to the item above, the way a
+  // word processor does. Left to the browser this instead shunts the number onto
+  // the next line and leaves the list in a mess.
+  contentEl.addEventListener('keydown', function (event) {
+    if (event.key !== 'Backspace') return;
+
+    var selection = window.getSelection();
+    if (!selection.isCollapsed) return;      // deleting a highlighted range is normal
+
+    var item = currentListItem();
+    if (!item || !caretAtStartOfItem(item)) return;
+
+    var previous = item.previousElementSibling;
+
+    // First item in the list: step out of the list rather than merge upwards.
+    if (!previous || previous.tagName !== 'LI') {
+      event.preventDefault();
+      document.execCommand('outdent');
+      normalizeLists();
+      rememberSelection();
+      refreshToolbar();
+      return;
+    }
+
+    event.preventDefault();
+
+    // Remember the join point so the caret can sit exactly where the two met.
+    var joinAfter = previous.lastChild;
+    while (item.firstChild) previous.appendChild(item.firstChild);
+    item.remove();
+
+    var range = document.createRange();
+    if (!joinAfter) {
+      range.setStart(previous, 0);
+    } else if (joinAfter.nodeType === 3) {
+      range.setStart(joinAfter, joinAfter.textContent.length);
+    } else {
+      range.setStartAfter(joinAfter);
+    }
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    normalizeLists();
+    rememberSelection();
+    refreshToolbar();
+  });
+
+  // Tab indents, Shift+Tab outdents.
+  //
+  // In a list this nests the bullet. In a paragraph the browser wraps the block
+  // in a <blockquote> and puts the indent in an inline style, which the
+  // sanitizer strips on save. The toolbar has no blockquote button, so every
+  // blockquote here comes from indenting: drop the inline style and let the
+  // stylesheet do the indenting, which survives saving.
+  contentEl.addEventListener('keydown', function (event) {
+    if (event.key !== 'Tab') return;
+    event.preventDefault();
+    document.execCommand(event.shiftKey ? 'outdent' : 'indent');
+    Array.prototype.forEach.call(contentEl.querySelectorAll('blockquote[style]'), function (quote) {
+      quote.removeAttribute('style');
+    });
+    normalizeLists();
+    rememberSelection();
+    refreshToolbar();
+  });
+
   contentEl.addEventListener('keydown', function (event) {
     if (event.key !== 'Enter') return;
 

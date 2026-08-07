@@ -116,12 +116,8 @@ h1 {
 }
 
 /* Content comes from the newsletter editor as HTML, so the tags it produces are
-   styled here.
-
-   Do not add white-space: pre-line to #text. It was needed when bodies were
-   plain text from the old textarea, but it doubles the gap between every <p>
-   the editor produces. Line breaks in older plain-text newsletters are handled
-   in public/js/individual-newsletter.js instead, which covers both shapes. */
+   styled here. pre-line used to stand in for line breaks back when the body was
+   plain text; with real <p> tags it would double every gap. */
 #text h1 { font-size: 26px; margin: 18px 0 10px; color: #2C4A2E; }
 #text h2 { font-size: 22px; margin: 16px 0 8px; color: #2C4A2E; }
 #text h3 { font-size: 18px; margin: 14px 0 8px; color: #2C4A2E; }
@@ -130,9 +126,8 @@ h1 {
 #text ol { margin: 0 0 14px; padding-left: 26px; }
 #text li { margin-bottom: 6px; }
 #text a { color: #3D7A40; }
+/* Blockquotes only ever come from pressing Tab in the editor, so render them as
+   an indent rather than a quotation. Nested ones compound the indent. */
 #text blockquote {
-    margin: 0 0 14px;
-    padding: 8px 16px;
-    border-left: 3px solid #d7e5d5;
-    color: #555;
+    margin: 0 0 14px 40px;
 }
