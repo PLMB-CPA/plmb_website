@@ -211,6 +211,11 @@ nav a.active {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    margin-bottom: 16px;
+}
+
+.accred-list:last-child {
+    margin-bottom: 0;
 }
 
 .accred-pill {

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var answeredRadios = document.querySelectorAll('input[name="answeredFilter"]');
   var readRadios = document.querySelectorAll('input[name="readFilter"]');
   var archiveRadios = document.querySelectorAll('input[name="archiveFilter"]');
+  var resetFiltersBtn = document.getElementById('reset-filters');
 
   var allInquiries = [];
   var currentAnsweredFilter = 'all';
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       var row = document.createElement('div');
       row.className = 'inquiry-container';
+      row.setAttribute('data-id', inq._id);
 
       row.innerHTML = '' +
         '<p class="inquiry-ticket-id">' + (inq.ticketNumber || '') + '</p>' +
@@ -64,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
         '  <p class="inquiry-date">' + formatDate(inq.date) + '</p>' +
         '  <p class="inquiry-status ' + statusClass + '">' + statusLabel + '</p>' +
         '  <div class="inquiry-buttons">' +
-        '    <a href="/inquiry-full.html?id=' + inq._id + '" class="manage-btn">Manage</a>' +
         '    <button type="button" class="delete-btn" data-id="' + inq._id + '"><i class="fa-solid fa-trash"></i></button>' +
         '  </div>' +
         '</div>';
@@ -119,26 +120,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
   listEl.addEventListener('click', function (e) {
     var delBtn = e.target.closest('.delete-btn');
-    if (!delBtn) return;
+    if (delBtn) {
+      var id = delBtn.getAttribute('data-id');
+      var confirmed = confirm('Delete this inquiry? This cannot be undone.');
+      if (!confirmed) return;
 
-    var id = delBtn.getAttribute('data-id');
-    var confirmed = confirm('Delete this inquiry? This cannot be undone.');
-    if (!confirmed) return;
+      fetch('/api/inquiries/' + id, { method: 'DELETE' })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+          if (data.error) {
+              alert(data.error);
+              return;
+          }
+          allInquiries = allInquiries.filter(function (inq) { return inq._id !== id; });
+          renderInquiries();
+          })
+          .catch(function () {
+          alert('Could not reach the server.');
+          });
+      return;
+    }
 
-    fetch('/api/inquiries/' + id, { method: 'DELETE' })
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-        if (data.error) {
-            alert(data.error);
-            return;
-        }
-        allInquiries = allInquiries.filter(function (inq) { return inq._id !== id; });
-        renderInquiries();
-        })
-        .catch(function () {
-        alert('Could not reach the server.');
-        });
-    });
-  
+    var row = e.target.closest('.inquiry-container');
+    if (row) {
+      var rowId = row.getAttribute('data-id');
+      if (rowId) window.location.href = '/inquiry-full.html?id=' + rowId;
+    }
+  });
+
+  resetFiltersBtn.addEventListener('click', function () {
+    currentAnsweredFilter = 'all';
+    currentReadFilter = 'all';
+    currentArchiveFilter = 'all';
+
+    document.querySelector('input[name="answeredFilter"][value="all"]').checked = true;
+    document.querySelector('input[name="readFilter"][value="all"]').checked = true;
+    document.querySelector('input[name="archiveFilter"][value="all"]').checked = true;
+
+    renderInquiries();
+  });
+
   fetchInquiries();
 });
