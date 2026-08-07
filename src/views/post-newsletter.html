@@ -1,82 +1,88 @@
 <!DOCTYPE HTML>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Po Lao Marquez Benedictos & Co.</title>
-  <link rel="stylesheet" href="/styles/post-newsletter.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Po Lao Marquez Benedictos & Co.</title>
+    <link rel="stylesheet" href="/styles/post-newsletter.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <div class="bg-container">
-    <div class="dashboard">
-      <aside class="sidebar">
-        <div class="sidebar-brand">
-          <img id="logo" src="/image/logo.png">
-          <h1>PLMB</h1>
-        </div>
-        <nav class="sidebar-nav">
-          <a href="admin_dashboard.html" class="dash-side">
-            <img class="menu-icon" src="/image/menu.png">
-            <span>Dashboard</span>
-          </a>
+    <div class="bg-container">
+        <div class="dashboard">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <img id="logo" src="/image/logo.png">
+                    <h1>PLMB</h1>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="admin_dashboard.html" class="dash-side">
+                        <img class="menu-icon" src="/image/menu.png">
+                        <span>Dashboard</span>
+                    </a>
 
-          <a href="admin_newsletter.html" class="dash-side active">
-            <img class="menu-icon" src="/image/newsletter-icon.png">
-            <span>Newsletters</span>
-          </a>
+                    <a href="admin_newsletter.html" class="dash-side active">
+                        <img class="menu-icon" src="/image/newsletter-icon.png">
+                        <span>Newsletters</span>
+                    </a>
 
-          <a href="admin_inquiry_management.html" class="dash-side">
-            <img class="menu-icon" src="/image/inquiries-icon.png">
-            <span>Inquiries</span>
-          </a>
+                    <a href="admin_inquiry_management.html" class="dash-side">
+                        <img class="menu-icon" src="/image/inquiries-icon.png">
+                        <span>Inquiries</span>
+                    </a>
 
-          <a href="admin_management.html" class="dash-side">
-            <img class="menu-icon" src="/image/user.png">
-            <span>Manage</span>
-          </a>
-        </nav>
-        <a href="/api/admin/logout" class="dash-side logout">
-          <img class="menu-icon" src="/image/logout.png">
-          <span>Logout</span>
-        </a>
-      </aside>
+                    <a href="admin_management.html" class="dash-side">
+                        <img class="menu-icon" src="/image/user.png">
+                        <span>Manage</span>
+                    </a>
+                </nav>
+                <a href="/api/admin/logout" class="dash-side logout">
+                    <img class="menu-icon" src="/image/logout.png">
+                    <span>Logout</span>
+                </a>
+            </aside>
 
-      <div class="main-content">
+            <div class="main-content">
 
-        <div class="head">
-          <div class="head-left">
-            <h1>Admin Dashboard</h1>
-          </div>
-          
-          <div class="divider"></div>
+                <div class="head">
+                    <div class="head-left">
+                        <h1>Admin Dashboard</h1>
+                    </div>
 
-          <div class="head-right">
-            <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+                    <div class="divider"></div>
 
-            <div class="admin-info">
-              <h3></h3>
-              <p>Admin Job Role</p>
+                    <div class="head-right">
+                        <img id="admin-pfp" src="/image/admin-pfp.png" alt="Admin">
+
+                        <div class="admin-info">
+                            <h3></h3>
+                            <p>Admin Job Role</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="newsletter-container">
+                    <input type="text" id="news-subject" class="news-subject" placeholder="Subject">
+
+                    <textarea id="news-content" class="news-content" placeholder="Type your text here..."></textarea>
+
+                    <input type="url" id="news-image" class="news-image" placeholder="Image URL (https://...)" hidden>
+                    <button type="button" id="toggle-image" class="upload-img">Add image</button>
+
+                    <p id="news-status" class="news-status"></p>
+
+                    <input type="submit" id="news-submit" class="news-submit" value="Submit for Review">
+                </div>
+
             </div>
-          </div>
         </div>
-
-        <div class="newsletter-container">
-          <input type="text" id="news-subject" class="news-subject" placeholder="Subject">
-
-          <textarea id="news-content" class="news-content" placeholder="Type your text here..."></textarea>
-
-          <input type="url" id="news-image" class="news-image" placeholder="Image URL (https://...)" hidden>
-          <button type="button" id="toggle-image" class="upload-img">Add image</button>
-
-          <p id="news-status" class="news-status"></p>
-
-          <input type="submit" id="news-submit" class="news-submit" value="Submit for Review">
-        </div>
-
-      </div>
     </div>
-  </div>
-  <script src="/public/js/admin_headname.js"></script>
-  <script src="/public/js/post-newsletter.js"></script>
+    <script src="/public/js/admin_headname.js"></script>
+    <script src="/public/js/post-newsletter.js"></script>
 </body>
+
 </html>
