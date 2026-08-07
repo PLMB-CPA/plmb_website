@@ -113,12 +113,15 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
     line-height: 1.7;
-    white-space: pre-line;
 }
 
 /* Content comes from the newsletter editor as HTML, so the tags it produces are
-   styled here. pre-line used to stand in for line breaks back when the body was
-   plain text; with real <p> tags it would double every gap. */
+   styled here.
+
+   Do not add white-space: pre-line to #text. It was needed when bodies were
+   plain text from the old textarea, but it doubles the gap between every <p>
+   the editor produces. Line breaks in older plain-text newsletters are handled
+   in public/js/individual-newsletter.js instead, which covers both shapes. */
 #text h1 { font-size: 26px; margin: 18px 0 10px; color: #2C4A2E; }
 #text h2 { font-size: 22px; margin: 16px 0 8px; color: #2C4A2E; }
 #text h3 { font-size: 18px; margin: 14px 0 8px; color: #2C4A2E; }
