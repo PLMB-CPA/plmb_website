@@ -15,8 +15,20 @@ document.addEventListener('DOMContentLoaded', function () {
     return div.innerHTML;
   }
 
+  // Bodies are stored as HTML from the editor, so take the words out before
+  // trimming: slicing the markup would leave a half-written tag on screen.
+  // DOMParser neither runs scripts nor fetches anything while parsing.
+  function toPlainText(html) {
+    if (!html) return '';
+    // Closing block tags imply a space, otherwise textContent runs the last word
+    // of a heading straight into the paragraph after it.
+    var spaced = html.replace(/<\/(p|div|h[1-6]|li|ul|ol|blockquote)>|<br\s*\/?>/gi, ' ');
+    var parsed = new DOMParser().parseFromString(spaced, 'text/html');
+    return (parsed.body.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
   function preview(content) {
-    var text = content || '';
+    var text = toPlainText(content);
     if (text.length > 120) text = text.slice(0, 120) + '...';
     return escapeHtml(text);
   }
@@ -25,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var row = document.createElement('div');
     row.className = 'newsletter-row';
     row.setAttribute('data-id', news._id);
-    row.setAttribute('data-search', ((news.title || '') + ' ' + (news.content || '')).toLowerCase());
+    row.setAttribute('data-search', ((news.title || '') + ' ' + toPlainText(news.content)).toLowerCase());
 
     row.innerHTML = '' +
       '<div class="newsletter-info">' +
@@ -56,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var row = document.createElement('div');
     row.className = 'newsletter-row';
     row.setAttribute('data-id', news._id);
-    row.setAttribute('data-search', ((news.title || '') + ' ' + (news.content || '')).toLowerCase());
+    row.setAttribute('data-search', ((news.title || '') + ' ' + toPlainText(news.content)).toLowerCase());
 
     row.innerHTML = '' +
       '<div class="newsletter-info">' +
