@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var blockSelect = document.getElementById('tb-block');
   var sizeSelect = document.getElementById('tb-size');
   var linkBtn = document.getElementById('tb-link');
+  var clearBtn = document.getElementById('tb-clear');
   var backBtn = document.getElementById('news-back');
 
   var editId = new URLSearchParams(window.location.search).get('id');
@@ -69,9 +70,36 @@ document.addEventListener('DOMContentLoaded', function () {
     contentEl.focus();
   }
 
+  // Turning paragraphs into a list leaves the <ul> inside the <p> it came from,
+  // which is invalid HTML. The browser tolerates it live but re-parses it
+  // differently when the newsletter is loaded back, so the list the editor shows
+  // and the list that was saved disagree. That mismatch is what makes backspace
+  // inside a list behave unpredictably. Lift the list back out.
+  function normalizeLists() {
+    var nested = contentEl.querySelectorAll('p > ul, p > ol');
+    Array.prototype.forEach.call(nested, function (list) {
+      var paragraph = list.parentNode;
+      paragraph.parentNode.insertBefore(list, paragraph);
+      if (!paragraph.textContent.trim() && !paragraph.querySelector('img, br')) {
+        paragraph.remove();
+      }
+    });
+  }
+
+  // The <li> the caret currently sits in, or null when outside a list.
+  function currentListItem() {
+    var selection = window.getSelection();
+    if (!selection.rangeCount) return null;
+    var node = selection.getRangeAt(0).startContainer;
+    var element = node.nodeType === 1 ? node : node.parentElement;
+    var item = element && element.closest ? element.closest('li') : null;
+    return item && contentEl.contains(item) ? item : null;
+  }
+
   function run(command, value) {
     restoreSelection();
     document.execCommand(command, false, value || null);
+    normalizeLists();
     rememberSelection();
     refreshToolbar();
   }
@@ -99,6 +127,41 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!sizeSelect.value) return;
     run('fontSize', sizeSelect.value);
     sizeSelect.value = '';
+  });
+
+  // Clear formatting.
+  //
+  // execCommand('removeFormat') only undoes inline formatting - bold, italic,
+  // underline, font size. Headings, lists and alignment survive it untouched,
+  // which made the button look like it did nothing. Undo those separately.
+  clearBtn.addEventListener('click', function () {
+    restoreSelection();
+
+    document.execCommand('removeFormat');
+
+    // Toggle off whichever list the caret is sitting in.
+    if (document.queryCommandState('insertUnorderedList')) {
+      document.execCommand('insertUnorderedList');
+    }
+    if (document.queryCommandState('insertOrderedList')) {
+      document.execCommand('insertOrderedList');
+    }
+
+    // Headings and blockquotes back to ordinary paragraphs.
+    document.execCommand('formatBlock', false, '<p>');
+    document.execCommand('justifyLeft');
+
+    // The commands above leave behind style="" or a redundant left alignment.
+    Array.prototype.forEach.call(contentEl.querySelectorAll('[style]'), function (node) {
+      var value = node.getAttribute('style').replace(/\s/g, '');
+      if (value === '' || value === 'text-align:left;' || value === 'text-align:left') {
+        node.removeAttribute('style');
+      }
+    });
+
+    normalizeLists();
+    rememberSelection();
+    refreshToolbar();
   });
 
   linkBtn.addEventListener('click', function () {
@@ -134,12 +197,28 @@ document.addEventListener('DOMContentLoaded', function () {
   // a paragraph it likewise starts a new one. Browsers differ on whether they do
   // this by default inside contenteditable, so handle it explicitly.
   contentEl.addEventListener('keydown', function (event) {
-    if (event.key !== 'Enter' || !event.shiftKey) return;
-    event.preventDefault();
-    if (!document.execCommand('insertLineBreak')) {
-      document.execCommand('insertHTML', false, '<br>');
+    if (event.key !== 'Enter') return;
+
+    if (event.shiftKey) {
+      event.preventDefault();
+      if (!document.execCommand('insertLineBreak')) {
+        document.execCommand('insertHTML', false, '<br>');
+      }
+      rememberSelection();
+      return;
     }
-    rememberSelection();
+
+    // Enter on an empty bullet leaves the list, which is how every other editor
+    // behaves. Without it the only way out is backspacing into the item above,
+    // and that is what was corrupting the list.
+    var item = currentListItem();
+    if (item && !item.textContent.trim()) {
+      event.preventDefault();
+      document.execCommand('outdent');
+      normalizeLists();
+      rememberSelection();
+      refreshToolbar();
+    }
   });
 
   // Paste as plain text. Copying out of Word or a browser drags in a large amount
