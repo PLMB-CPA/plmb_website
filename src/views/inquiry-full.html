@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Po Lao Marquez Benedictos & Co.</title>
+  <title>Inquiry Details - Po Lao Marquez Benedictos & Co.</title>
   <link rel="stylesheet" href="/styles/inquiry-full.css">
 </head>
 <body>
@@ -59,38 +59,42 @@
           </div>
 
         </div>
-        <div class="inquiry-message">
-          <div class="message-header">
-              <h1 class="title">Title</h1>
-              <div class="status-badges">
-                  <span class="status-badge unread read-badge">Unread</span>
-                  <span class="status-badge unanswered answered-badge">Unanswered</span>
-                  <span class="status-badge archived archived-badge" style="display:none;">Archived</span>
-              </div>
-          </div>
 
-          <div class="tags">
-              <p class="category">Category</p>
-              <p class="industry">Industry</p>
-          </div>
+        <div class="content-body">
+          <a href="/admin_inquiry_management.html" class="back-link">&larr; Back to Inquiries</a>
 
-          <p class="content">Loading...</p>
+          <div class="inquiry-message">
+            <div class="message-header">
+                <h1 class="title">Title</h1>
+                <div class="status-badges">
+                    <span class="status-badge unread read-badge">Unread</span>
+                    <span class="status-badge unanswered answered-badge">Unanswered</span>
+                    <span class="status-badge archived archived-badge" style="display:none;">Archived</span>
+                </div>
+            </div>
 
-          <div class="contact-container">
-              <p>Contact:</p>
-              <p class="contact">smth@mail.com</p>
-          </div>
+            <div class="tags">
+                <p class="category">Category</p>
+                <p class="industry">Industry</p>
+            </div>
 
-          <div class="action-bar">
-              <button type="button" class="action-btn read-btn">Mark as Read</button>
-              <button type="button" class="action-btn answered-btn">Mark as Answered</button>
-              <button type="button" class="action-btn archive-btn">Archive</button>
-              <button type="button" class="action-btn delete-button">Delete Inquiry</button>
+            <p class="content">Loading...</p>
+
+            <div class="contact-container">
+                <p>Contact:</p>
+                <p class="contact">smth@mail.com</p>
+            </div>
+
+            <div class="action-bar">
+                <div class="status-actions">
+                    <button type="button" class="action-btn read-btn">Mark as Read</button>
+                    <button type="button" class="action-btn answered-btn">Mark as Answered</button>
+                    <button type="button" class="action-btn archive-btn">Archive</button>
+                </div>
+                <button type="button" class="delete-button">Delete Inquiry</button>
+            </div>
           </div>
         </div>
-        <a href="/admin_inquiry_management.html" class="back-link">&larr; Back to Inquiries</a>
-      </div>
-
       </div>
     </div>
   </div>
