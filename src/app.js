@@ -3,13 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const fs = require('fs');
 const path = require('path');
+const routes = require('./routes/index');
+
 const app = express();
-const {requireAdminPage} = require('./middleware/auth');
 
 app.use(cors());
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -19,42 +19,59 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// add routes here when developed
-app.get('/admin_dashboard.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin_dashboard.html'));
+
+// ===== API =====
+app.use('/api', routes);
+
+// Unknown /api paths get a JSON 404 instead of falling through to the React page
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Not found' });
 });
 
-app.get('/admin_management.html', requireAdminPage, function(req, res) {
-    res.sendFile(path.join(__dirname, 'views', 'admin_management.html'));
+
+// ===== OLD .html URLS =====
+// The site used to be separate .html pages. Send old bookmarks/links to the
+// matching React page. (?id=... carries over where the old page used it.)
+const LEGACY_PAGES = {
+  '/index.html': () => '/',
+  '/services.html': () => '/services',
+  '/about_us.html': () => '/about',
+  '/newsletter-page.html': () => '/newsletter',
+  '/newsletter.html': (id) => (id ? `/newsletter/${id}` : '/newsletter'),
+  '/inquiry-page.html': () => '/contact',
+  '/admin_login.html': () => '/admin/login',
+  '/admin_dashboard.html': () => '/admin',
+  '/admin_newsletter.html': () => '/admin/newsletters',
+  '/post-newsletter.html': (id) => (id ? `/admin/newsletters/${id}/edit` : '/admin/newsletters/new'),
+  '/admin_inquiry_management.html': () => '/admin/inquiries',
+  '/inquiry-full.html': (id) => (id ? `/admin/inquiries/${id}` : '/admin/inquiries'),
+  '/admin_management.html': () => '/admin/manage',
+  '/admin_creation.html': () => '/admin/manage',
+};
+
+app.get(Object.keys(LEGACY_PAGES), (req, res) => {
+  const id = typeof req.query.id === 'string' ? encodeURIComponent(req.query.id) : '';
+  res.redirect(301, LEGACY_PAGES[req.path](id));
 });
 
-app.get('/admin_creation.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin_creation.html'));
-});
 
-app.get('/admin_newsletter.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin_newsletter.html'));
-});
+// ===== REACT APP =====
+// `npm run build` (in the project root) builds the React app into client/dist.
+// Express serves those files, and every other GET returns index.html so that
+// React Router can show the right page for URLs like /admin/inquiries/123.
+const clientDist = path.join(__dirname, '..', 'client', 'dist');
+const indexHtml = path.join(clientDist, 'index.html');
 
-app.get('/admin_inquiry_management.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin_inquiry_management.html'));
-});
+app.use(express.static(clientDist));
 
-app.get('/inquiry-full.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'inquiry-full.html'));
-});
-
-app.get('/post-newsletter.html', requireAdminPage, (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'post-newsletter.html'));
-});
-
-app.use(express.static(path.join(__dirname, 'views')));
-app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/styles', express.static(path.join(__dirname, 'styles')));
-app.use('/image', express.static(path.join(__dirname, 'image')));
-
-app.get('/', (req, res) => {
-  res.send('PLMB API is running');
+app.get('*', (req, res) => {
+  if (!fs.existsSync(indexHtml)) {
+    return res
+      .status(503)
+      .send('The React app has not been built yet. Run "npm run build" in the project root, '
+        + 'or use "npm run dev" inside client/ while developing.');
+  }
+  res.sendFile(indexHtml);
 });
 
 module.exports = app;

@@ -1,0 +1,70 @@
+/* Header / nav / footer shared by every public page.
+   (Previously copy-pasted at the top of each *_styles.css file.) */
+
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #f8faf8, #eef5ee);
+  color: #333;
+}
+
+.public-main {
+  flex: 1;
+}
+
+/* HEADER */
+.public-layout .header {
+  background-color: #3D7A40;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+.public-layout .header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+.public-layout .header p {
+  font-style: italic;
+  font-size: 15px;
+  margin-top: 4px;
+}
+.public-layout #logo {
+  width: 70px;
+}
+
+/* NAV */
+.public-layout nav {
+  background: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+}
+.public-layout nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  font-weight: bold;
+}
+.public-layout nav a:hover { text-decoration: underline; }
+/* NavLink adds the "active" class automatically on the current page */
+.public-layout nav a.active { color: #3D7A40; }
+
+/* FOOTER */
+.public-layout .footer {
+  background-color: #3D7A40;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  font-size: 13px;
+}
+.public-layout .footer a { color: white; text-decoration: none; }
+.public-layout .footer a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .public-layout nav { padding: 14px 16px; }
+}

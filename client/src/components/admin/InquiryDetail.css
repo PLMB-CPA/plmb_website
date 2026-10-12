@@ -1,0 +1,207 @@
+/* From src/styles/inquiry-full.css, scoped under .inquiry-detail-page.
+   The sidebar/container shell that used to be copy-pasted at the top lives in AdminLayout.css. */
+
+.inquiry-detail-page .content-body {
+    padding: 24px 30px 30px;
+    max-width: 900px;
+}
+
+.inquiry-detail-page .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    color: #255f20;
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.inquiry-detail-page .back-link:hover {
+    text-decoration: underline;
+}
+
+.inquiry-detail-page .inquiry-message {
+    background: white;
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+    border-radius: 16px;
+    padding: 32px 36px;
+}
+
+.inquiry-detail-page .message-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.inquiry-detail-page .title {
+    color: #202020;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.inquiry-detail-page .status-badges {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.inquiry-detail-page .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 13px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    white-space: nowrap;
+}
+
+.inquiry-detail-page .status-badge.read {
+    background: #d5eaff; color: #1a5fa8;
+}
+
+.inquiry-detail-page .status-badge.unread {
+    background: #f1f1f1; color: #888;
+}
+
+.inquiry-detail-page .status-badge.answered {
+    background: #d9f2df; color: #2d8f3f;
+}
+
+.inquiry-detail-page .status-badge.unanswered {
+    background: #fde3e3; color: #d32f2f;
+}
+
+.inquiry-detail-page .status-badge.archived {
+    background: #eee3fb; color: #6b3fa0;
+}
+
+.inquiry-detail-page .tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.inquiry-detail-page .category,
+.inquiry-detail-page .industry {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.inquiry-detail-page .category {
+    background-color: rgb(255, 231, 193); color: #7a4a06;
+}
+
+.inquiry-detail-page .industry {
+    background-color: rgb(213, 218, 250); color: #35408f;
+}
+
+.inquiry-detail-page .content {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #3a3a3a;
+    text-align: justify;
+    margin-bottom: 24px;
+}
+
+.inquiry-detail-page .contact-container {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    color: #8a8a8a;
+    padding: 16px 0;
+    border-top: 1px solid #f0f0f0;
+    margin-bottom: 24px;
+}
+
+.inquiry-detail-page .contact {
+    font-weight: 700;
+    color: #333;
+}
+
+.inquiry-detail-page .action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 22px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.inquiry-detail-page .status-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.inquiry-detail-page .action-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+    color: white;
+}
+
+.inquiry-detail-page .read-btn {
+    background: #2f7dd1;
+}
+
+.inquiry-detail-page .read-btn:hover {
+    background: #2566ac;
+}
+
+.inquiry-detail-page .answered-btn {
+    background: #378b2f;
+}
+
+.inquiry-detail-page .answered-btn:hover {
+    background: #2c6e24;
+}
+
+.inquiry-detail-page .archive-btn {
+    background: #7a4fb0;
+}
+
+.inquiry-detail-page .archive-btn:hover {
+    background: #613c8d;
+}
+
+.inquiry-detail-page .delete-button {
+    border: 1px solid #f3c8c8;
+    background: white;
+    color: #d32f2f;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 11px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.inquiry-detail-page .delete-button:hover {
+    background: #d32f2f;
+    border-color: #d32f2f;
+    color: white;
+}
+
+/* ===== SMALL SCREENS ===== */
+@media (max-width: 768px) {
+    .inquiry-detail-page .content-body { padding: 16px; }
+    .inquiry-detail-page .message-header { flex-direction: column; gap: 10px; }
+    .inquiry-detail-page .contact { overflow-wrap: anywhere; }
+    .inquiry-detail-page .status-actions { flex-wrap: wrap; }
+    .inquiry-detail-page .delete-button { width: 100%; }
+}

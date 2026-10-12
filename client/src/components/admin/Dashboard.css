@@ -1,0 +1,215 @@
+/* From src/styles/admin_dashboard_styles.css (everything after the sidebar/shell,
+   which lives in AdminLayout.css), scoped under .dashboard-page */
+
+.dashboard-page .welcome-message {
+    background: white;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dashboard-page .welcome-left h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: #255f20;
+    margin-bottom: 6px;
+}
+
+.dashboard-page .welcome-left p {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8a8a8a;
+}
+
+.dashboard-page .welcome-text {
+    display: flex;
+    gap: 4px;
+}
+
+.dashboard-page .divider {
+    width: 1px;
+    height: 55px;
+    background: #d9d9d9;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.dashboard-page .welcome-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-page .admin-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboard-page .admin-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.dashboard-page .admin-info p {
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8b8b8b;
+}
+
+.dashboard-page #admin-pfp {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dashboard-page /* DASHBOARD CONTENT */
+
+.dashboard-content {
+    padding: 20px 30px;
+}
+
+.dashboard-page .dashboard-content h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #202020;
+    margin-bottom: 5px;
+    letter-spacing: -0.6px;
+}
+
+.dashboard-page .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+    animation: fadeUp 0.8s ease;
+}
+
+.dashboard-page .card {
+    display: block;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    transition: .25s;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.dashboard-page .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 48px;
+    margin-bottom: 20px;
+}
+
+.dashboard-page .card-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+}
+
+.dashboard-page .card-title span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4d4d4d;
+    line-height: 1.3;
+}
+
+.dashboard-page .card-icon {
+    width: 18px;
+    opacity: .65;
+}
+
+.dashboard-page .info-icon {
+    width: 16px;
+    opacity: .45;
+}
+
+.dashboard-page .card-body {
+    display: flex;
+    align-items: center;
+    min-height: 55px;
+}
+
+.dashboard-page .info-icon:hover {
+    opacity: .8;
+}
+
+.dashboard-page .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
+}
+
+.dashboard-page .card h2 {
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    color: #255f20;
+    font-size: 40px;
+}
+
+.dashboard-page /* TOOLTIP STYLES */
+
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.dashboard-page .tooltip .info-icon {
+    width: 16px;
+    opacity: .45;
+    cursor: default;
+    transition: .2s;
+}
+
+.dashboard-page .tooltip:hover .info-icon {
+    opacity: .8;
+}
+
+.dashboard-page /* Hidden by default */
+
+.tooltip-text {
+    position: absolute;
+    top: 130%;
+    right: 0;
+    width: 230px;
+    padding: 10px 12px;
+    background: #2f2f2f;
+    color: white;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+    z-index: 100;
+}
+
+.dashboard-page .tooltip:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Phone screens: stack the cards, let the welcome bar wrap */
+@media (max-width: 600px) {
+    .dashboard-page .cards { grid-template-columns: 1fr; }
+    .dashboard-page .welcome-message { flex-wrap: wrap; padding: 16px; gap: 16px; }
+    .dashboard-page .divider { display: none; }
+    .dashboard-page .dashboard-content { padding: 16px; }
+    .dashboard-page .welcome-left h1 { font-size: 24px; }
+}
