@@ -1,0 +1,395 @@
+/* From src/styles/admin_newsletter_styles.css, scoped under .admin-newsletters-page.
+   The sidebar/container shell that used to be copy-pasted at the top lives in AdminLayout.css. */
+
+.admin-newsletters-page .welcome-message {
+    width: 100%;
+    background: white;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.admin-newsletters-page .welcome-left h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: #255f20;
+    margin-bottom: 6px;
+}
+
+.admin-newsletters-page .welcome-left p {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8a8a8a;
+}
+
+.admin-newsletters-page .dashboard-header {
+    width: 100%;
+    background: #fff;
+    padding: 24px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.admin-newsletters-page .labels {
+    padding-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.admin-newsletters-page .labels-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.admin-newsletters-page .labels h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #202020;
+    letter-spacing: -0.6px;
+    margin-bottom: 2px;
+}
+
+.admin-newsletters-page .labels p {
+    font-size: 14px;
+    color: #8a8a8a;
+    margin-bottom: 10px;
+}
+
+.admin-newsletters-page .approve {
+    display: flex;
+    align-items: center;
+}
+
+.admin-newsletters-page .new-newsletter-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 1.5px solid #d9d9d9;
+    border-radius: 20px;
+    background: #fff;
+    color: #555;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.admin-newsletters-page .new-newsletter-btn i {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #d9d9d9;
+    border-radius: 50%;
+    font-size: 12px;
+    transition: .2s ease;
+}
+
+.admin-newsletters-page .new-newsletter-btn:hover {
+    border-color: #255f20;
+    color: #255f20;
+    background: #f7fcf6;
+    box-shadow: 0 4px 12px rgba(37, 95, 32, .08);
+}
+
+.admin-newsletters-page .new-newsletter-btn:hover i {
+    border-color: #255f20;
+    background: #255f20;
+    color: #fff;
+}
+
+.admin-newsletters-page .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.admin-newsletters-page .content-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #202020;
+    letter-spacing: -.5px;
+}
+
+/* Search Bar */
+
+.admin-newsletters-page .manage-search {
+    display: flex;
+    align-items: center;
+    width: 320px;
+    height: 42px;
+    padding: 0 16px;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    transition: .2s ease;
+}
+
+.admin-newsletters-page .manage-search:hover {
+    border-color: #d8d8d8;
+}
+
+.admin-newsletters-page .manage-search:focus-within {
+    border-color: #255f20;
+    box-shadow: 0 0 0 4px rgba(37, 95, 32, .08);
+}
+
+.admin-newsletters-page .search-icon {
+    width: 16px;
+    opacity: .45;
+    margin-right: 10px;
+}
+
+.admin-newsletters-page .manage-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.admin-newsletters-page .manage-search input::placeholder {
+    color: #9a9a9a;
+}
+
+.admin-newsletters-page .divider {
+    width: 1px;
+    height: 55px;
+    background: #d9d9d9;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.admin-newsletters-page .welcome-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-newsletters-page .admin-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.admin-newsletters-page .admin-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.admin-newsletters-page .admin-info p {
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8b8b8b;
+}
+
+.admin-newsletters-page #admin-pfp {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-newsletters-page .review-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.admin-newsletters-page .action-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.admin-newsletters-page .action-circle.approve {
+    color: #2d8f3f;
+    border-color: #2d8f3f;
+}
+
+.admin-newsletters-page .action-circle.approve:hover {
+    background: #edf8ed;
+}
+
+.admin-newsletters-page .action-circle.reject {
+    color: #d14343;
+    border-color: #d14343;
+}
+
+.admin-newsletters-page .action-circle.reject:hover {
+    background: #fdecec;
+}
+
+.admin-newsletters-page .action-circle i {
+    font-size: 16px;
+}
+
+/* NEWSLETTER LIST */
+
+.admin-newsletters-page .newsletter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.admin-newsletters-page .newsletter-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 22px 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    transition: .2s;
+    animation: fadeUp 0.8s ease;
+}
+
+.admin-newsletters-page .newsletter-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-newsletters-page .newsletter-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.admin-newsletters-page .newsletter-info h3,
+.admin-newsletters-page .newsletter-info p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-newsletters-page .published-section {
+    margin-top: 48px;
+}
+
+.admin-newsletters-page .more-btn {
+    margin-left: auto;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.admin-newsletters-page .more-btn:hover {
+    background: #f5f5f5;
+}
+
+.admin-newsletters-page .dashboard-content {
+    padding: 24px 30px;
+}
+
+/* ROW DROPDOWN (⋮) */
+
+.admin-newsletters-page .dropdown-btn {
+    position: relative;
+    margin-left: auto;
+}
+
+.admin-newsletters-page .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 175px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+    z-index: 100;
+}
+
+.admin-newsletters-page .dropdown-content * {
+    width: 100%;
+    display: block;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    text-align: left;
+    color: #333;
+    cursor: pointer;
+}
+
+.admin-newsletters-page .dropdown-content *:hover {
+    background: #f5f5f5;
+}
+
+.admin-newsletters-page .dropdown-content.show {
+    display: block;
+}
+
+/* EMPTY / ERROR STATE */
+
+.admin-newsletters-page .empty-list {
+    padding: 22px 4px;
+    font-size: 14px;
+    color: #8a8a8a;
+}
+
+/* ===== SMALL SCREENS =====
+   Each newsletter card stacks: title + preview on top, author / date /
+   buttons in a row underneath. */
+@media (max-width: 768px) {
+    .admin-newsletters-page .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px 16px;
+    }
+    .admin-newsletters-page .labels h1 { font-size: 28px; }
+    .admin-newsletters-page .dashboard-content { padding: 16px; }
+
+    .admin-newsletters-page .content-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .admin-newsletters-page .content-header h1 { font-size: 24px; }
+    .admin-newsletters-page .manage-search { width: 100%; }
+
+    .admin-newsletters-page .newsletter-row {
+        flex-wrap: wrap;
+        gap: 12px 20px;
+        padding: 16px;
+    }
+    .admin-newsletters-page .newsletter-info { flex: 1 1 100%; }
+    .admin-newsletters-page .review-actions,
+    .admin-newsletters-page .dropdown-btn { margin-left: auto; }
+}

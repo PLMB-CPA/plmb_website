@@ -1,0 +1,279 @@
+/* Sidebar + container shell shared by every admin page.
+   From the top of src/styles/admin_dashboard_styles.css (the same block was
+   copy-pasted into each admin_*.css). The old `body {}` rules now live on
+   .admin-shell so they don't leak into the public pages. */
+
+.admin-shell {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    min-height: 100vh;
+    color: #2f2f2f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+/* MAIN CONTAINER */
+.admin-shell .bg-container {
+    width: 95%;
+    height: 90vh;
+    background: #88bd73;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+/* WHOLE DASHBOARD */
+.admin-shell .dashboard {
+    display: flex;
+    height: 100%;
+}
+
+/* SIDEBAR */
+.admin-shell .sidebar {
+    width: 185px;
+    min-width: 185px;
+    background: #255f20;
+    padding: 22px 12px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+/* LOGO AREA */
+.admin-shell .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    margin-bottom: 30px;
+}
+.admin-shell #logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+.admin-shell .sidebar-brand h1 {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+/* NAVIGATION */
+.admin-shell .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 20px;
+}
+
+/* SIDEBAR LINKS */
+.admin-shell .dash-side {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.25s ease;
+}
+.admin-shell .dash-side:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* ACTIVE PAGE (NavLink adds .active) */
+.admin-shell .dash-side.active {
+    background: white;
+    color: #255f20;
+    box-shadow: none;
+    font-weight: 600;
+}
+.admin-shell .dash-side.active img {
+    opacity: 1;
+    filter: invert(27%) sepia(16%) saturate(1094%) hue-rotate(67deg);
+}
+
+/* ICONS */
+.admin-shell .menu-icon {
+    width: 17px;
+    height: 18px;
+    opacity: 0.8;
+    filter: brightness(0) invert(1);
+}
+
+/* LOGOUT */
+.admin-shell .logout {
+    margin-top: auto;
+}
+
+/* RIGHT SIDE */
+.admin-shell .main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f3f6f4;
+    overflow-y: auto;
+}
+
+/* PAGE HEADER BAR (AdminHeader.jsx), shared by every admin page */
+.admin-shell .welcome-message {
+    background: white;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.admin-shell .welcome-left h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: #255f20;
+}
+.admin-shell .welcome-message .divider {
+    width: 1px;
+    height: 55px;
+    background: #d9d9d9;
+    margin-left: auto;
+    margin-right: 15px;
+}
+.admin-shell .welcome-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.admin-shell .admin-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.admin-shell .admin-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+.admin-shell .admin-info p {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #8b8b8b;
+}
+.admin-shell #admin-pfp {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Hamburger button: hidden on desktop, shown in the media query below */
+.admin-shell .menu-toggle {
+    display: none;
+}
+
+
+/* ===== SMALL SCREENS =====
+   Below 768px the sidebar turns into a bar across the top. The nav links
+   collapse behind the ☰ button and drop down when it's tapped. The container
+   stops being a fixed-height card so the page scrolls normally. */
+@media (max-width: 768px) {
+    .admin-shell {
+        display: block;
+    }
+
+    .admin-shell .bg-container {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .admin-shell .dashboard {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .admin-shell .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    .admin-shell .sidebar-brand {
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .admin-shell .menu-toggle {
+        display: block;
+        margin-left: auto;
+        background: none;
+        border: 0;
+        color: white;
+        font-size: 24px;
+        line-height: 1;
+        padding: 6px 8px;
+        cursor: pointer;
+    }
+
+    .admin-shell .sidebar-nav,
+    .admin-shell .logout {
+        display: none;
+    }
+
+    .admin-shell .sidebar.open .sidebar-nav,
+    .admin-shell .sidebar.open .logout {
+        display: flex;
+    }
+
+    .admin-shell .sidebar.open .sidebar-nav {
+        padding-top: 14px;
+    }
+
+    .admin-shell .sidebar.open .logout {
+        margin-top: 6px;
+    }
+
+    .admin-shell .main-content {
+        overflow-y: visible;
+    }
+
+    /* .main-content added so these beat the header rules each page CSS repeats */
+    .admin-shell .main-content .welcome-message {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .admin-shell .main-content .welcome-left h1 {
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+
+    .admin-shell .main-content .welcome-message .divider {
+        display: none;
+    }
+
+    .admin-shell .main-content .welcome-right {
+        margin-left: auto;
+        gap: 10px;
+    }
+
+    .admin-shell .main-content #admin-pfp {
+        width: 36px;
+        height: 36px;
+    }
+
+    .admin-shell .main-content .admin-info h3 {
+        font-size: 14px;
+    }
+}

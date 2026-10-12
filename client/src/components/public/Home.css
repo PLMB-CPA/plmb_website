@@ -1,0 +1,55 @@
+/* From src/styles/index_styles.css, scoped under .home */
+
+.home { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+.home > h2 { font-size: 42px; color: #2C4A2E; margin-bottom: 24px; }
+
+/* CARD STYLE */
+.home .container {
+  background: white;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  transition: .3s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.8s ease;
+}
+.home .container::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 6px;
+  background: #3D7A40;
+}
+.home .container p {
+  line-height: 1.8;
+  color: #666;
+  font-size: 16px;
+  text-align: justify;
+}
+.home .container h3 {
+  color: #2C4A2E;
+  font-size: 22px;
+  padding-bottom: 12px;
+}
+
+/* HIGHLIGHTS */
+.home .highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* MAP */
+.home .map { margin-bottom: 40px; }
+.home .map h4 { color: #2C4A2E; font-size: 17px; margin-top: 16px; margin-bottom: 6px; }
+.home .map p { margin-bottom: 4px; }
+.home .map-wrapper { margin-top: 16px; border-radius: 12px; overflow: hidden; }
+.home .map-wrapper iframe { display: block; width: 100%; height: 320px; }
+.home .map a { color: #3D7A40; font-weight: bold; text-decoration: none; }
+.home .map a:hover { text-decoration: underline; }
+
+@media (max-width: 700px) {
+  .home .map-wrapper iframe { height: 240px; }
+}

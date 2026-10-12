@@ -1,0 +1,277 @@
+/* From src/styles/post-newsletter.css, scoped under .post-newsletter-page.
+   The sidebar/container shell that used to be copy-pasted at the top lives in AdminLayout.css. */
+
+.post-newsletter-page .newsletter-container {
+    background: white;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .08);
+    border-radius: 15px;
+    margin: 20px;
+    padding: 10px;
+    height: 78%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-newsletter-page .news-subject {
+    margin: 20px;
+    font-size: medium;
+    padding: 5px;
+    max-width: 95%;
+    border-radius: 10px;
+    color: #333;
+    border: 1px solid #e7e7e7;
+}
+
+.post-newsletter-page .news-back {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    height: 34px;
+    padding: 0 14px;
+    border: 1px solid #d9e5d6;
+    border-radius: 10px;
+    background: #f7fbf6;
+    color: #255f20;
+    cursor: pointer;
+    margin: 12px 0 0 20px;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+}
+
+.post-newsletter-page .news-back:hover {
+    background: #f1f8ef;
+    border-color: #b8d5b2;
+    box-shadow: 0 3px 8px rgba(37, 95, 32, 0.08);
+}
+
+.post-newsletter-page .news-back:active {
+    box-shadow: 0 2px 6px rgba(37, 95, 32, 0.1);
+}
+
+.post-newsletter-page .upload-img {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    width: 120px;
+    height: 40px;
+    border: 1px solid #d9e5d6;
+    border-radius: 10px;
+    background: #f7fbf6;
+    color: #255f20;
+    cursor: pointer;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.post-newsletter-page .upload-img:hover {
+    background: #f1f8ef;
+    border-color: #b8d5b2;
+    color: #255f20;
+    box-shadow: 0 3px 8px rgba(37, 95, 32, 0.08);
+}
+
+.post-newsletter-page .upload-img:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(37, 95, 32, 0.1);
+}
+
+.post-newsletter-page .news-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-left: 20px;
+    margin-bottom: 8px;
+    max-width: 95%;
+    padding: 8px;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    background: #fbfdfa;
+}
+
+.post-newsletter-page .tb-btn {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    min-width: 34px;
+    height: 30px;
+    padding: 0 8px;
+    background: white;
+    color: #333;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.post-newsletter-page .tb-btn:hover {
+    background: #f1f8ef;
+    border-color: #b8d5b2;
+    color: #255f20;
+}
+
+.post-newsletter-page .tb-btn.active {
+    background: #255f20;
+    border-color: #255f20;
+    color: white;
+}
+
+.post-newsletter-page .tb-bold {
+    font-weight: 700;
+}
+
+.post-newsletter-page .tb-italic {
+    font-style: italic;
+}
+
+.post-newsletter-page .tb-underline {
+    text-decoration: underline;
+}
+
+.post-newsletter-page .tb-select {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    height: 30px;
+    padding: 0 6px;
+    color: #333;
+    background: white;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.post-newsletter-page .tb-divider {
+    width: 1px;
+    height: 20px;
+    margin: 0 4px;
+    background: #e2e2e2;
+}
+
+.post-newsletter-page .news-content {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    min-height: 260px;
+    padding: 14px;
+    max-width: 95%;
+    border-radius: 10px;
+    border: 1px solid #e7e7e7;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-y: auto;
+    background: white;
+}
+
+/* contenteditable has no placeholder attribute, so stand in for one */
+
+.post-newsletter-page .news-content:empty::before {
+    content: attr(data-placeholder);
+    color: #9a9a9a;
+}
+
+.post-newsletter-page .news-content h2 {
+    font-size: 20px; margin: 12px 0 6px;
+}
+
+.post-newsletter-page .news-content h3 {
+    font-size: 16px; margin: 10px 0 6px;
+}
+
+.post-newsletter-page .news-content p {
+    margin: 0 0 10px;
+}
+
+.post-newsletter-page .news-content ul,
+.post-newsletter-page .news-content ol {
+    margin: 0 0 10px; padding-left: 24px;
+}
+
+.post-newsletter-page .news-content a {
+    color: #255f20;
+}
+
+/* Tab indents by wrapping the block in a blockquote, so it reads as an indent
+   rather than a quotation. Nesting them compounds the indent. */
+
+.post-newsletter-page .news-content blockquote {
+    margin: 0 0 10px 40px;
+}
+
+.post-newsletter-page .news-image {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    padding: 8px;
+    max-width: 95%;
+    border-radius: 10px;
+    border: 1px solid #d9d9d9;
+    color: #333;
+    font-family: "Inter", sans-serif;
+}
+
+.post-newsletter-page .news-status {
+    margin-left: 20px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #8a8a8a;
+    min-height: 16px;
+}
+
+.post-newsletter-page .news-status.error {
+    color: #d14343;
+}
+
+.post-newsletter-page .news-submit {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 22px;
+    min-height: 45px;
+    background: #255f20;
+    color: white;
+    border: 1px solid #255f20;
+    border-radius: 10px;
+    margin: 20px;
+    cursor: pointer;
+    align-self: flex-start;
+    box-shadow: 0 4px 10px rgba(37, 95, 32, 0.12);
+    transition: all 0.2s ease;
+}
+
+.post-newsletter-page .news-submit:hover {
+    background: #1e501a;
+    border-color: #1e501a;
+    box-shadow: 0 6px 14px rgba(37, 95, 32, 0.18);
+    transform: translateY(-1px);
+}
+
+.post-newsletter-page .news-submit:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(37, 95, 32, 0.12);
+}
+
+.post-newsletter-page .news-submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+}
+
+.post-newsletter-page .news-subject:focus,
+.post-newsletter-page .news-content:focus,
+.post-newsletter-page .news-image:focus {
+    border-color: #255f20;
+    box-shadow: 0 0 0 4px rgba(37, 95, 32, .08);
+    outline: none;
+    transition: .2s ease;
+}
+
+/* ===== SMALL SCREENS ===== */
+@media (max-width: 768px) {
+    .post-newsletter-page .newsletter-container { margin: 12px; height: auto; }
+    .post-newsletter-page .news-toolbar { margin-left: 0; max-width: 100%; }
+}

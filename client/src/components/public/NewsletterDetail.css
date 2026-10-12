@@ -1,0 +1,59 @@
+/* From src/styles/newsletter_indiv_styles.css, scoped under .newsletter-detail
+   (the old #title/#author/#date/#image/#text ids became classes) */
+
+.newsletter-detail {
+  padding: 24px;
+  padding-bottom: 10px;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.newsletter-detail > h1 {
+  font-size: 42px;
+  color: #2C4A2E;
+  margin-bottom: 0.2rem;
+}
+
+.newsletter-detail .newsletter-author {
+  margin-top: 0;
+  margin-bottom: 0.2rem;
+}
+.newsletter-detail .newsletter-date {
+  margin-top: 0;
+}
+
+.newsletter-detail .newsletter-image {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 8px;
+  margin: 20px auto;
+}
+
+.newsletter-detail .newsletter-text {
+  margin-top: 20px;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  line-height: 1.7;
+}
+
+/* Content comes from the newsletter editor as HTML, so style the tags it produces */
+.newsletter-text h1 { font-size: 26px; margin: 18px 0 10px; color: #2C4A2E; }
+.newsletter-text h2 { font-size: 22px; margin: 16px 0 8px; color: #2C4A2E; }
+.newsletter-text h3 { font-size: 18px; margin: 14px 0 8px; color: #2C4A2E; }
+.newsletter-text p { margin: 0 0 14px; }
+.newsletter-text ul,
+.newsletter-text ol { margin: 0 0 14px; padding-left: 26px; }
+.newsletter-text li { margin-bottom: 6px; }
+.newsletter-text a { color: #3D7A40; }
+/* Blockquotes only come from pressing Tab in the editor, so render them as an indent */
+.newsletter-text blockquote { margin: 0 0 14px 40px; }
+
+@media (max-width: 600px) {
+  .newsletter-detail { padding: 16px; }
+  .newsletter-detail > h1 { font-size: 30px; }
+  .newsletter-detail .newsletter-text { padding: 16px; }
+}

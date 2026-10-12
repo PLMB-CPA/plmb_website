@@ -3,8 +3,12 @@ dns.setDefaultResultOrder('ipv4first');
 
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
-const routes = require('./src/routes/index');
+
+// The /api routes are mounted inside src/app.js now. They have to be registered
+// before the React catch-all route there, otherwise every GET /api/... request
+// would get the React page instead of JSON.
 
 connectDB();
-app.listen(process.env.PORT || 3000, () => console.log('Server running'));
-app.use('/api', routes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

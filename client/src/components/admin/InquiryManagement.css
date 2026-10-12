@@ -1,0 +1,522 @@
+/* From src/styles/admin_inquiry_styles.css, scoped under .inquiries-page.
+   The sidebar/container shell that used to be copy-pasted at the top lives in AdminLayout.css. */
+
+.inquiries-page .welcome-message {
+    width: 100%;
+    background: white;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.inquiries-page .welcome-left h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: #255f20;
+    margin-bottom: 6px;
+}
+
+.inquiries-page .welcome-left p {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8a8a8a;
+}
+
+.inquiries-page .dashboard-header {
+    width: 100%;
+    background: #fff;
+    padding: 22px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.inquiries-page .labels {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.inquiries-page .labels-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inquiries-page .labels h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #202020;
+    letter-spacing: -0.6px;
+    margin-bottom: 4px;
+}
+
+.inquiries-page .labels p {
+    font-size: 13px;
+    color: #8a8a8a;
+}
+
+.inquiries-page .divider {
+    width: 1px;
+    height: 55px;
+    background: #d9d9d9;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.inquiries-page .welcome-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.inquiries-page .admin-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inquiries-page .admin-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.inquiries-page .admin-info p {
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8b8b8b;
+}
+
+.inquiries-page #admin-pfp {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* SEARCH + FILTER */
+
+.inquiries-page .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.inquiries-page .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #dfe3e0;
+    border-radius: 10px;
+    background: white;
+}
+
+.inquiries-page .search-bar i {
+    font-size: 12px;
+    color: #8a8a8a;
+}
+
+.inquiries-page .search-bar input {
+    border: none;
+    outline: none;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: #333;
+    width: 200px;
+}
+
+.inquiries-page .search-bar input::placeholder {
+    color: #b0b0b0;
+}
+
+.inquiries-page .filter-dropdown {
+    position: relative;
+}
+
+.inquiries-page .filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid #dfe3e0;
+    background: white;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: .2s ease;
+    margin-bottom: 18px;
+    animation: fadeUp 0.8s ease;
+    cursor: pointer;
+}
+
+.inquiries-page .inquiry-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .12);
+}
+
+.inquiries-page .filter-btn i {
+    font-size: 11px;
+    color: #8a8a8a;
+}
+
+.inquiries-page .filter-btn:hover {
+    border-color: #255f20;
+    color: #255f20;
+}
+
+.inquiries-page .filter-btn:hover i {
+    color: #255f20;
+}
+
+.inquiries-page .filter-dropdown-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 240px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.14);
+    padding: 18px;
+    z-index: 20;
+}
+
+.inquiries-page .filter-dropdown-content.show {
+    display: block;
+    animation: fadeUp .18s ease;
+}
+
+.inquiries-page .filter-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: #a0a0a0;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.inquiries-page .filter-group-title:not(:first-child) {
+    margin-top: 16px;
+}
+
+.inquiries-page .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.inquiries-page .filter-option:hover {
+    background: #f3f6f4;
+}
+
+.inquiries-page .filter-option input {
+    accent-color: #255f20;
+    width: 14px;
+    height: 14px;
+}
+
+.inquiries-page .filter-option:has(input:checked) {
+    background: #e9f5e6;
+    color: #255f20;
+    font-weight: 700;
+}
+
+/* INQUIRY LIST */
+
+.inquiries-page .dashboard-content {
+    padding: 24px 30px 30px;
+}
+
+.inquiries-page .inquiry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.inquiries-page .inquiry-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: white;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, .06);
+    border-radius: 14px;
+    padding: 18px 22px;
+    border-left: 4px solid transparent;
+    transition: .2s ease;
+    animation: fadeUp 0.5s ease;
+}
+
+.inquiries-page .inquiry-container:hover {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .1);
+    transform: translateY(-1px);
+}
+
+.inquiries-page .inquiry-container.unread {
+    border-left-color: #2f7dd1;
+}
+
+.inquiries-page .inquiry-container.archived {
+    opacity: .6;
+}
+
+.inquiries-page .inquiry-ticket-id {
+    font-weight: 700;
+    font-size: 13px;
+    color: #255f20;
+    white-space: nowrap;
+}
+
+.inquiries-page .inquiry-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 170px;
+}
+
+.inquiries-page .inquiry-category-bubble,
+.inquiries-page .inquiry-subcat-bubble {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.inquiries-page .inquiry-category-bubble {
+    background-color: rgb(255, 231, 193);
+    color: #7a4a06;
+}
+
+.inquiries-page .inquiry-subcat-bubble {
+    background-color: rgb(213, 218, 250);
+    color: #35408f;
+}
+
+.inquiries-page .text-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.inquiries-page .inquiry-top-text {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+}
+
+.inquiries-page .inquiry-business {
+    font-size: 14px;
+    font-weight: 800;
+    color: #222;
+    flex-shrink: 0;
+}
+
+.inquiries-page .dash-divider {
+    color: #bbb;
+    font-size: 13px;
+}
+
+.inquiries-page .inquiry-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inquiries-page .inquiry-content {
+    color: #888;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inquiries-page .inquiry-right-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.inquiries-page .inquiry-date {
+    font-size: 11px;
+    color: #999;
+}
+
+.inquiries-page .inquiry-status {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.inquiries-page .inquiry-status.resolved {
+    color: #2d8f3f;
+}
+
+.inquiries-page .inquiry-status.unresolved {
+    color: #d32f2f;
+}
+
+.inquiries-page .inquiry-tabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f3f4f6;
+    border-radius: 8px;
+}
+
+.inquiries-page .tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.inquiries-page .tab span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+}
+
+.inquiries-page .tab:hover {
+    background: #eceff1;
+}
+
+.inquiries-page .tab.active {
+    background: white;
+    color: #255f20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
+}
+
+.inquiries-page .tab.active span {
+    color: #255f20;
+}
+
+.inquiries-page .inquiry-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.inquiries-page .delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #fdeaea;
+    color: #d32f2f;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.inquiries-page .delete-btn:hover {
+    background: #d32f2f;
+    color: white;
+}
+
+.inquiries-page .reset-filters-btn {
+    width: 100%;
+    margin-top: 14px;
+    background: #f1f1f1;
+    color: #555;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.inquiries-page .reset-filters-btn:hover {
+    background: #255f20;
+    color: white;
+}
+
+.inquiries-page .no-inquiries {
+    text-align: center;
+    color: #9a9a9a;
+    padding: 60px 0;
+    font-size: 14px;
+    background: white;
+    border-radius: 14px;
+}
+
+/* ===== SMALL SCREENS =====
+   Each inquiry card stacks: ticket + tags on top, text in the middle,
+   date / status / delete along the bottom. */
+@media (max-width: 768px) {
+    .inquiries-page .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 18px 16px;
+    }
+    .inquiries-page .labels h1 { font-size: 28px; }
+    .inquiries-page .header-actions { width: 100%; }
+    .inquiries-page .search-bar { flex: 1; min-width: 0; }
+    .inquiries-page .search-bar input { width: 100%; min-width: 0; }
+    .inquiries-page .dashboard-content { padding: 16px; }
+
+    .inquiries-page .inquiry-container {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        padding: 14px 16px;
+    }
+    .inquiries-page .inquiry-container .divider { display: none; }
+    .inquiries-page .inquiry-labels { flex-direction: row; flex-wrap: wrap; min-width: 0; }
+    .inquiries-page .text-content { flex: 1 1 100%; }
+    .inquiries-page .inquiry-right-side {
+        flex: 1 1 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
