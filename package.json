@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "build": "npm install --prefix client && npm run build --prefix client",
-    "client": "npm run dev --prefix client"
+    "client": "npm run dev --prefix client",
+    "lint": "npm run lint --prefix client",
+    "test:unit": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration --runInBand",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -18,5 +22,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.0",
     "nodemailer": "^9.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "jest": "^30.5.2",
+    "mongodb-memory-server": "^11.3.0",
+    "supertest": "^7.3.1"
   }
 }
