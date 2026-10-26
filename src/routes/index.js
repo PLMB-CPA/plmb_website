@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const {requireAuth, requireAdminPage} = require('../middleware/auth');
+const {requireAuth, requireAdminPage, requireClient, requireClientLogin} = require('../middleware/auth');
 
 const Subscriber = require('../models/Subscriber');
 
-const AuthController = require('../controllers/auth_controller');
+const adminController = require('../controllers/admin_controller');
+const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const dashboardController = require('../controllers/dashboard_controller');
@@ -62,14 +63,29 @@ router.get('/unsubscribe', async (req, res) => {
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 
 //ADMIN LOGIN/LOGOUTROUTES
-router.post('/admin/login', AuthController.postAdminLogin);
-router.get('/admin/logout', AuthController.getAdminLogout);
-router.get('/admin/username', requireAuth, AuthController.getAdminUsername);
+router.post('/admin/login', adminController.postAdminLogin);
+router.get('/admin/logout', adminController.getAdminLogout);
+router.get('/admin/username', requireAuth, adminController.getAdminUsername);
 // ADMIN MANAGEMENT ROUTES
-router.post('/admin/users', requireAuth, AuthController.addAdmin);
-router.get('/admin/users', requireAuth, AuthController.getAdmins);
-router.delete('/admin/users/:id', requireAuth, AuthController.deleteAdmin);
-router.put('/admin/users/:id/password', requireAuth, AuthController.changeAdminPassword);
+router.post('/admin/users', requireAuth, adminController.addAdmin);
+router.get('/admin/users', requireAuth, adminController.getAdmins);
+router.delete('/admin/users/:id', requireAuth, adminController.deleteAdmin);
+router.put('/admin/users/:id/password', requireAuth, adminController.changeAdminPassword);
+
+
+
+//CLIENT ROUTES
+
+// Admin only: the office creates client accounts (no public sign-up)
+router.post('/admin/clients', requireAuth, clientController.createClient);
+
+router.post('/client/login', clientController.loginClient);
+router.post('/client/logout', clientController.logoutClient);
+// requireClientLogin: still reachable while the temporary password is active
+router.put('/client/password', requireClientLogin, clientController.changeClientPassword);
+router.get('/client/me', requireClient, clientController.getCurrentClient);
 
 module.exports = router;
             
+
+

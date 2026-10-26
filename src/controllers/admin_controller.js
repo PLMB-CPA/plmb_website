@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const Admin = require('../models/Admin');
+const { checkPasswordStrength } = require('../util/passwordStrength');
 
 exports.postAdminLogin =async (req, res) => {
   try {
@@ -28,22 +29,6 @@ exports.getAdminLogout = (req, res) => {
         res.redirect('/admin/login');
     });
 };
-
-function checkPasswordStrength(password) {
-  const specialChars = /[!@#$%^&*(),.?":{}|<>_-]/;
-  const capitalChars = /[A-Z]/;
-
-  if (password.length < 8)
-    return 'Password must be at least 8 characters long';
-
-  if (!specialChars.test(password))
-    return 'Password must have at least one (1) special character';
-
-  if (!capitalChars.test(password))
-    return 'Password must have at least one (1) capitalized letter';
-
-  return null; 
-}
 
 exports.addAdmin = async (req, res) => {
   try {
