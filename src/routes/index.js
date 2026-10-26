@@ -76,12 +76,11 @@ router.put('/admin/users/:id/password', requireAuth, adminController.changeAdmin
 
 //CLIENT ROUTES
 
-// Admin only: the office creates client accounts (no public sign-up)
 router.post('/admin/clients', requireAuth, clientController.createClient);
+router.get('/admin/clients', requireAuth, clientController.getClients);
 
 router.post('/client/login', clientController.loginClient);
 router.post('/client/logout', clientController.logoutClient);
-// requireClientLogin: still reachable while the temporary password is active
 router.put('/client/password', requireClientLogin, clientController.changeClientPassword);
 router.get('/client/me', requireClient, clientController.getCurrentClient);
 

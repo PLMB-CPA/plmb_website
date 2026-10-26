@@ -19,19 +19,12 @@ app.use(session({
   saveUninitialized: false
 }));
 
-
-// ===== API =====
 app.use('/api', routes);
 
-// Unknown /api paths get a JSON 404 instead of falling through to the React page
 app.use('/api', (req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 
-
-// ===== OLD .html URLS =====
-// The site used to be separate .html pages. Send old bookmarks/links to the
-// matching React page. (?id=... carries over where the old page used it.)
 const LEGACY_PAGES = {
   '/index.html': () => '/',
   '/services.html': () => '/services',
@@ -55,10 +48,6 @@ app.get(Object.keys(LEGACY_PAGES), (req, res) => {
 });
 
 
-// ===== REACT APP =====
-// `npm run build` (in the project root) builds the React app into client/dist.
-// Express serves those files, and every other GET returns index.html so that
-// React Router can show the right page for URLs like /admin/inquiries/123.
 const clientDist = path.join(__dirname, '..', 'client', 'dist');
 const indexHtml = path.join(clientDist, 'index.html');
 

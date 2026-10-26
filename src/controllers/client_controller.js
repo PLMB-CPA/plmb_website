@@ -15,7 +15,6 @@ exports.createClient = async (req, res) => {
     const { email, firstName, lastName, phoneNumber, address, city, businessName } = req.body;
     if (!email || !firstName || !lastName || !phoneNumber || !address || !city || !businessName)
         return res.status(400).json({error: 'Please recheck missing information.'})
-    // TODO: Client.findOne({ email: email.toLowerCase().trim() }) → 409 if it exists
     if (await Client.findOne({email: email.toLowerCase().trim()}))
         return res.status(409).json({error: 'Client account already exists.'});
 
@@ -32,7 +31,7 @@ exports.createClient = async (req, res) => {
     } catch (mailErr) {
         console.error(mailErr);
         await Client.findByIdAndDelete(client._id);
-        return res.status(500).json({error: 'Account not created: welcome email could not be sent.'});
+        return res.status(502).json({error: 'Account not created: welcome email could not be sent.'});
     }
 
     res.status(201).json({
@@ -40,7 +39,19 @@ exports.createClient = async (req, res) => {
         client: { id: client._id, email: client.email, firstName:  client.firstName, lastName: client.lastName}
         });
   } catch (err) {
-    res.status(502).json({error: 'Account not created: welcome email could not be sent.' });
+    console.error(err);
+    res.status(500).json({ error: 'An error occurred. Account not created.' });
+  }
+};
+
+// Admin list all clients 
+exports.getClients = async (req, res) => {
+  try {
+    const clients = await Client.find().select('-password').sort({ createdAt: -1 });
+    return res.status(200).json(clients)
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load clients.' });
   }
 };
 
@@ -48,6 +59,8 @@ exports.createClient = async (req, res) => {
 exports.loginClient = async (req, res) => {
   try {
     const {email, password} = req.body;
+    if (!email || !password)
+        return res.status(400).json({error: 'Email and password are required.'});
     const client = await Client.findOne({email: email.toLowerCase().trim()})
         if (!client || !(await bcrypt.compare(password, client.password))) {
             return res.status(401).json({error: 'Invalid email or password.'})
@@ -62,6 +75,7 @@ exports.loginClient = async (req, res) => {
     res.json({mustChangePassword: client.mustChangePassword});
 
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'An error occurred.' });
   }
 };
