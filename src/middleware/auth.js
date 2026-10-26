@@ -14,4 +14,21 @@ function requireAdminPage(req, res, next) {
   next();
 }
 
-module.exports = {requireAuth, requireAdminPage};
+function requireClient(req, res, next) {
+  if (!req.session || !req.session.isClient) {
+    return res.status(401).json({error: 'Unauthorized.'});
+  }
+  if (req.session.mustChangePassword) {
+    return res.status(403).json({error: 'Password change required.', mustChangePassword: true});
+  }
+  next();
+}
+
+function requireClientLogin(req, res, next) {
+  if (!req.session || !req.session.isClient) {
+    return res.status(401).json({error: 'Unauthorized.'})
+  }
+  next();
+}
+
+module.exports = {requireAuth, requireAdminPage, requireClient, requireClientLogin};

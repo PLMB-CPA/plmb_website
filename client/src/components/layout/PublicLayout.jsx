@@ -8,6 +8,9 @@ function PublicLayout() {
                 <img id="logo" src="/image/logo.png" alt="Logo" />
                 <h1>Po Lao Marquez Benedictos & Co.</h1>
                 <p>Certified Public Accountants</p>
+                <span className="header-login" aria-disabled="true">
+                    Client Login <small>Under development</small>
+                </span>
             </div>
 
             <nav>
@@ -19,7 +22,7 @@ function PublicLayout() {
             </nav>
 
             <main className="public-main">
-                <Outlet /> {/* This is where the child routes will be rendered */}
+                <Outlet />
             </main>
 
             <footer className="footer">
