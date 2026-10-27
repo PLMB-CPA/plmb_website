@@ -9,14 +9,64 @@ const routes = require('./routes/index');
 
 const app = express();
 
-app.use(cors());
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Render (and most hosts) sit behind a proxy. Without this, Express thinks the
+// request came in over plain HTTP and refuses to send the `secure` cookie.
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
+
+
+// ===== CORS / ORIGIN CHECK =====
+// The React app is served by this same Express server, so the site never needs
+// other websites to call /api. Extra origins can be allowed with CORS_ORIGINS
+// (comma-separated, e.g. "https://plmb.com.ph,https://www.plmb.com.ph").
+const allowedOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
+function isAllowedOrigin(req, origin) {
+  if (!origin) return true; // same-origin GETs, curl, server-to-server
+  if (allowedOrigins.includes(origin)) return true;
+  try {
+    // Same site: the Origin's host matches the host this request was sent to
+    return new URL(origin).host === req.get('host');
+  } catch {
+    return false;
+  }
+}
+
+// Reject /api requests sent from other websites before they reach any route.
+// (CORS alone only stops the other site from *reading* the response; the
+// request would still run, so a cross-site POST/DELETE could still do damage.)
+app.use('/api', (req, res, next) => {
+  if (isAllowedOrigin(req, req.get('origin'))) return next();
+  return res.status(403).json({ error: 'Origin not allowed.' });
+});
+
+app.use(cors((req, callback) => {
+  callback(null, {
+    origin: isAllowedOrigin(req, req.get('origin')),
+    credentials: true,
+  });
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
+  name: 'plmb.sid',
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,       // page scripts can't read the cookie (blocks XSS cookie theft)
+    secure: isProduction, // HTTPS only on the live site; plain HTTP is fine on localhost
+    sameSite: 'lax',      // not sent on cross-site POSTs (CSRF protection)
+    // no maxAge: ends when the browser closes, unless "Remember Me" sets 30 days
+  },
 }));
 
 
