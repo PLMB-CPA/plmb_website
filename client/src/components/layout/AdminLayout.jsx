@@ -49,6 +49,10 @@ function AdminLayout() {
                                 <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
                                 <span>Inquiries</span>
                             </NavLink>
+                            <NavLink to="/admin/subscribers" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/subscriber.png" alt="" />
+                                <span>Subscribers</span>
+                            </NavLink>
                             {/* Clients: to be implemented when the client accounts are open */}
                             <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/user.png" alt="" />
