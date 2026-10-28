@@ -8,8 +8,9 @@
     "build": "npm install --prefix client && npm run build --prefix client",
     "client": "npm run dev --prefix client",
     "lint": "npm run lint --prefix client",
-    "test:unit": "jest --selectProjects unit",
-    "test:integration": "jest --selectProjects integration --runInBand",
+    "test": "jest --forceExit",
+    "test:unit": "jest --selectProjects unit --forceExit",
+    "test:integration": "jest --selectProjects integration --forceExit --runInBand",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.0",
     "nodemailer": "^9.0.3"
   },

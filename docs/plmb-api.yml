@@ -1,0 +1,992 @@
+openapi: 3.0.3
+info:
+  title: PLMB Website API
+  version: 1.0.0
+  description: |
+    REST API for the PLMB website: public inquiries, newsletters, subscribers,
+    and the admin back office.
+
+    **Authentication.** Admin routes use a cookie session (`express-session`).
+    Call `POST /api/admin/login` first; the session cookie is then sent
+    automatically. Admin routes return `401 {"error": "Unauthorized."}` when
+    there is no valid session.
+
+    Routes and behaviours are derived from `src/routes/index.js`, the
+    controllers, and `tests/integration/api.test.js`.
+servers:
+  - url: http://localhost:3000
+    description: Local development (PORT defaults to 3000)
+
+tags:
+  - name: Inquiries
+    description: Contact-form inquiries (create is public, everything else is admin)
+  - name: Newsletters
+    description: Newsletters / announcements
+  - name: Subscribers
+    description: Newsletter subscriptions
+  - name: Admin Auth
+    description: Admin login, logout and current user
+  - name: Admin Dashboard
+    description: Dashboard statistics
+  - name: Admin Management
+    description: Admin account management
+  - name: Fallback
+    description: Behaviour for unmatched /api paths
+
+paths:
+  # INQUIRIES
+  /api/inquiries:
+    post:
+      tags: [Inquiries]
+      summary: Create an inquiry (public)
+      description: |
+        Validates the email, assigns a ticket number (`INQ-0001`, `INQ-0002`, ...),
+        saves the inquiry, and sends a notification and a confirmation email
+        in the background.
+      operationId: createInquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InquiryInput'
+      responses:
+        '201':
+          description: Inquiry recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Your inquiry has been recorded.
+                  inquiry:
+                    $ref: '#/components/schemas/Inquiry'
+        '400':
+          description: Missing/invalid fields or email failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Inquiries]
+      summary: List inquiries (admin)
+      description: Sorted by `date` ascending. All filters are optional.
+      operationId: getInquiries
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: isArchived
+          in: query
+          schema: { type: boolean }
+        - name: isRead
+          in: query
+          schema: { type: boolean }
+        - name: isAnswered
+          in: query
+          schema: { type: boolean }
+      responses:
+        '200':
+          description: Inquiries found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Inquiries found
+                  inquiries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Inquiry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/inquiries/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    get:
+      tags: [Inquiries]
+      summary: Get one inquiry (admin)
+      operationId: getInquiryById
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Inquiry found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Inquiry found
+                  inquiry:
+                    $ref: '#/components/schemas/Inquiry'
+        '400':
+          description: Invalid id format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Inquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags: [Inquiries]
+      summary: Update an inquiry (admin)
+      description: |
+        Updates any provided fields (typically `isRead`, `isArchived`).
+        Note: if the id does not exist, the current implementation returns
+        `200` with `inquiry: null` rather than `404`.
+      operationId: updateInquiry
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InquiryUpdate'
+      responses:
+        '200':
+          description: Inquiry updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Inquiry updated
+                  inquiry:
+                    $ref: '#/components/schemas/Inquiry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags: [Inquiries]
+      summary: Delete an inquiry (admin)
+      operationId: deleteInquiry
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Inquiry deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Inquiry deleted
+                  inquiry:
+                    $ref: '#/components/schemas/Inquiry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Inquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/inquiries/{id}/reply:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    post:
+      tags: [Inquiries]
+      summary: Reply to an inquiry by email (admin)
+      description: Sends the reply email, stores `reply` and `repliedAt`, and sets `isAnswered = true`.
+      operationId: replyToInquiry
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reply]
+              properties:
+                reply:
+                  type: string
+                  example: Thank you for your inquiry.
+      responses:
+        '200':
+          description: Reply sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reply sent
+                  inquiry:
+                    $ref: '#/components/schemas/Inquiry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Inquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # NEWSLETTERS
+  /api/announcements:
+    get:
+      tags: [Newsletters]
+      summary: List published newsletters (public)
+      description: Only `isPublished = true`, newest first.
+      operationId: getPublishedNewsletters
+      responses:
+        '200':
+          description: Newsletters found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      tags: [Newsletters]
+      summary: Create a newsletter (admin)
+      description: |
+        Creates a draft (or a published newsletter if `isPublished: true`).
+        `content` is HTML and is sanitized server-side (e.g. `<script>` tags are stripped).
+      operationId: createNewsletter
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsletterInput'
+      responses:
+        '201':
+          description: Newsletter created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/announcements/all:
+    get:
+      tags: [Newsletters]
+      summary: List all newsletters (admin)
+      description: Every newsletter regardless of publish status, newest first.
+      operationId: getAllNewsletters
+      security:
+        - sessionCookie: []
+      parameters:
+        - name: isPublished
+          in: query
+          schema: { type: boolean }
+        - name: isBlasted
+          in: query
+          schema: { type: boolean }
+      responses:
+        '200':
+          description: Newsletters found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/announcements/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    get:
+      tags: [Newsletters]
+      summary: Get one newsletter for editing (admin)
+      operationId: getNewsletterByIdAdmin
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Newsletter found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NewsletterNotFound'
+    patch:
+      tags: [Newsletters]
+      summary: Edit / publish / unpublish a newsletter (admin)
+      description: '`content`, if provided, is sanitized the same way as on create.'
+      operationId: updateNewsletter
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsletterUpdate'
+      responses:
+        '200':
+          description: Newsletter updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NewsletterNotFound'
+    delete:
+      tags: [Newsletters]
+      summary: Delete a newsletter (admin)
+      operationId: deleteNewsletter
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Newsletter deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NewsletterNotFound'
+
+  /api/newsletter/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ObjectId'
+    get:
+      tags: [Newsletters]
+      summary: Get one newsletter (public)
+      description: |
+        Used by the public newsletter page. The implementation does not check
+        `isPublished`, so any newsletter id (including drafts) is returned.
+      operationId: getNewsletterByIdPublic
+      responses:
+        '200':
+          description: Newsletter found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NewsletterNotFound'
+
+  # SUBSCRIBERS 
+  /api/subscribers:
+    post:
+      tags: [Subscribers]
+      summary: Subscribe to the newsletter (public)
+      operationId: createSubscriber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: sub@gmail.com
+      responses:
+        '201':
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Thank you for subscribing
+                  subscriber:
+                    $ref: '#/components/schemas/Subscriber'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/unsubscribe:
+    get:
+      tags: [Subscribers]
+      summary: Unsubscribe by email (public)
+      description: 'Deletes the subscriber with the given email. Returns 200 even if no match was found (subscriber is null).'
+      operationId: unsubscribe
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          example: sub@gmail.com
+      responses:
+        '200':
+          description: Unsubscribed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unsubscribed
+                  subscriber:
+                    allOf:
+                      - $ref: '#/components/schemas/Subscriber'
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  # ADMIN AUTH
+  /api/admin/login:
+    post:
+      tags: [Admin Auth]
+      summary: Admin login
+      description: |
+        Username is lower-cased and trimmed before lookup. On success a session
+        cookie is set. With `remember: true` the cookie lasts 30 days.
+      operationId: adminLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                  example: plmbadmin
+                password:
+                  type: string
+                  format: password
+                  example: Plmb2026.
+                remember:
+                  type: boolean
+                  description: Keep the session for 30 days
+      responses:
+        '200':
+          description: Logged in
+          headers:
+            Set-Cookie:
+              description: Session cookie (`connect.sid`)
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  redirect:
+                    type: string
+                    example: /admin
+        '401':
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                badUsername:
+                  value: { error: Invalid username }
+                badPassword:
+                  value: { error: Invalid password }
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/logout:
+    get:
+      tags: [Admin Auth]
+      summary: Admin logout
+      description: Destroys the session and redirects to `/admin/login`.
+      operationId: adminLogout
+      responses:
+        '302':
+          description: Redirect to the login page
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /admin/login
+
+  /api/admin/username:
+    get:
+      tags: [Admin Auth]
+      summary: Get the logged-in admin's username
+      operationId: getAdminUsername
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Current username
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: plmbadmin
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ADMIN DASHBOARD
+  /api/admin/stats:
+    get:
+      tags: [Admin Dashboard]
+      summary: Dashboard counts
+      operationId: getAdminStats
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Counts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalAdmins:
+                    type: integer
+                    example: 1
+                  publishedNewsletters:
+                    type: integer
+                    example: 1
+                  pendingNewsletters:
+                    type: integer
+                    description: Unpublished (draft) newsletters
+                    example: 1
+                  pendingInquiries:
+                    type: integer
+                    description: Inquiries that are neither answered nor archived
+                    example: 1
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # ADMIN MANAGEMENT
+  /api/admin/users:
+    get:
+      tags: [Admin Management]
+      summary: List admin accounts
+      description: Passwords are never returned.
+      operationId: getAdmins
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Array of admins
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags: [Admin Management]
+      summary: Create an admin account
+      description: |
+        Username: 8-24 characters (stored lower-cased and trimmed).
+        Password: at least 8 characters, with at least one capital letter and
+        one special character.
+      operationId: addAdmin
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCredentials'
+      responses:
+        '201':
+          description: Admin created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Created new admin
+                  admin:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 665f1c2e9b1e8a0012345678
+                      username:
+                        type: string
+                        example: newadmin1
+        '400':
+          description: Missing fields, username length out of range, or weak password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Username already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/users/{id}:
+    delete:
+      tags: [Admin Management]
+      summary: Delete an admin account
+      description: Cannot delete yourself, and cannot delete the last remaining admin.
+      operationId: deleteAdmin
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/ObjectId'
+      responses:
+        '200':
+          description: Admin deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Deleted selected admin account
+        '400':
+          description: Deleting own account, or only one admin exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/users/{id}/password:
+    put:
+      tags: [Admin Management]
+      summary: Change an admin's password
+      description: Same strength rules as admin creation.
+      operationId: changeAdminPassword
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: Newpass1.
+      responses:
+        '200':
+          description: Password updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Password updated
+        '400':
+          description: Empty or weak password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # FALLBACK
+  /api/{unknownPath}:
+    get:
+      tags: [Fallback]
+      summary: Unknown API route
+      description: Any unmatched `/api/*` path returns a JSON 404 (not the React page).
+      operationId: apiNotFound
+      parameters:
+        - name: unknownPath
+          in: path
+          required: true
+          schema: { type: string }
+          example: does-not-exist
+      responses:
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Not found
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      description: Session cookie issued by `POST /api/admin/login`.
+
+  parameters:
+    ObjectId:
+      name: id
+      in: path
+      required: true
+      description: MongoDB ObjectId
+      schema:
+        type: string
+        pattern: '^[a-fA-F0-9]{24}$'
+      example: 665f1c2e9b1e8a0012345678
+
+  responses:
+    BadRequest:
+      description: Bad request (validation error or invalid id)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: No valid admin session
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Unauthorized.
+    NewsletterNotFound:
+      description: Newsletter not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Newsletter not found
+    ServerError:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+    # Inquiries
+    InquiryInput:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - businessName
+        - email
+        - industrySector
+        - category
+        - subject
+        - message
+      properties:
+        firstName:     { type: string, example: Juan }
+        lastName:      { type: string, example: Dela Cruz }
+        businessName:  { type: string, example: JDC Corp }
+        email:         { type: string, format: email, example: juan@gmail.com }
+        number:        { type: string, example: '09171234567' }
+        industrySector:
+          type: string
+          enum: [Healthcare, Real Estate, Retail, Professional Services, Non-Profit, Other]
+          example: Retail
+        category:
+          type: string
+          enum:
+            - New Client General Inquiry
+            - Audit & Assurance
+            - Tax Services
+            - Accounting & Bookkeeping
+            - Business Advisory
+            - Payroll Services
+            - Billing Concerns
+            - Comments & Complaints
+            - Other
+          example: Audit & Assurance
+        subject:       { type: string, example: Statutory Audit Inquiry }
+        message:       { type: string, example: We need an audit quote for FY 2026. }
+    InquiryUpdate:
+      type: object
+      description: Any subset of inquiry fields.
+      properties:
+        isRead:     { type: boolean }
+        isArchived: { type: boolean }
+        isAnswered: { type: boolean }
+    Inquiry:
+      allOf:
+        - $ref: '#/components/schemas/InquiryInput'
+        - type: object
+          properties:
+            _id:          { type: string, example: 665f1c2e9b1e8a0012345678 }
+            ticketNumber: { type: string, example: INQ-0001 }
+            date:         { type: string, format: date-time }
+            reply:        { type: string, nullable: true }
+            repliedAt:    { type: string, format: date-time, nullable: true }
+            isArchived:   { type: boolean, default: false }
+            isRead:       { type: boolean, default: false }
+            isAnswered:   { type: boolean, default: false }
+
+    # Newsletters
+    NewsletterInput:
+      type: object
+      required: [title, content]
+      properties:
+        title:       { type: string, example: Tax Advisory }
+        author:      { type: string }
+        image:       { type: string }
+        content:
+          type: string
+          description: HTML; sanitized server-side
+          example: <p>Hello</p>
+        isPublished: { type: boolean, default: false }
+        isBlasted:   { type: boolean, default: false }
+    NewsletterUpdate:
+      type: object
+      description: Any subset of newsletter fields.
+      properties:
+        title:       { type: string }
+        author:      { type: string }
+        image:       { type: string }
+        content:     { type: string }
+        isPublished: { type: boolean }
+        isBlasted:   { type: boolean }
+    Newsletter:
+      allOf:
+        - $ref: '#/components/schemas/NewsletterInput'
+        - type: object
+          properties:
+            _id:  { type: string, example: 665f1c2e9b1e8a0012345678 }
+            date: { type: string, format: date-time }
+    NewsletterResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        newsletter:
+          $ref: '#/components/schemas/Newsletter'
+    NewsletterList:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Newsletters found
+        newsletters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Newsletter'
+
+    # Subscribers
+    Subscriber:
+      type: object
+      properties:
+        _id:          { type: string }
+        email:        { type: string, format: email }
+        subscribedAt: { type: string, format: date-time }
+
+    # Admins
+    AdminCredentials:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          minLength: 8
+          maxLength: 24
+          example: newadmin1
+        password:
+          type: string
+          format: password
+          minLength: 8
+          description: At least 8 chars, one capital letter, one special character
+          example: Newpass1.
+    Admin:
+      type: object
+      properties:
+        _id:      { type: string, example: 665f1c2e9b1e8a0012345678 }
+        username: { type: string, example: plmbadmin }
