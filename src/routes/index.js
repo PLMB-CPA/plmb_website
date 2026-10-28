@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const {requireAuth, requireAdminPage} = require('../middleware/auth');
 
-const Subscriber = require('../models/Subscriber');
-
-const AuthController = require('../controllers/auth_controller');
+const authController = require('../controllers/auth_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
+const subscriberController = require('../controllers/subscriber_controller');
 const dashboardController = require('../controllers/dashboard_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
@@ -40,36 +38,24 @@ router.patch('/announcements/:id', requireAuth, newsletterController.updateNewsl
 router.delete('/announcements/:id', requireAuth, newsletterController.deleteNewsletter);
 // SUBSCRIBER ROUTES
 
-router.post('/subscribers', async (req, res) => {
-  try {
-    const subscriber = await Subscriber.create(req.body);
-    res.status(201).json({message: 'Thank you for subscribing', subscriber});
-  } catch (err) {
-    res.status(400).json({error: err.message});
-  }
-  });
+//Subscriber: subscribe to newsletter
+router.post('/subscribers', subscriberController.createSubscriber);
 
-router.get('/unsubscribe', async (req, res) => {
-  try {
-    const subscriber = await Subscriber.findOneAndDelete({email: req.query.email});
-    res.status(200).json({message: 'Unsubscribed', subscriber});
-} catch (err) {
-  res.status(400).json({error: err.message});
-  }
-});
+//Subscriber: unsubscribe from newsletter
+router.get('/unsubscribe/:token', subscriberController.unsubscribe);
 
 //ADMIN DASHBOARD ROUTES
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 
 //ADMIN LOGIN/LOGOUTROUTES
-router.post('/admin/login', AuthController.postAdminLogin);
-router.get('/admin/logout', AuthController.getAdminLogout);
-router.get('/admin/username', requireAuth, AuthController.getAdminUsername);
+router.post('/admin/login', authController.postAdminLogin);
+router.get('/admin/logout', authController.getAdminLogout);
+router.get('/admin/username', requireAuth, authController.getAdminUsername);
 // ADMIN MANAGEMENT ROUTES
-router.post('/admin/users', requireAuth, AuthController.addAdmin);
-router.get('/admin/users', requireAuth, AuthController.getAdmins);
-router.delete('/admin/users/:id', requireAuth, AuthController.deleteAdmin);
-router.put('/admin/users/:id/password', requireAuth, AuthController.changeAdminPassword);
+router.post('/admin/users', requireAuth, authController.addAdmin);
+router.get('/admin/users', requireAuth, authController.getAdmins);
+router.delete('/admin/users/:id', requireAuth, authController.deleteAdmin);
+router.put('/admin/users/:id/password', requireAuth, authController.changeAdminPassword);
 
 module.exports = router;
             

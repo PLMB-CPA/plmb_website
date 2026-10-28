@@ -1,11 +1,8 @@
-// API TESTS
-
 const request = require('supertest');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-// mock emailer and email validator to avoid sending real emails during tests
 jest.mock('../../src/util/emailer', () => ({
   sendInquiryNotification: jest.fn().mockResolvedValue(),
   sendConfirmation: jest.fn().mockResolvedValue(),
@@ -66,7 +63,7 @@ describe('PLMB API Integration Tests', () => {
     ]);
   });
 
-  // UNKNOWN ROUTE TEST
+  // MISC
   test('GET /api/unknown-route returns 404 JSON', async () => {
     const res = await request(app).get('/api/does-not-exist');
     expect(res.status).toBe(404);
@@ -74,6 +71,7 @@ describe('PLMB API Integration Tests', () => {
   });
 
   // INQUIRIES
+
   test('POST /api/inquiries creates inquiry with ticket number', async () => {
     const res = await request(app).post('/api/inquiries').send(INQUIRY_PAYLOAD);
     expect(res.status).toBe(201);
@@ -172,7 +170,7 @@ describe('PLMB API Integration Tests', () => {
     expect(res.status).toBe(404);
   });
 
-  // NEWSLETTERS 
+  // NEWSLETTERS
   test('GET /api/announcements returns only published newsletters', async () => {
     await Newsletter.create([
       { title: 'Published', content: '<p>Live</p>', isPublished: true },
@@ -279,22 +277,25 @@ describe('PLMB API Integration Tests', () => {
     expect(res.status).toBe(404);
   });
 
-  // SUBSCRIBERS 
+  // SUBSCRIBERS
+
   test('POST /api/subscribers adds a subscriber', async () => {
     const res = await request(app).post('/api/subscribers').send({ email: 'sub@gmail.com' });
     expect(res.status).toBe(201);
     expect(res.body.subscriber.email).toBe('sub@gmail.com');
   });
 
-  test('GET /api/unsubscribe removes subscriber by email', async () => {
-    await Subscriber.create({ email: 'sub@gmail.com' });
+  test('GET /api/unsubscribe/:token marks subscriber as unsubscribed', async () => {
+    await Subscriber.create({ email: 'sub@gmail.com', unsubscribeToken: 'test-token-123' });
 
-    const res = await request(app).get('/api/unsubscribe?email=sub@gmail.com');
+    const res = await request(app).get('/api/unsubscribe/test-token-123');
     expect(res.status).toBe(200);
-    expect(await Subscriber.findOne({ email: 'sub@gmail.com' })).toBeNull();
+    const sub = await Subscriber.findOne({ email: 'sub@gmail.com' });
+    expect(sub.isSubscribed).toBe(false);
   });
 
-  // ADMIN AUTH
+  // ADMIN AUTH 
+
   test('POST /api/admin/login succeeds with valid credentials', async () => {
     const hashed = await bcrypt.hash('Plmb2026.', 10);
     await Admin.create({ username: 'plmbadmin', password: hashed });
@@ -358,7 +359,7 @@ describe('PLMB API Integration Tests', () => {
     expect(res.status).toBe(401);
   });
 
-  // ADMIN MANAGEMENT
+  // ADMIN MANAGEMENT 
   test('GET /api/admin/users returns list of admins', async () => {
     const { agent } = await createAdminAndLogin();
     const res = await agent.get('/api/admin/users');
