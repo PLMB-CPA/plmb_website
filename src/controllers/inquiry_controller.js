@@ -64,13 +64,15 @@ exports.replyToInquiry = async (req, res) => {
     const inquiry = await Inquiry.findById(req.params.id);
     if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
 
-    await sendReplyEmail(inquiry, req.body.reply);
-
     const updated = await Inquiry.findByIdAndUpdate(
       req.params.id,
       { reply: req.body.reply, repliedAt: new Date(), isAnswered: true },
       { new: true }
     );
+
+    sendReplyEmail(updated, req.body.reply)
+      .then(() => console.log('Reply email sent'))
+      .catch(err => console.error('Reply saved, email failed', err));
 
     res.status(200).json({message: 'Reply sent', inquiry: updated});
   } catch (err) {
