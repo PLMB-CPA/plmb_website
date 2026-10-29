@@ -46,7 +46,18 @@ const unsubscribe = async (req, res) => {
   }
 };
 
+const getSubscribers = async (req, res) => {
+  try {
+    // default sorting is most recently subscribed
+    const subscribers = await Subscriber.find().sort({ subscribedAt: -1 });
+    res.status(200).json(subscribers);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch subscribers' });
+  }
+};
+
 module.exports = {
   createSubscriber,
-  unsubscribe
+  unsubscribe,
+  getSubscribers
 };

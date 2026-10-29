@@ -17,6 +17,7 @@ import InquiryDetail from './components/admin/InquiryDetail';
 import AdminManagement from './components/admin/AdminManagement';
 import Login from './components/admin/Login';
 import AdminCreation from './components/admin/AdminCreation';
+import SubscriberManagement from './components/admin/SubscriberManagement';
 
 import NotFound from './components/public/NotFound';
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="newsletters/:id/edit" element={<PostNewsletter />} />
         <Route path="inquiries" element={<InquiryManagement />} />
         <Route path="inquiries/:id" element={<InquiryDetail />} />
+        <Route path="subscribers" element={<SubscriberManagement />} />
         <Route path="manage" element={<AdminManagement />} />
       </Route>
 
