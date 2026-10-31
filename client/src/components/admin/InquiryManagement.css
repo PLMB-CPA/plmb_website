@@ -520,3 +520,73 @@
         justify-content: space-between;
     }
 }
+
+
+/* F03 - Inquiry Analytics */
+
+.inquiries-page .inquiry-analytics {
+    padding: 24px 30px;
+}
+
+.inquiries-page .inquiry-analytics h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #255f20;
+    margin-bottom: 10px;
+}
+
+.inquiries-page .inquiry-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.inquiries-page .inquiry-stat {
+    min-width: 0;
+    background: white;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.inquiries-page .inquiry-stat h3 {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.inquiries-page .inquiry-stat p {
+    font-size: 26px;
+    font-weight: 700;
+    color: #255f20;
+    overflow-wrap: anywhere;
+}
+
+/* Tablet */
+
+@media (max-width: 1000px) {
+    .inquiries-page .inquiry-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 375px) {
+    .inquiries-page .inquiry-analytics {
+        padding: 16px;
+    }
+
+    .inquiries-page .inquiry-stat {
+        padding: 12px;
+    }
+
+    .inquiries-page .inquiry-stat h3 {
+        font-size: 12px;
+    }
+
+    .inquiries-page .inquiry-stat p {
+        font-size: 20px;
+    }
+}

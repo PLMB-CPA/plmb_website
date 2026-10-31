@@ -11,6 +11,10 @@ function InquiryDetail() {
     const navigate = useNavigate();
     const [inquiry, setInquiry] = useState(null);
     const [error, setError] = useState('');
+    const [reply, setReply] = useState('');
+    const [replyError, setReplyError] = useState('');
+    const [replySuccess, setReplySuccess] = useState('');
+    const [sending, setSending] = useState(false);
 
     // PATCH a few fields, then show what the server saved
     const updateInquiry = useCallback(async (payload) => {
@@ -42,6 +46,72 @@ function InquiryDetail() {
             })
             .catch(() => setError('Could not reach the server.'));
     }, [id, updateInquiry]);
+
+
+    // F03 - Handle inquiry replies with input validation
+    async function handleReply(event) {
+        event.preventDefault();
+
+        setReplyError('');
+        setReplySuccess('');
+
+        const trimmedReply = reply.trim();
+        if (!trimmedReply) {
+            setReplyError('Please enter a reply before sending.');
+            return;
+        }
+        if (trimmedReply.length > 10000) {
+            setReplyError('Reply must be 10,000 characters or fewer.');
+            return;
+        }
+
+        setSending(true);
+
+        try {
+            const res = await fetch(`/api/inquiries/${id}/reply`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reply: trimmedReply }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setReplyError(data.error || 'Could not send the reply. Please try again.');
+                return;
+            }
+            setInquiry(data.inquiry);
+            setReply('');
+            setReplySuccess('Reply sent successfully.');
+
+        } catch {
+            setReplyError('Could not reach the server. Please try again.');
+        } finally {
+            setSending(false);
+        }
+    }
+
+
+    // F03 - Format the recorded response time for display
+    function formatResponseTime(minutes) {
+        if (minutes == null) {
+            return 'Not available';
+        }
+
+        if (minutes < 1) {
+            return 'Under 1 minute';
+        }
+
+        if (minutes < 60) {
+            return `${minutes} minute${minutes === 1 ? '' : 's'}`;
+        }
+
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+
+        return `${hours} hour${hours === 1 ? '' : 's'}${remainingMinutes ? ` ${remainingMinutes} minute${remainingMinutes === 1 ? '' : 's'}` : ''}`;
+    }
+
 
     async function handleDelete() {
         if (!window.confirm('Delete this inquiry? This cannot be undone.')) return;
@@ -92,7 +162,77 @@ function InquiryDetail() {
                             <p>Contact:</p>
                             <p className="contact">{inquiry.email}</p>
                         </div>
+                        {inquiry.repliedAt && (
+                            <div className="reply-details">
 
+                                <h3>Reply Information</h3>
+
+                                <p>
+                                    <strong>Status:</strong> Answered
+                                </p>
+
+                                <p>
+                                    <strong>Replied At:</strong>{' '}
+                                    {new Date(inquiry.repliedAt).toLocaleString(
+                                        'en-PH',
+                                        { timeZone: 'Asia/Manila' }
+                                    )}
+                                </p>
+
+                                <p>
+                                    <strong>Response Time:</strong>{' '}
+                                    {formatResponseTime(inquiry.responseTimeMinutes)}
+                                </p>
+
+                                <p>
+                                    <strong>Reply:</strong> {inquiry.reply}
+                                </p>
+
+                            </div>
+                        )}
+                        {!inquiry.repliedAt && (
+                            <form
+                                className="inquiry-reply-form"
+                                onSubmit={handleReply}
+                                noValidate
+                            >
+
+                                <label htmlFor="reply-message">
+                                    Reply to Client
+                                </label>
+
+                                <textarea
+                                    id="reply-message"
+                                    value={reply}
+                                    onChange={(event) => setReply(event.target.value)}
+                                    placeholder="Write your reply here..."
+                                    rows={5}
+                                    aria-describedby={
+                                        replyError ? 'reply-error' : undefined
+                                    }
+                                />
+
+                                {replyError && (
+                                    <p
+                                        id="reply-error"
+                                        className="reply-error"
+                                        role="alert"
+                                    >
+                                        {replyError}
+                                    </p>
+                                )}
+
+                                <button type="submit" disabled={sending}>
+                                    {sending ? 'Sending...' : 'Send Reply'}
+                                </button>
+
+                            </form>
+                        )}
+                        {replySuccess && (
+                            <p role="status" className="reply-success">
+                                {replySuccess}
+                            </p>
+                        )}
                         <div className="action-bar">
                             <div className="status-actions">
                                 <button type="button" className="action-btn read-btn"
