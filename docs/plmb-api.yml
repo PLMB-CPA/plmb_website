@@ -444,20 +444,19 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
-  /api/unsubscribe:
+  /api/unsubscribe/{token}:
     get:
       tags: [Subscribers]
-      summary: Unsubscribe by email (public)
-      description: 'Deletes the subscriber with the given email. Returns 200 even if no match was found (subscriber is null).'
+      summary: Unsubscribe by token (public)
+      description: 'Marks the subscriber as unsubscribed. Returns 404 if the token does not match any subscriber.'
       operationId: unsubscribe
       parameters:
-        - name: email
-          in: query
+        - name: token
+          in: path
           required: true
           schema:
             type: string
-            format: email
-          example: sub@gmail.com
+          example: a3f1c2e9b1e8a0012345678abc
       responses:
         '200':
           description: Unsubscribed
@@ -470,9 +469,13 @@ paths:
                     type: string
                     example: Unsubscribed
                   subscriber:
-                    allOf:
-                      - $ref: '#/components/schemas/Subscriber'
-                    nullable: true
+                    $ref: '#/components/schemas/Subscriber'
+        '404':
+          description: Token not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '400':
           $ref: '#/components/responses/BadRequest'
 
