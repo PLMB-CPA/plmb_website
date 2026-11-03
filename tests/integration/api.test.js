@@ -370,15 +370,15 @@ describe('PLMB API Integration Tests', () => {
 
   test('POST /api/admin/users creates a new admin', async () => {
     const { agent } = await createAdminAndLogin();
-    const res = await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass1.' });
+    const res = await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass123.' });
     expect(res.status).toBe(201);
     expect(res.body.admin.username).toBe('newadmin1');
   });
 
   test('POST /api/admin/users returns 409 on duplicate username', async () => {
     const { agent } = await createAdminAndLogin();
-    await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass1.' });
-    const res = await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass1.' });
+    await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass123.' });
+    const res = await agent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass123.' });
     expect(res.status).toBe(409);
   });
 
@@ -396,7 +396,7 @@ describe('PLMB API Integration Tests', () => {
 
   test('DELETE /api/admin/users/:id deletes another admin', async () => {
     const { agent } = await createAdminAndLogin();
-    const hashed = await bcrypt.hash('Plmb2026.', 10);
+    const hashed = await bcrypt.hash('Plmb2026123.', 10);
     const other = await Admin.create({ username: 'otheradmin', password: hashed });
 
     const res = await agent.delete(`/api/admin/users/${other._id}`);
@@ -412,7 +412,7 @@ describe('PLMB API Integration Tests', () => {
 
   test('DELETE /api/admin/users/:id returns 400 when only one admin exists', async () => {
     const { agent, admin } = await createAdminAndLogin();
-    const hashed = await bcrypt.hash('Plmb2026.', 10);
+    const hashed = await bcrypt.hash('Plmb2026123.', 10);
     const other = await Admin.create({ username: 'otheradmin', password: hashed });
 
     await agent.delete(`/api/admin/users/${other._id}`);
@@ -422,7 +422,7 @@ describe('PLMB API Integration Tests', () => {
 
   test('PUT /api/admin/users/:id/password updates password', async () => {
     const { agent, admin } = await createAdminAndLogin();
-    const res = await agent.put(`/api/admin/users/${admin._id}/password`).send({ password: 'Newpass1.' });
+    const res = await agent.put(`/api/admin/users/${admin._id}/password`).send({ password: 'Newpass123.' });
     expect(res.status).toBe(200);
   });
 
@@ -435,7 +435,39 @@ describe('PLMB API Integration Tests', () => {
   test('PUT /api/admin/users/:id/password returns 404 on missing admin', async () => {
     const { agent } = await createAdminAndLogin();
     const fakeId = new mongoose.Types.ObjectId();
-    const res = await agent.put(`/api/admin/users/${fakeId}/password`).send({ password: 'Newpass1.' });
+    const res = await agent.put(`/api/admin/users/${fakeId}/password`).send({ password: 'Newpass123.' });
     expect(res.status).toBe(404);
+  });
+
+  // ─── SECURITY ────────────────────────────────────────────────────────────────
+
+  test('Session cookie is HttpOnly and SameSite=Lax', async () => {
+    const hashed = await bcrypt.hash('Plmb2026.', 10);
+    await Admin.create({ username: 'plmbadmin', password: hashed });
+
+    const res = await request(app).post('/api/admin/login').send({ username: 'plmbadmin', password: 'Plmb2026.' });
+    expect(res.status).toBe(200);
+
+    const cookie = res.headers['set-cookie'].find(c => c.startsWith('plmb.sid='));
+    expect(cookie).toBeDefined();
+    expect(cookie).toMatch(/HttpOnly/i);
+    expect(cookie).toMatch(/SameSite=Lax/i);
+  });
+
+  test('API rejects requests sent from another website with 403', async () => {
+    const res = await request(app)
+      .post('/api/inquiries')
+      .set('Origin', 'https://evil.example')
+      .send({ firstName: 'X' });
+    expect(res.status).toBe(403);
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  test('API allows requests from its own origin', async () => {
+    const res = await request(app)
+      .get('/api/announcements')
+      .set('Host', 'plmb.example')
+      .set('Origin', 'https://plmb.example');
+    expect(res.status).toBe(200);
   });
 });
