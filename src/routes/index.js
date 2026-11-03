@@ -44,6 +44,9 @@ router.post('/subscribers', subscriberController.createSubscriber);
 //Subscriber: unsubscribe from newsletter
 router.get('/unsubscribe/:token', subscriberController.unsubscribe);
 
+// Admin: fetch all subscribers for the dashboard tab
+router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
+
 //ADMIN DASHBOARD ROUTES
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 
