@@ -38,7 +38,9 @@ const inquirySchema = new mongoose.Schema({
   repliedAt: {type: Date, default: null},
   isArchived: {type: Boolean, default: false},
   isRead: {type: Boolean, default: false},
-  isAnswered: {type: Boolean, default: false}
+  isAnswered: {type: Boolean, default: false},
+  status: {type: String, enum:['new', 'in_progress', 'answered'], default: 'new'},
+  responseTimeMinutes:{type: Number, default: null, min: 0}
 });
 
 module.exports = mongoose.model('Inquiry', inquirySchema);

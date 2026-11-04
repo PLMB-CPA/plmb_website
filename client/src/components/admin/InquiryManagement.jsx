@@ -35,6 +35,8 @@ function matchesFilters(inq, filters, search) {
 function InquiryManagement() {
     const navigate = useNavigate();
     const [inquiries, setInquiries] = useState([]);
+    const [stats, setStats] = useState(null);
+    const [statsError, setStatsError] = useState('');
     const [loadError, setLoadError] = useState('');
     const [search, setSearch] = useState('');
     const [filters, setFilters] = useState(DEFAULT_FILTERS);
@@ -42,23 +44,42 @@ function InquiryManagement() {
     const filterRef = useClickOutside(() => setFilterOpen(false));
 
     useEffect(() => {
-        fetch('/api/inquiries')
-            .then(res => res.json())
-            .then(data => setInquiries(data.inquiries || []))
-            .catch(() => setLoadError('Could not reach the server.'));
+        async function fetchStats() {
+            try {
+                const response = await fetch('/api/inquiries/stats');
+
+                if (!response.ok) {
+                    throw new Error('Failed to load statistics');
+                }
+
+                const data = await response.json();
+
+                setStats(data.stats);
+
+            } catch (error) {
+                setStatsError(
+                    'Unable to load inquiry statistics.'
+                );
+            }
+        }
+
+        fetchStats();
     }, []);
 
     async function handleDelete(event, id) {
         event.stopPropagation(); // don't also open the inquiry
+
         if (!window.confirm('Delete this inquiry? This cannot be undone.')) return;
 
         try {
             const res = await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
             const data = await res.json();
+
             if (data.error) {
                 window.alert(data.error);
                 return;
             }
+
             setInquiries(inquiries.filter(inq => inq._id !== id));
         } catch {
             window.alert('Could not reach the server.');
@@ -119,6 +140,64 @@ function InquiryManagement() {
                     </div>
                 </div>
             </div>
+
+            <section className="inquiry-analytics">
+                <h2>Inquiry Tracker</h2>
+
+                <p>
+                    Overview of incoming and ongoing inquiries
+                </p>
+
+                {statsError && (
+                    <p role="alert">{statsError}</p>
+                )}
+
+                <div className="inquiry-stats-grid">
+                    <div className="inquiry-stat">
+                        <h3>Total Inquiries</h3>
+                        <p>{stats?.total ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>New Inquiries</h3>
+                        <p>{stats?.new ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>In Progress</h3>
+                        <p>{stats?.inProgress ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>Answered</h3>
+                        <p>{stats?.answered ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>Overdue</h3>
+                        <p>{stats?.overdue ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>Archived</h3>
+                        <p>{stats?.archived ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>Email Replies Sent</h3>
+                        <p>{stats?.replied ?? '—'}</p>
+                    </div>
+
+                    <div className="inquiry-stat">
+                        <h3>Average Response Time</h3>
+                        <p>
+                            {stats?.averageResponseTimeMinutes == null
+                                ? '—'
+                                : `${stats.averageResponseTimeMinutes} minutes`}
+                        </p>
+                    </div>
+                </div>
+            </section>
 
             <div className="dashboard-content">
                 <div className="published-section">

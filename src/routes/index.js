@@ -11,6 +11,7 @@ const dashboardController = require('../controllers/dashboard_controller');
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
+router.get('/inquiries/stats', requireAuth, inquiryController.getInquiryStats);
 router.get('/inquiries/:id', requireAuth, inquiryController.getInquiryById);
 router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
 router.delete('/inquiries/:id', requireAuth, inquiryController.deleteInquiry);
