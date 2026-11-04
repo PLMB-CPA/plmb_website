@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-const {requireAuth, requireAdminPage, requireClient, requireClientLogin} = require('../middleware/auth');
 
-const Subscriber = require('../models/Subscriber');
+const { requireAuth, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
 
 const adminController = require('../controllers/admin_controller');
 const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
+const subscriberController = require('../controllers/subscriber_controller');
 const dashboardController = require('../controllers/dashboard_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
+router.get('/inquiries/stats', requireAuth, inquiryController.getInquiryStats);
 router.get('/inquiries/:id', requireAuth, inquiryController.getInquiryById);
 router.patch('/inquiries/:id', requireAuth, inquiryController.updateInquiry);
 router.delete('/inquiries/:id', requireAuth, inquiryController.deleteInquiry);
@@ -41,23 +41,14 @@ router.patch('/announcements/:id', requireAuth, newsletterController.updateNewsl
 router.delete('/announcements/:id', requireAuth, newsletterController.deleteNewsletter);
 // SUBSCRIBER ROUTES
 
-router.post('/subscribers', async (req, res) => {
-  try {
-    const subscriber = await Subscriber.create(req.body);
-    res.status(201).json({message: 'Thank you for subscribing', subscriber});
-  } catch (err) {
-    res.status(400).json({error: err.message});
-  }
-  });
+//Subscriber: subscribe to newsletter
+router.post('/subscribers', subscriberController.createSubscriber);
 
-router.get('/unsubscribe', async (req, res) => {
-  try {
-    const subscriber = await Subscriber.findOneAndDelete({email: req.query.email});
-    res.status(200).json({message: 'Unsubscribed', subscriber});
-} catch (err) {
-  res.status(400).json({error: err.message});
-  }
-});
+//Subscriber: unsubscribe from newsletter
+router.get('/unsubscribe/:token', subscriberController.unsubscribe);
+
+// Admin: fetch all subscribers for the dashboard tab
+router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
 
 //ADMIN DASHBOARD ROUTES
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
@@ -72,10 +63,7 @@ router.get('/admin/users', requireAuth, adminController.getAdmins);
 router.delete('/admin/users/:id', requireAuth, adminController.deleteAdmin);
 router.put('/admin/users/:id/password', requireAuth, adminController.changeAdminPassword);
 
-
-
-//CLIENT ROUTES
-
+// CLIENT ROUTES
 router.post('/admin/clients', requireAuth, clientController.createClient);
 router.get('/admin/clients', requireAuth, clientController.getClients);
 

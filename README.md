@@ -1,7 +1,7 @@
 # plmb_website
 
-[![qa](https://github.com/justineaniko/plmb_website/actions/workflows/qa.yml/badge.svg?branch=main)](https://github.com/justineaniko/plmb_website/actions/workflows/qa.yml)
-[![dev](https://github.com/justineaniko/plmb_website/actions/workflows/dev.yml/badge.svg?branch=develop)](https://github.com/justineaniko/plmb_website/actions/workflows/dev.yml)
+[![qa](https://github.com/PLMB-CPA/plmb_website/actions/workflows/qa.yml/badge.svg?branch=main)](https://github.com/PLMB-CPA/plmb_website/actions/workflows/qa.yml)
+[![dev](https://github.com/PLMB-CPA/plmb_website/actions/workflows/dev.yml/badge.svg?branch=develop)](https://github.com/PLMB-CPA/plmb_website/actions/workflows/dev.yml)
 
 **Po Lao Marquez Benedictos & Co. Online Portal** — CSSWENG Project Group 8 (S08)
 

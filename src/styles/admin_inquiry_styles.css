@@ -586,26 +586,7 @@ body {
     display: flex;
     gap: 8px;
     align-items: center;
-.inquiry-buttons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
     margin-top: 4px;
-}
-
-.manage-btn {
-    text-decoration: none;
-    background: #255f20;
-    color: white;
-    padding: 8px 18px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 12px;
-    transition: .2s ease;
-}
-
-.manage-btn:hover {
-    background: #1c4818;
 }
 
 .delete-btn {
@@ -627,75 +608,6 @@ body {
     color: white;
 }
 
-
-/* FILTER DROPDOWN */
-
-.filter-dropdown {
-    position: relative;
-}
-
-.filter-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-family: "Inter", sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #4d4d4d;
-    cursor: pointer;
-    transition: .2s ease;
-}
-
-.filter-btn:hover {
-    border-color: #255f20;
-    color: #255f20;
-}
-
-.filter-dropdown-content {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: 220px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-    padding: 14px 16px;
-    z-index: 50;
-}
-
-.filter-dropdown-content.show {
-    display: block;
-}
-
-.filter-group-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    color: #8a8a8a;
-    margin-top: 12px;
-    margin-bottom: 6px;
-}
-
-.filter-group-title:first-child {
-    margin-top: 0;
-}
-
-.filter-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #333;
-    padding: 4px 0;
-    cursor: pointer;
-}
-
 .reset-filters-btn {
     width: 100%;
     margin-top: 14px;
@@ -714,6 +626,8 @@ body {
 .reset-filters-btn:hover {
     background: #255f20;
     color: white;
+}
+
 .no-inquiries {
     text-align: center;
     color: #9a9a9a;

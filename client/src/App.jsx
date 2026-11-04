@@ -21,6 +21,9 @@ import ClientCreation from './components/admin/ClientCreation';
 import ClientManagement from './components/admin/ClientManagement';
 import ClientLogin from './components/client/ClientLogin';
 import ClientChangePassword from './components/client/ClientChangePassword.jsx';
+import ClientDashboard from './components/client/ClientDashboard';
+import SubscriberManagement from './components/admin/SubscriberManagement';
+
 
 import NotFound from './components/public/NotFound';
 
@@ -44,6 +47,7 @@ function App() {
         <Route path="newsletters/:id/edit" element={<PostNewsletter />} />
         <Route path="inquiries" element={<InquiryManagement />} />
         <Route path="inquiries/:id" element={<InquiryDetail />} />
+        <Route path="subscribers" element={<SubscriberManagement />} />
         <Route path="manage" element={<AdminManagement />} />
         <Route path="manage/create" element={<AdminCreation />} />
         <Route path="clients" element={<ClientManagement />} />
@@ -51,10 +55,14 @@ function App() {
       </Route>
 
       <Route path="/admin/login" element={<Login />} />
+      
       <Route path="/client/login" element={<ClientLogin />} />
       <Route path="/client/change-password" element={<ClientChangePassword />} />
+
+      <Route path="/client" element={<ClientDashboard />} />
     </Routes>
   );
 }
 
 export default App;
+

@@ -118,4 +118,36 @@ describe('PLMB API & Database Integration Tests', () => {
       pendingInquiries: 0,
     });
   });
+
+  test('Session cookie is HttpOnly and SameSite=Lax', async () => {
+    const hashedPassword = await bcrypt.hash('plmb2026.', 10);
+    await Admin.create({ username: 'plmbadmin', password: hashedPassword });
+
+    const res = await request(app)
+      .post('/api/admin/login')
+      .send({ username: 'plmbadmin', password: 'plmb2026.' });
+    expect(res.status).toBe(200);
+
+    const cookie = res.headers['set-cookie'].find(c => c.startsWith('plmb.sid='));
+    expect(cookie).toBeDefined();
+    expect(cookie).toMatch(/HttpOnly/i);
+    expect(cookie).toMatch(/SameSite=Lax/i);
+  });
+
+  test('API rejects requests sent from another website with 403', async () => {
+    const res = await request(app)
+      .post('/api/inquiries')
+      .set('Origin', 'https://evil.example')
+      .send({ firstName: 'X' });
+    expect(res.status).toBe(403);
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  test('API allows requests from its own origin', async () => {
+    const res = await request(app)
+      .get('/api/announcements')
+      .set('Host', 'plmb.example')
+      .set('Origin', 'https://plmb.example');
+    expect(res.status).toBe(200);
+  });
 });
