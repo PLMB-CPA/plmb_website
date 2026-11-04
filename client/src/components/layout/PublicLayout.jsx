@@ -8,9 +8,9 @@ function PublicLayout() {
                 <img id="logo" src="/image/logo.png" alt="Logo" />
                 <h1>Po Lao Marquez Benedictos & Co.</h1>
                 <p>Certified Public Accountants</p>
-                <span className="header-login" aria-disabled="true">
-                    Client Login <small>Under development</small>
-                </span>
+                <Link to="/client/login" className="header-login">
+                    Client Login
+                </Link>
             </div>
 
             <nav>
