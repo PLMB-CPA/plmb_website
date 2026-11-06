@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {requireAuth, requireAdminPage} = require('../middleware/auth');
 
-const authController = require('../controllers/auth_controller');
+const { requireAuth, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
+
+const adminController = require('../controllers/admin_controller');
+const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
@@ -52,14 +54,25 @@ router.get('/admin/subscribers', requireAuth, subscriberController.getSubscriber
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 
 //ADMIN LOGIN/LOGOUTROUTES
-router.post('/admin/login', authController.postAdminLogin);
-router.get('/admin/logout', authController.getAdminLogout);
-router.get('/admin/username', requireAuth, authController.getAdminUsername);
+router.post('/admin/login', adminController.postAdminLogin);
+router.get('/admin/logout', adminController.getAdminLogout);
+router.get('/admin/username', requireAuth, adminController.getAdminUsername);
 // ADMIN MANAGEMENT ROUTES
-router.post('/admin/users', requireAuth, authController.addAdmin);
-router.get('/admin/users', requireAuth, authController.getAdmins);
-router.delete('/admin/users/:id', requireAuth, authController.deleteAdmin);
-router.put('/admin/users/:id/password', requireAuth, authController.changeAdminPassword);
+router.post('/admin/users', requireAuth, adminController.addAdmin);
+router.get('/admin/users', requireAuth, adminController.getAdmins);
+router.delete('/admin/users/:id', requireAuth, adminController.deleteAdmin);
+router.put('/admin/users/:id/password', requireAuth, adminController.changeAdminPassword);
+
+// CLIENT ROUTES
+router.post('/admin/clients', requireAuth, clientController.createClient);
+router.get('/admin/clients', requireAuth, clientController.getClients);
+
+router.post('/client/login', clientController.loginClient);
+router.post('/client/logout', clientController.logoutClient);
+router.put('/client/password', requireClientLogin, clientController.changeClientPassword);
+router.get('/client/me', requireClient, clientController.getCurrentClient);
 
 module.exports = router;
             
+
+

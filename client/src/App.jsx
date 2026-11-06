@@ -17,7 +17,13 @@ import InquiryDetail from './components/admin/InquiryDetail';
 import AdminManagement from './components/admin/AdminManagement';
 import Login from './components/admin/Login';
 import AdminCreation from './components/admin/AdminCreation';
+import ClientCreation from './components/admin/ClientCreation';
+import ClientManagement from './components/admin/ClientManagement';
+import ClientLogin from './components/client/ClientLogin';
+import ClientChangePassword from './components/client/ClientChangePassword.jsx';
+import ClientDashboard from './components/client/ClientDashboard';
 import SubscriberManagement from './components/admin/SubscriberManagement';
+
 
 import NotFound from './components/public/NotFound';
 
@@ -34,8 +40,6 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Route>
 
-      {/* Every page in here gets the sidebar + the login check (AdminLayout).
-          Child paths are relative to /admin, e.g. "newsletters" = /admin/newsletters */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="newsletters" element={<AdminNewsletterList />} />
@@ -45,14 +49,20 @@ function App() {
         <Route path="inquiries/:id" element={<InquiryDetail />} />
         <Route path="subscribers" element={<SubscriberManagement />} />
         <Route path="manage" element={<AdminManagement />} />
+        <Route path="manage/create" element={<AdminCreation />} />
+        <Route path="clients" element={<ClientManagement />} />
+        <Route path="clients/new" element={<ClientCreation />} />
       </Route>
 
-      {/* No sidebar on these two, so they sit outside AdminLayout.
-          (AdminCreation runs its own login check.) */}
       <Route path="/admin/login" element={<Login />} />
-      <Route path="/admin/create" element={<AdminCreation />} />
+      
+      <Route path="/client/login" element={<ClientLogin />} />
+      <Route path="/client/change-password" element={<ClientChangePassword />} />
+
+      <Route path="/client" element={<ClientDashboard />} />
     </Routes>
   );
 }
 
 export default App;
+

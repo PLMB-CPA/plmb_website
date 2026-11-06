@@ -62,4 +62,29 @@ async function sendConfirmation(inquiry) {
     });
 }
 
-module.exports = { sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation };
+async function sendClientWelcome(client, tempPassword) {
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        replyTo: process.env.PLMB_EMAIL,
+        to: client.email,
+        subject: "PLMB Website Client Login", 
+        text: `
+            Dear ${client.firstName} ${client.lastName},
+
+            Your new PLMB Portal Account has been created. Your login information is as follows.
+
+            Email: ${client.email}
+            Temporary Password: ${tempPassword}
+            
+            Setting a new password for your first time logging in will be required by the site. 
+            If you have any concerns or questions, please don't hesitate to reach out to us. 
+            
+            Have a lovely day. 
+
+            Best regards,
+            The PLMB Team
+        `
+    });
+}
+
+module.exports = { sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation, sendClientWelcome};
