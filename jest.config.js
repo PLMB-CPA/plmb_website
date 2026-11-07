@@ -1,4 +1,5 @@
 module.exports = {
+  testTimeout: 60000,
   coverageDirectory: 'reports/coverage',
   collectCoverageFrom: [
     'src/**/*.js',
@@ -15,6 +16,7 @@ module.exports = {
       displayName: 'integration',
       testEnvironment: 'node',
       testMatch: ['<rootDir>/tests/integration/**/*.test.js'],
+      setupFiles: ['<rootDir>/tests/setup.js'],
     },
   ],
 };
