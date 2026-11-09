@@ -9,6 +9,8 @@ const clientSchema = new mongoose.Schema({
     address: {type: String, required: true},
     city: {type: String, required: true},
     businessName: {type: String, required: true},
+    birthday: {type: Date},
+    tin: {type: String},
     mustChangePassword: {type: Boolean, default: true},
 }, {timestamps: true});
 
