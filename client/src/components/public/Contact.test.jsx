@@ -98,7 +98,7 @@ describe('contact (send inquiry) page', () => {
 
   // F05 AC2 - a field that only contains spaces is not "filled in properly"
   // CHECKS: nothing is sent, and the other fields keep their values
-  it.fails('treats whitespace-only fields as missing', async () => {
+  it('treats whitespace-only fields as missing', async () => {
     api();
     renderPage();
     const user = userEvent.setup();
@@ -127,7 +127,7 @@ describe('contact (send inquiry) page', () => {
   // F05 AC3 - the inquiry is saved but the confirmation email failed
   // CHECKS: the popup still shows the ticket (inquiry was sent) AND tells the user the
   // confirmation email failed. The exact sentence is not in the AC, so the match is loose.
-  it.fails('shows the ticket and an email-failed notice when the confirmation email fails', async () => {
+  it('shows the ticket and an email-failed notice when the confirmation email fails', async () => {
     api(() => respond({ confirmationEmailSent: false, inquiry: { ticketNumber: 'INQ-0002' } }));
     renderPage();
     const user = userEvent.setup();

@@ -21,6 +21,18 @@ async function sendInquiryNotification(inquiry) {
         from: process.env.EMAIL_USER,
         to: process.env.PLMB_EMAIL,
         subject: `New Inquiry [${inquiry.ticketNumber}]: ${esc(inquiry.subject)}`,
+        text: `
+            You have received a new inquiry:
+
+            From: ${inquiry.firstName} ${inquiry.lastName}
+            Business Name: ${inquiry.businessName}
+            Email: ${inquiry.email}
+            Phone Number: ${inquiry.number}
+            Industry Sector: ${inquiry.industrySector}
+            Category: ${inquiry.category}
+            Subject: ${inquiry.subject}
+            Message: ${inquiry.message}
+        `,
         html: `
             <p>You have received a new inquiry.</p>
             <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
@@ -28,6 +40,7 @@ async function sendInquiryNotification(inquiry) {
                 <tr><td style="padding:6px 12px;font-weight:bold">From</td><td style="padding:6px 12px">${esc(inquiry.firstName)} ${esc(inquiry.lastName)}</td></tr>
                 <tr><td style="padding:6px 12px;font-weight:bold">Business</td><td style="padding:6px 12px">${esc(inquiry.businessName)}</td></tr>
                 <tr><td style="padding:6px 12px;font-weight:bold">Email</td><td style="padding:6px 12px">${esc(inquiry.email)}</td></tr>
+                <tr><td style="padding:6px 12px;font-weight:bold">Phone</td><td style="padding:6px 12px">${esc(inquiry.number)}</td></tr>
                 <tr><td style="padding:6px 12px;font-weight:bold">Industry</td><td style="padding:6px 12px">${esc(inquiry.industrySector)}</td></tr>
                 <tr><td style="padding:6px 12px;font-weight:bold">Category</td><td style="padding:6px 12px">${esc(inquiry.category)}</td></tr>
                 <tr><td style="padding:6px 12px;font-weight:bold">Subject</td><td style="padding:6px 12px">${esc(inquiry.subject)}</td></tr>
@@ -43,6 +56,14 @@ async function sendReply(inquiry, replyMessage) {
         to: inquiry.email,
         replyTo: process.env.PLMB_EMAIL,
         subject: `Re: [${inquiry.ticketNumber}] ${esc(inquiry.subject)}`,
+        text: `
+            Dear ${inquiry.firstName} ${inquiry.lastName},
+
+            ${replyMessage}
+
+            Best regards,
+            The PLMB Team
+        `,
         html: `
             <p style="font-family:Arial,sans-serif;font-size:14px">Dear ${esc(inquiry.firstName)} ${esc(inquiry.lastName)},</p>
             <p style="font-family:Arial,sans-serif;font-size:14px">${esc(replyMessage)}</p>
@@ -58,6 +79,15 @@ async function sendConfirmation(inquiry) {
         from: process.env.EMAIL_USER,
         to: inquiry.email,
         subject: `We received your inquiry [${inquiry.ticketNumber}]`,
+        text: `
+            Dear ${inquiry.firstName} ${inquiry.lastName},
+
+            Thank you for your inquiry. We have received your message and will get back to you shortly.
+            Your ticket number is [${inquiry.ticketNumber}]. Please keep this for your reference.
+
+            Best regards,
+            The PLMB Team
+        `,
         html: `
             <p style="font-family:Arial,sans-serif;font-size:14px">Dear ${esc(inquiry.firstName)} ${esc(inquiry.lastName)},</p>
             <p style="font-family:Arial,sans-serif;font-size:14px">Thank you for reaching out to Po Lao Marquez Benedictos &amp; Co. We have received your inquiry and will get back to you as soon as possible.</p>

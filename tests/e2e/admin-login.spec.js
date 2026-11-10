@@ -34,7 +34,6 @@ test('wrong password keeps the admin on the login page with an error', async ({ 
 // passes while the bug exists,
 // goes red when it's fixed.
 test('login errors do not reveal which usernames exist', async ({ request }) => {
-  test.fail();
   const badUser = await request.post('/api/admin/login', { data: { username: 'nobody', password: 'x' } });
   const badPass = await request.post('/api/admin/login', { data: { username: ADMIN.username, password: 'wrong' } });
   expect((await badUser.json()).error).toBe((await badPass.json()).error);

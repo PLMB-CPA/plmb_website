@@ -18,6 +18,8 @@ function Contact() {
     const [form, setForm] = useState(emptyForm);
     const [status, setStatus] = useState('');
     const [ticket, setTicket] = useState(null); // non-null = show success modal
+    const [emailFailed, setEmailFailed] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     // One handler for every field: uses the input's name="" to pick which key to update
     function handleChange(e) {
@@ -28,6 +30,16 @@ function Contact() {
         e.preventDefault();
         setStatus('');
 
+        const requiredFields = [
+            'firstName', 'lastName', 'businessName', 'category',
+            'industrySector', 'subject', 'message', 'email',
+        ];
+        if (requiredFields.some(key => !String(form[key] ?? '').trim())) {
+            setStatus('Please fill in all required fields.');
+            return;
+        }
+
+        setSubmitting(true);
         try {
             const res = await fetch('/api/inquiries', {
                 method: 'POST',
@@ -38,12 +50,15 @@ function Contact() {
 
             if (res.ok) {
                 setTicket(data.inquiry.ticketNumber);
+                setEmailFailed(data.confirmationEmailSent === false);
                 setForm(emptyForm);
             } else {
                 setStatus(data.error || 'Something went wrong.');
             }
         } catch {
             setStatus('Could not reach the server. Please try again later.');
+        } finally {
+            setSubmitting(false);
         }
     }
 
@@ -101,7 +116,7 @@ function Contact() {
 
                     {status && <div className="form-status">{status}</div>}
 
-                    <input type="submit" className="inquiry-submit" value="Send Inquiry" />
+                    <input type="submit" className="inquiry-submit" value={submitting ? 'Sending...' : 'Send Inquiry'} disabled={submitting} />
                 </form>
             </div>
 
@@ -110,8 +125,11 @@ function Contact() {
                     <div className="modal-box">
                         <h3>Inquiry sent!</h3>
                         <p>Your ticket number is <strong>{ticket}</strong>.</p>
+                        {emailFailed && (
+                            <p role="alert">Your inquiry has been recorded, but the confirmation email failed to send.</p>
+                        )}
                         <p>Please take note of this. We will send a response to your given email in at most 2 Business Days.</p>
-                        <button onClick={() => setTicket(null)}>Close</button>
+                        <button onClick={() => { setTicket(null); setEmailFailed(false); }}>Close</button>
                     </div>
                 </div>
             )}

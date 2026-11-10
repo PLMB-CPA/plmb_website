@@ -37,7 +37,7 @@ describe('checkPasswordStrength', () => {
   });
 
   // "special" characters but are not in the list.
-  test.failing.each(['+', '=', '[', ']', ';', "'", '/', '~'])('"%s" should count as a special character', (ch) => {
+  test.each(['+', '=', '[', ']', ';', "'", '/', '~'])('"%s" should count as a special character', (ch) => {
     expect(checkPasswordStrength('Abcdefgh1' + ch)).toBeNull();
   });
 });

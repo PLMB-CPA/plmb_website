@@ -129,7 +129,7 @@ test.each([
 
 // SITUATION (AC3): valid inquiry, but sendConfirmation fails.
 // CHECKS: saved, 201, the user is told the email failed, the failure is logged on the server.
-test.failing('AC3: saves, warns the user, and logs the failure when the email fails', async () => {
+test('AC3: saves, warns the user, and logs the failure when the email fails', async () => {
   const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
   sendConfirmation.mockRejectedValueOnce(new Error('smtp down'));
 
@@ -144,7 +144,7 @@ test.failing('AC3: saves, warns the user, and logs the failure when the email fa
 });
 
 // test.failing passes while the bug exists and goes red when it's fixed (then delete ".failing").
-test.failing('the phone number from the form is saved', async () => {
+test('the phone number from the form is saved', async () => {
   await request(app).post('/api/inquiries').send(PAYLOAD);
   const saved = await Inquiry.findOne({ ticketNumber: 'INQ-0001' });
   expect(saved.toObject().number).toBe('09171234567');

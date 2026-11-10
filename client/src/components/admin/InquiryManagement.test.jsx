@@ -64,7 +64,7 @@ describe('F03 AC1 · analytics cards', () => {
   });
 
   // BUG #5. it.fails passes while the bug exists and goes red when it's fixed.
-  it.fails('average response time is worded correctly (1 minute, not 1 minutes)', async () => {
+  it('average response time is worded correctly (1 minute, not 1 minutes)', async () => {
     setupApi({ stats: { ...STATS, averageResponseTimeMinutes: 1 } });
     renderPage();
     await waitFor(() => expect(card('Average Response Time')).toHaveTextContent(/^1 minute$/));
@@ -72,7 +72,7 @@ describe('F03 AC1 · analytics cards', () => {
 });
 
 describe('F03 · inquiry list', () => {
-  it.fails('shows the inquiries returned by /api/inquiries', async () => {
+  it('shows the inquiries returned by /api/inquiries', async () => {
     setupApi({
       inquiries: [{
         _id: 'a1', ticketNumber: 'INQ-0001', businessName: 'JDC Corp', subject: 'Audit',
