@@ -9,6 +9,7 @@ const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
 const dashboardController = require('../controllers/dashboard_controller');
+const remittanceController = require('../controllers/remittance_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
@@ -39,6 +40,7 @@ router.patch('/announcements/:id', requireAuth, newsletterController.updateNewsl
 
 // Admin: delete a newsltter
 router.delete('/announcements/:id', requireAuth, newsletterController.deleteNewsletter);
+
 // SUBSCRIBER ROUTES
 
 //Subscriber: subscribe to newsletter
@@ -49,6 +51,16 @@ router.get('/unsubscribe/:token', subscriberController.unsubscribe);
 
 // Admin: fetch all subscribers for the dashboard tab
 router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
+
+// REMITTANCE ROUTES
+
+// Admin: fetch all remittances, create records, update statuses
+router.get('/admin/remittances', requireAuth, remittanceController.getAdminRemittances);
+router.post('/admin/remittances', requireAuth, remittanceController.addRemittanceRecord);
+router.put('/admin/remittances/:id', requireAuth, remittanceController.updateRemittanceStatus);
+
+// Client: fetch only the logged-in client's remittances
+router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
 
 //ADMIN DASHBOARD ROUTES
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
