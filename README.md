@@ -51,6 +51,8 @@ npm run test:e2e
 | `main` | Production-ready deployed code | — | — | — |
 | `develop` | Integration branch for completed work | `main` | `main` | Merge commit |
 | `feature/<id>-<short-name>` | One user story or feature | `develop` | `develop` | Squash and merge |
+| `qa/<id>-<short-name>` | QA testing suites & automation | `develop` | `develop` | Squash and merge |
+| `ops/<id>-<short-name>` | DevOps, deployment & infrastructure | `develop` | `develop` | Squash and merge |
 | `bugfix/<id>-<short-name>` | Non-urgent bug fixes | `develop` | `develop` | Squash and merge |
 | `hotfix/<short-name>` | Urgent production fixes | `main` | `main` & `develop` | Merge commit |
 
