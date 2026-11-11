@@ -205,3 +205,53 @@
     .inquiry-detail-page .status-actions { flex-wrap: wrap; }
     .inquiry-detail-page .delete-button { width: 100%; }
 }
+
+.inquiry-detail-page .inquiry-reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.inquiry-detail-page .inquiry-reply-form textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.inquiry-detail-page .inquiry-reply-form button {
+    background: #255f20;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.inquiry-detail-page .inquiry-reply-form button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.inquiry-detail-page .reply-error {
+    color: #c62828;
+    font-size: 13px;
+}
+
+.inquiry-detail-page .reply-details {
+    background: #f5f9f4;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 375px) {
+    .inquiry-detail-page .inquiry-reply-form button {
+        width: 100%;
+    }
+}

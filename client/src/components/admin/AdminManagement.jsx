@@ -27,7 +27,7 @@ function AdminRow({ admin, onDelete }) {
                 <button type="button" className="more-btn" onClick={() => setMenuOpen(!menuOpen)}>⋮</button>
                 <div className={`dropdown-content ${menuOpen ? 'show' : ''}`}>
                     <button type="button" className="change-pass-ad"
-                        onClick={() => navigate(`/admin/create?mode=change&id=${admin._id}`)}>
+                        onClick={() => navigate(`/admin/manage/create?mode=change&id=${admin._id}`)}>
                         Change Password
                     </button>
                     <button type="button" className="delete-ad" onClick={() => onDelete(admin._id)}>
@@ -78,7 +78,7 @@ function AdminManagement() {
             <div className="dashboard-header">
                 <div className="labels">
                     <div className="labels-text">
-                        <h1>Manage</h1>
+                        <h1>Manage Admin</h1>
                         <p>Add, delete, track, and update admins.</p>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ function AdminManagement() {
                         <h1>All Admins</h1>
                         <div className="header-items">
                             <button type="button" className="add-admin-btn"
-                                onClick={() => navigate('/admin/create?mode=add')}>
+                                onClick={() => navigate('/admin/manage/create?mode=add')}>
                                 Add Admin
                             </button>
                         </div>

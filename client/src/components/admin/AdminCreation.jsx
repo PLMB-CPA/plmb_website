@@ -1,31 +1,25 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import useAdminSession from './useAdminSession';
+import AdminHeader from './AdminHeader';
 import './AdminCreation.css';
 
-// Replaces src/views/admin_creation.html + public/js/admin_creation.js
-//
-//   /admin/create?mode=add                 -> create a new admin
-//   /admin/create?mode=change&id=<adminId> -> change that admin's password
-//
-// No sidebar here, so this page sits outside AdminLayout and runs the login
-// check itself.
-
-function PasswordField({ id, placeholder, value, onChange, containerId, buttonId }) {
+function PasswordField({ label, value, onChange }) {
     const [show, setShow] = useState(false);
     return (
-        <div className="password" id={containerId}>
-            <input type={show ? 'text' : 'password'} id={id} placeholder={placeholder}
-                autoComplete="new-password" value={value} onChange={onChange} required />
-            <button type="button" id={buttonId} className={show ? 'open' : ''}
-                onClick={() => setShow(!show)}
-                aria-label={show ? 'Hide password' : 'Show password'} />
-        </div>
+        <label className="field">
+            {label}
+            <span className="password-input">
+                <input type={show ? 'text' : 'password'} autoComplete="new-password"
+                    value={value} onChange={onChange} required />
+                <button type="button" className={`pw-toggle ${show ? 'open' : ''}`}
+                    onClick={() => setShow(!show)}
+                    aria-label={show ? 'Hide password' : 'Show password'} />
+            </span>
+        </label>
     );
 }
 
 function AdminCreation() {
-    const loggedInAs = useAdminSession();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const mode = searchParams.get('mode') === 'change' ? 'change' : 'add';
@@ -35,8 +29,9 @@ function AdminCreation() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
-    if (loggedInAs === null) return null; // still checking the session
+    const title = mode === 'change' ? 'Change Password' : 'Add Admin';
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -51,6 +46,7 @@ function AdminCreation() {
             ? { url: '/api/admin/users', method: 'POST', body: { username, password } }
             : { url: `/api/admin/users/${adminId}/password`, method: 'PUT', body: { password } };
 
+        setSubmitting(true);
         try {
             const res = await fetch(request.url, {
                 method: request.method,
@@ -65,40 +61,73 @@ function AdminCreation() {
             navigate('/admin/manage');
         } catch {
             setError('Network error. Try again.');
+        } finally {
+            setSubmitting(false);
         }
     }
 
     return (
-        <div className="admin-create-page">
-            <div className="main">
-                <form className="admin_form" onSubmit={handleSubmit}>
-                    <div className="admin_block">
-                        <h2 className="admin_header">{mode === 'change' ? 'Change Password' : 'Add Admin'}</h2>
+        <div className="admin-form-page">
+            <AdminHeader />
 
-                        <div className="admin_inputs">
-                            {mode === 'add' && (
-                                <div className="username">
-                                    <input type="text" id="username" placeholder="Username" autoComplete="off"
+            <div className="form-wrap">
+                <div className="form-title">
+                    <nav className="breadcrumb" aria-label="Breadcrumb">
+                        <Link to="/admin/manage">Manage Admin</Link>
+                        <span className="sep" aria-hidden="true">/</span>
+                        <span>{title}</span>
+                    </nav>
+                    <h1>{title}</h1>
+                    <p>
+                        {mode === 'change'
+                            ? 'Set a new password for this admin.'
+                            : 'Gives a staff member access to this admin panel.'}
+                    </p>
+                </div>
+
+                <form className="form-card" onSubmit={handleSubmit}>
+                    {mode === 'add' && (
+                        <section className="form-section">
+                            <h2>Account</h2>
+                            <div className="form-grid">
+                                <label className="field">
+                                    Username
+                                    <input type="text" autoComplete="off" placeholder="e.g. mreyes"
                                         value={username} onChange={e => setUsername(e.target.value)} required />
-                                </div>
-                            )}
+                                </label>
+                            </div>
+                        </section>
+                    )}
 
-                            <PasswordField id="password" placeholder="Password"
-                                containerId="pw-container-1" buttonId="pw-button"
-                                value={password} onChange={e => setPassword(e.target.value)} />
-                            <PasswordField id="confirm-password" placeholder="Confirm Password"
-                                containerId="pw-container-2" buttonId="pw-button-confirm"
-                                value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                    <section className="form-section">
+                        <h2>Password</h2>
+                        <div className="form-grid">
+                            <div className="field-stack">
+                                <PasswordField label="Password"
+                                    value={password} onChange={e => setPassword(e.target.value)} />
+                                <PasswordField label="Confirm password"
+                                    value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                            </div>
+
+                            <div className="password-rules">
+                                <strong>Password must have</strong>
+                                <ul>
+                                    <li>At least 10 characters</li>
+                                    <li>One capital letter</li>
+                                    <li>One number</li>
+                                    <li>One special character</li>
+                                </ul>
+                            </div>
                         </div>
+                    </section>
 
-                        <p className="input-error">{error}</p>
+                    {error && <p className="form-message error">{error}</p>}
 
-                        <div className="admin_action">
-                            <button type="submit" id="submit_btn">
-                                {mode === 'change' ? 'Update Password' : 'Confirm'}
-                            </button>
-                            <Link to="/admin/manage" className="btn">Return to Dashboard</Link>
-                        </div>
+                    <div className="form-actions">
+                        <Link to="/admin/manage" className="btn-secondary">Cancel</Link>
+                        <button type="submit" className="btn-primary" disabled={submitting}>
+                            {submitting ? 'Saving...' : mode === 'change' ? 'Update password' : 'Create admin'}
+                        </button>
                     </div>
                 </form>
             </div>
