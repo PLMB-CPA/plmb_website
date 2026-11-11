@@ -1,0 +1,444 @@
+.remittance-page .dashboard-header {
+    width: 100%;
+    background: #fff;
+    padding: 24px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.remittance-page .labels {
+    padding-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.remittance-page .labels-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.remittance-page .labels h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #202020;
+    letter-spacing: -0.6px;
+    margin-bottom: 2px;
+}
+
+.remittance-page .labels p {
+    font-size: 14px;
+    color: #8a8a8a;
+    margin-bottom: 10px;
+}
+
+.remittance-page .dashboard-content {
+    padding: 24px 30px;
+}
+
+.remittance-page .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* Filter Tabs */
+.remittance-page .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.remittance-page .filter-btn {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+    background: white;
+    color: #555;
+}
+
+.remittance-page .filter-btn:hover {
+    background: #f5f5f5;
+}
+
+.remittance-page .filter-btn.active {
+    background: #255f20;
+    color: white;
+    border-color: #255f20;
+}
+
+/* Actions Area */
+.remittance-page .header-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.remittance-page .add-btn {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 16px;
+    height: 42px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s;
+    background: white;
+    color: #255f20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
+}
+
+.remittance-page .add-btn:hover {
+    background-color: #f5f5f5;
+}
+
+/* Search Bar */
+.remittance-page .manage-search {
+    display: flex;
+    align-items: center;
+    width: 280px;
+    height: 42px;
+    padding: 0 16px;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    transition: .2s ease;
+}
+
+.remittance-page .manage-search:hover {
+    border-color: #d8d8d8;
+}
+
+.remittance-page .manage-search:focus-within {
+    border-color: #255f20;
+    box-shadow: 0 0 0 4px rgba(37, 95, 32, .08);
+}
+
+.remittance-page .search-icon {
+    width: 16px;
+    opacity: .45;
+    margin-right: 10px;
+}
+
+.remittance-page .manage-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Row Styling */
+.remittance-page .remittance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.remittance-page .user-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    padding: 18px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    transition: .2s;
+    animation: fadeUp 0.8s ease;
+}
+
+.remittance-page .user-info {
+    flex: 1.2;
+}
+
+.remittance-page .user-info h3 {
+    font-size: 16px;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.remittance-page .user-info p {
+    font-size: 12px;
+    color: #8a8a8a;
+}
+
+.remittance-page .user-stat {
+    flex: 1;
+    min-width: 120px;
+}
+
+.remittance-page .user-stat h3 {
+    font-size: 14px;
+    margin-bottom: 3px;
+    color: #333;
+}
+
+.remittance-page .user-stat p {
+    font-size: 12px;
+    color: #8a8a8a;
+}
+
+/* Dynamic Status Badges */
+.remittance-page .status-badge {
+    text-align: center;
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 14px;
+    font-weight: 600;
+}
+
+.remittance-page .status-badge.pending {
+    background: #fff4e5;
+    color: #b26a00;
+}
+
+.remittance-page .status-badge.processing {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.remittance-page .status-badge.remitted {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.remittance-page .status-badge.completed {
+    background: #edf8ed;
+    color: #2d8f3f;
+}
+
+/* Dropdown Menu */
+.remittance-page .dropdown-btn {
+    position: relative;
+    flex: 0 0 38px;
+}
+
+.remittance-page .more-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    transition: .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remittance-page .more-btn:hover {
+    background: #f5f5f5;
+}
+
+.remittance-page .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 175px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    top: 100%;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.remittance-page .dropdown-content.show {
+    display: block;
+}
+
+.remittance-page .status-opt {
+    width: 100%;
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    font-size: 13px;
+    border: 0;
+    background: none;
+    text-align: left;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.remittance-page .status-opt:hover {
+    background-color: #f5f5f5;
+}
+
+.remittance-page .empty-list {
+    padding: 22px 4px;
+    font-size: 14px;
+    color: #8a8a8a;
+}
+
+/* Responsive Constraints */
+@media (max-width: 850px) {
+    .remittance-page .header-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .remittance-page .manage-search {
+        width: 100%;
+    }
+
+    .remittance-page .user-row {
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .remittance-page .user-info {
+        flex: 1 1 100%;
+    }
+
+    .remittance-page .user-stat {
+        flex: 1 1 45%;
+    }
+}
+
+/* Desktop View */
+.list-header {
+    display: flex;
+    gap: 18px; /* Matches the gap in .user-row */
+    padding: 0 24px; /* Matches the horizontal padding in .user-row */
+    font-weight: bold;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.header-client {
+    flex: 1.2; /* Matches .user-info */
+}
+
+.header-tax, 
+.header-date {
+    flex: 1; /* Matches .user-stat */
+}
+
+.header-status {
+    flex: 0 0 110px; /* Matches the status badge container */
+    text-align: center;
+}
+
+/* Lock the container width so it never shifts */
+.status-badge-container {
+    flex: 0 0 110px; 
+}
+
+/* Ensure the badge fills the container */
+.remittance-page .status-badge {
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+.header-spacer {
+    flex: 0 0 38px; /* Matches .dropdown-btn */
+}
+
+/* Enhances the monetary amount */
+.amount-text {
+    color: #333 !important;
+    font-weight: 600;
+}
+
+.mobile-label {
+    display: none; /* Hide inline labels on desktop */
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .list-header {
+        display: none; /* Hide the top header row */
+    }
+
+    .mobile-label {
+        display: inline-block;
+        font-weight: 600;
+        color: #666;
+        font-size: 12px;
+        min-width: 90px;
+        margin-right: 8px;
+    }
+
+    /* Stack card contents vertically using your actual class name */
+    .remittance-page .user-row {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+        position: relative;
+    }
+    
+    /* Display the label and the data side-by-side */
+    .remittance-page .user-info, 
+    .remittance-page .user-stat, 
+    .status-badge-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%; 
+        flex: unset;
+        align-items: flex-start;
+    }
+    
+    /* Move the 3-dot menu to the top right corner */
+    .remittance-page .dropdown-btn {
+        position: absolute; 
+        top: 16px;
+        right: 16px;
+    }
+}
+
+/* Overdue Date Styling */
+.date-overdue {
+    color: #d32f2f !important;
+    font-weight: 700;
+}
+
+/* Date Filter Dropdown */
+.date-filter-select {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    background: #fff;
+    padding: 0 16px;
+    height: 42px;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.date-filter-select:hover {
+    border-color: #d8d8d8;
+}
+
+.date-filter-select:focus {
+    border-color: #255f20;
+}
+
+@media (max-width: 850px) {
+    .date-filter-select {
+        width: 100%;
+    }
+}
