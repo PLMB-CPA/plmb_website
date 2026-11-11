@@ -12,7 +12,7 @@ function generateTempPassword() {
 // Admin create client
 exports.createClient = async (req, res) => {
   try {
-    const { email, firstName, lastName, phoneNumber, address, city, businessName } = req.body;
+    const { email, firstName, lastName, phoneNumber, address, city, businessName, birthday, tin } = req.body;
     if (!email || !firstName || !lastName || !phoneNumber || !address || !city || !businessName)
         return res.status(400).json({error: 'Please recheck missing information.'})
     if (await Client.findOne({email: email.toLowerCase().trim()}))
@@ -23,6 +23,8 @@ exports.createClient = async (req, res) => {
 
     const client = await Client.create({
         email, firstName, lastName, phoneNumber, address, city, businessName,
+        birthday: birthday || undefined,
+        tin: tin || undefined,
         password: tempPasswordHash
     });
 
