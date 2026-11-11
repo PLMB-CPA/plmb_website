@@ -1,4 +1,5 @@
 const Remittance = require('../models/Remittance');
+const { TAX_TYPES, REMITTANCE_STATUS } = require('../util/constants');
 
 // TODO: confirm which fields are mandatory
 // TODO: confirm enum values
@@ -11,7 +12,7 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(400).json({ message: 'Client, tax type, and amount are required' });
         }
 
-        const validTaxTypes = ['VAT', 'Percentage Tax', 'Income Tax', 'Withholding Tax'];
+        const validTaxTypes = Object.values(TAX_TYPES);
         if (!validTaxTypes.includes(taxType)) {
             return res.status(400).json({ message: 'Invalid tax type selected' });
         }
@@ -26,6 +27,9 @@ const addRemittanceRecord = async (req, res) => {
             amount,
             dueDate: dueDate || null
         });
+
+        // Fetch the full client details before sending it back to the React frontend
+        await remittance.populate('client');
 
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
@@ -56,7 +60,7 @@ const updateRemittanceStatus = async (req, res) => {
             return res.status(400).json({ message: 'Status is required' });
         }
 
-        const validStatuses = ['Pending', 'Processing', 'Remitted', 'Completed'];
+        const validStatuses = Object.values(REMITTANCE_STATUS);
         if (!validStatuses.includes(status)) {
             return res.status(400).json({ message: 'Invalid status update' });
         }
@@ -76,7 +80,7 @@ const updateRemittanceStatus = async (req, res) => {
             { new: true, runValidators: true }
         )
             .populate('client', 'firstName lastName email')
-            .populate('lastEditedBy', 'firstName lastName');
+            .populate('lastEditedBy', 'username');
 
         if (!remittance) {
             return res.status(404).json({ message: 'Remittance record not found' });
@@ -105,6 +109,7 @@ const getClientRemittances = async (req, res) => {
 
         res.status(200).json(remittances);
     } catch (err) {
+
         res.status(500).json({ error: 'Failed to fetch remittances' });
     }
 };
