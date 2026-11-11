@@ -1,5 +1,31 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const express = require('express');
+
+// ---- fake emailer (E2E only) ----
+// GET    /__e2e/outbox                          -> list of "sent" emails
+// DELETE /__e2e/outbox                          -> clear the list
+// POST   /__e2e/fail-next-email                 -> the next email (any kind) throws
+// POST   /__e2e/fail-next-email?fn=sendConfirmation -> the next email of THAT kind throws
+const outbox = [];
+let failNext = null;   // null, '*' (any), or an emailer function name
+
+function installFakeEmailer() {
+  const emailerPath = require.resolve('../../src/util/emailer');
+  const fake = new Proxy({}, {
+    get(_target, name) {
+      if (typeof name !== 'string' || name === 'then') return undefined;
+      return async (...args) => {
+        if (failNext && (failNext === '*' || failNext === name)) {
+          failNext = null;
+          throw new Error('E2E: forced email failure');
+        }
+        outbox.push({ fn: name, args: JSON.parse(JSON.stringify(args)) });
+      };
+    },
+  });
+  require.cache[emailerPath] = { id: emailerPath, filename: emailerPath, loaded: true, exports: fake };
+}
 
 async function startServer() {
   if (!process.env.SESSION_SECRET) {
@@ -18,7 +44,6 @@ async function startServer() {
 
   await mongoose.connect(mongoUri);
 
-  // Ensure default admin account exists for E2E login tests
   const Admin = require('../../src/models/Admin');
   const username = 'plmbadmin';
   const existing = await Admin.findOne({ username });
@@ -27,9 +52,20 @@ async function startServer() {
     await Admin.create({ username, password: hashedPassword });
   }
 
+  installFakeEmailer();                       
   const app = require('../../src/app');
+
+  const outer = express();
+  outer.get('/__e2e/outbox', (_req, res) => res.json(outbox));
+  outer.delete('/__e2e/outbox', (_req, res) => { outbox.length = 0; res.sendStatus(204); });
+  outer.post('/__e2e/fail-next-email', (req, res) => {
+    failNext = req.query.fn || '*';
+    res.sendStatus(204);
+  });
+  outer.use(app);
+
   const port = process.env.PORT || 3000;
-  const server = app.listen(port, () => {
+  const server = outer.listen(port, () => {
     console.log(`E2E server listening on http://localhost:${port}`);
   });
 
