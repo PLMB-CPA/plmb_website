@@ -1,0 +1,175 @@
+/* Modal Overlay Background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal Box */
+.modal-content {
+    background: #fff;
+    padding: 32px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+    font-size: 22px;
+    color: #202020;
+    margin-bottom: 24px;
+}
+
+/* Form Layout */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-content label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: -8px;
+}
+
+.modal-content input,
+.modal-content select {
+    padding: 12px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+    border-color: #255f20;
+}
+
+/* Buttons */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #555;
+}
+
+.save-btn {
+    padding: 10px 20px;
+    background: #255f20;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* --- Custom Searchable Dropdown --- */
+.custom-select-container {
+    position: relative;
+    width: 100%;
+}
+
+.select-header {
+    padding: 12px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    transition: 0.2s;
+}
+
+.select-header:hover {
+    border-color: #d8d8d8;
+}
+
+.select-header .arrow {
+    font-size: 10px;
+    color: #888;
+}
+
+.select-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    overflow: hidden;
+}
+
+/* Force override the global input styles for this specific search box */
+.modal-content input.search-box {
+    width: 100%;
+    padding: 12px 16px !important;
+    border: none !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    border-radius: 0 !important;
+    background: #f9f9f9;
+}
+
+.modal-content input.search-box:focus {
+    border-bottom: 1px solid #255f20 !important;
+    background: #fff;
+}
+
+.options-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.options-list li {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #444;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.options-list li:hover {
+    background: #f0f7f0;
+    color: #255f20;
+}
+
+.no-results {
+    color: #8a8a8a !important;
+    text-align: center;
+    cursor: default !important;
+}
+
+.no-results:hover {
+    background: #fff !important;
+}
