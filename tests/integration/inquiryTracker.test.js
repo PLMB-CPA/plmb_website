@@ -294,7 +294,7 @@ describe('F03 · filters and known bugs', () => {
   });
 
   // passes while the bug exists and turns red when it's fixed
-  test.failing('ticket numbers stay unique after an inquiry is deleted', async () => {
+  test('ticket numbers stay unique after an inquiry is deleted', async () => {
     await request(app).post('/api/inquiries').send(PAYLOAD);                                    // INQ-0001
     await request(app).post('/api/inquiries').send({ ...PAYLOAD, email: 'ana@gmail.com' });     // INQ-0002
     await Inquiry.deleteOne({ ticketNumber: 'INQ-0001' });
@@ -304,7 +304,7 @@ describe('F03 · filters and known bugs', () => {
     expect(new Set(tickets).size).toBe(tickets.length);
   });
 
-  test.failing('PATCH cannot overwrite protected fields', async () => {
+  test('PATCH cannot overwrite protected fields', async () => {
     const agent = await createAdminAndLogin();
     const inquiry = await makeInquiry();
 
@@ -321,7 +321,7 @@ describe('F03 · filters and known bugs', () => {
     expect(inDb.responseTimeMinutes).toBeNull();
   });
 
-  test.failing('PATCH on a nonexistent inquiry returns 404', async () => {
+  test('PATCH on a nonexistent inquiry returns 404', async () => {
     const agent = await createAdminAndLogin();
     const res = await agent
       .patch(`/api/inquiries/${new mongoose.Types.ObjectId()}`)

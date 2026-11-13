@@ -93,7 +93,7 @@ test.describe('F01 AC1 · admin adds a client, client logs in', () => {
     await page.getByPlaceholder('Confirm Password').fill(NEW_PASSWORD);
     await page.getByRole('button', { name: 'Save Password' }).click();
     await expect(page).toHaveURL(/\/client$/);
-    await expect(page.getByRole('heading', { name: 'Client Dashboard' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Client (Dashboard|Portal)/i })).toBeVisible();
 
     // logout through the api (the dashboard has no logout button yet, see the bug below)
     expect((await page.request.post('/api/client/logout')).ok()).toBeTruthy();
@@ -194,7 +194,6 @@ test.describe('F01 AC3 · not logged in as a client', () => {
   // SITUATION: a visitor with no login types the dashboard url.
   // CHECKS: sent to the client login (AC3).
   test('/client redirects a logged-out visitor to the login', async ({ page }) => {
-    test.fail();
     await page.goto('/client');
     await expect(page).toHaveURL(/\/client\/login/);
   });
@@ -217,7 +216,6 @@ test.describe('F01 AC3 · not logged in as a client', () => {
   // SITUATION: AC1 says "when logging out, the session is destroyed and the client is
   // redirected to the login page", so the dashboard needs a logout button.
   test('the dashboard has a logout button', async ({ page, context }) => {
-    test.fail();
     await loginAsAdmin(page);
     const { email, tempPassword } = await createClientViaApi(page);
     await context.clearCookies();

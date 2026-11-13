@@ -37,6 +37,11 @@ jobs:
           npm ci
           npm ci --prefix client
 
+      - name: Audit production dependencies
+        run: |
+          npm audit --omit=dev --audit-level=high
+          npm audit --prefix client --omit=dev --audit-level=high
+
       - name: Lint
         run: npm run lint --prefix client
 

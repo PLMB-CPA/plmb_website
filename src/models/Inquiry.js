@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 
 const inquirySchema = new mongoose.Schema({
   ticketNumber: {type: String},
-  firstName: {type: String, required: true},
-  lastName: {type: String, required: true},
-  businessName: {type: String, required: true},
-  email: {type: String, required: true},
+  firstName: {type: String, required: true, trim: true},
+  lastName: {type: String, required: true, trim: true},
+  businessName: {type: String, required: true, trim: true},
+  email: {type: String, required: true, trim: true},
+  number: {type: String, trim: true},
   industrySector: {type: String,
               enum: [
                 'Healthcare',
@@ -31,8 +32,8 @@ const inquirySchema = new mongoose.Schema({
                     ],
             required: true
             },
-  subject: {type: String, required: true},
-  message: {type: String, required: true},
+  subject: {type: String, required: true, trim: true},
+  message: {type: String, required: true, trim: true},
   date: {type: Date, default: Date.now},
   reply: {type: String, default: null},
   repliedAt: {type: Date, default: null},
