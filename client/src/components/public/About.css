@@ -7,14 +7,6 @@
   padding: 0 20px;
 }
 
-.about .about-intro,
-.about .mv-grid,
-.about .partner-card,
-.about .accred,
-.about .contact {
-  animation: fadeUp 0.8s ease forwards;
-}
-
 /* ABOUT INTRO */
 .about .about-intro {
   background: white;

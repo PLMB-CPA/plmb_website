@@ -266,7 +266,6 @@
     padding: 22px 28px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
     transition: .2s;
-    animation: fadeUp 0.8s ease;
 }
 
 .admin-newsletters-page .newsletter-info {
