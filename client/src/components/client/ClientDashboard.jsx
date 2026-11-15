@@ -15,31 +15,18 @@ function ClientDashboard() {
     const navigate = useNavigate();
     const [error, setError] = useState('');
 
-    // TEMP: mock data for UI preview — delete lines 18-28 and uncomment line 30 when done
-    const [client, setClient] = useState({
-        firstName: 'Juan',
-        lastName: 'dela Cruz',
-        email: 'juan@example.com',
-        phoneNumber: '09171234567',
-        birthday: '1990-05-15',
-        tin: '123-456-789',
-        businessName: 'Sample Corp',
-        address: '123 Main St',
-        city: 'Manila',
-    });
-    // const [client, setClient] = useState(null);
+    const [client, setClient] = useState(null);
 
-    // TEMP: comment this back in when done previewing
-    // useEffect(() => {
-    //     fetch('/api/client/me')
-    //         .then(res => {
-    //             if (res.status === 401) { navigate('/client/login', { replace: true }); return null; }
-    //             if (res.status === 403) { navigate('/client/change-password', { replace: true }); return null; }
-    //             return res.json();
-    //         })
-    //         .then(data => { if (data) setClient(data); })
-    //         .catch(() => setError('Could not load profile.'));
-    // }, [navigate]);
+    useEffect(() => {
+        fetch('/api/client/me')
+            .then(res => {
+                if (res.status === 401) { navigate('/client/login', { replace: true }); return null; }
+                if (res.status === 403) { navigate('/client/change-password', { replace: true }); return null; }
+                return res.json();
+            })
+            .then(data => { if (data) setClient(data); })
+            .catch(() => setError('Could not load profile.'));
+    }, [navigate]);
 
     async function handleLogout() {
         await fetch('/api/client/logout', { method: 'POST' });
