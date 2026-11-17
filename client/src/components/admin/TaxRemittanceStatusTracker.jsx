@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import AdminHeader from './AdminHeader';
 import AddRemittanceModal from './AddRemittanceModal';
+import DeleteConfirmModal from './DeleteConfirmModal';
 import useClickOutside from './useClickOutside';
 import './TaxRemittanceStatusTracker.css';
-import './AddRemittanceModal.css';
-import { REMITTANCE_STATUS } from '../../util/constants';
+import './RemittanceTrackerModal.css';
+import { REMITTANCE_STATUS, TAX_TYPES, STATUS_COLORS } from '../../util/constants';
 
 function formatDate(dateStr) {
     if (!dateStr) return '—';
@@ -32,7 +33,7 @@ function checkIsOverdue(dueDate, status) {
 }
 
 // Component representing a single row in the remittance list
-function RemittanceRow({ remittance, onStatusUpdate }) {
+function RemittanceRow({ remittance, onStatusUpdate, onDelete }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useClickOutside(() => setMenuOpen(false));
 
@@ -52,7 +53,7 @@ function RemittanceRow({ remittance, onStatusUpdate }) {
     };
 
     return (
-        <div className="user-row">
+        <div className={`user-row ${menuOpen ? 'menu-active' : ''}`}>
             <div className="user-info">
                 <span className="mobile-label">Client: </span>
                 <div>
@@ -86,7 +87,13 @@ function RemittanceRow({ remittance, onStatusUpdate }) {
 
             <div className="status-badge-container">
                 <span className="mobile-label">Status: </span>
-                <div className={`status-badge ${statusClass}`}>
+                <div 
+                    className="status-badge"
+                    style={{ 
+                        backgroundColor: STATUS_COLORS[remittance.status]?.bg || '#f5f5f5', 
+                        color: STATUS_COLORS[remittance.status]?.text || '#333' 
+                    }}
+                >
                     {remittance.status}
                 </div>
             </div>
@@ -95,10 +102,32 @@ function RemittanceRow({ remittance, onStatusUpdate }) {
             <div className="dropdown-btn" ref={menuRef}>
                 <button type="button" className="more-btn" onClick={() => setMenuOpen(!menuOpen)}>⋮</button>
                 <div className={`dropdown-content ${menuOpen ? 'show' : ''}`}>
-                    <button type="button" className="status-opt pending" onClick={() => handleStatusChange('Pending')}>Mark Pending</button>
-                    <button type="button" className="status-opt processing" onClick={() => handleStatusChange('Processing')}>Mark Processing</button>
-                    <button type="button" className="status-opt remitted" onClick={() => handleStatusChange('Remitted')}>Mark Remitted</button>
-                    <button type="button" className="status-opt completed" onClick={() => handleStatusChange('Completed')}>Mark Completed</button>
+                    {/* Status buttons are dynamically mapped to values */}
+                    {Object.values(REMITTANCE_STATUS).map(status => (
+                        <button 
+                            key={status}
+                            type="button" 
+                            className="status-opt" 
+                            onClick={() => handleStatusChange(status)}
+                        >
+                            Mark {status}
+                        </button>
+                    ))}
+
+                    {/* Add a subtle divider line */}
+                    <hr style={{ margin: '4px 0', border: 'none', borderTop: '1px solid #e5e5e5' }} />
+
+                    {/* Delete Button */}
+                    <button 
+                        type="button" 
+                        className="status-opt delete-opt" 
+                        onClick={() => {
+                            setMenuOpen(false); // Close the menu
+                            onDelete(remittance._id); // Trigger the delete function
+                        }}
+                    >
+                        Delete Record
+                    </button>
                 </div>
             </div>
         </div>
@@ -112,9 +141,17 @@ function TaxRemittanceStatusTracker() {
     const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('All');
     const [dateFilter, setDateFilter] = useState('All'); // New date filter state
-    
-    const [showModal, setShowModal] = useState(false);
+    const [taxFilter, setTaxFilter] = useState('All');
+
+    const [showAddModal, setShowAddModal] = useState(false);
     const [clients, setClients] = useState([]);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [recordToDelete, setRecordToDelete] = useState(null);
+
+    const promptDelete = (id) => {
+        setRecordToDelete(id);
+        setDeleteModalOpen(true);
+    };
 
     useEffect(() => {
         fetch('/api/admin/remittances')
@@ -169,7 +206,30 @@ function TaxRemittanceStatusTracker() {
             newRemittance.client = fullClientObj || newRemittance.client;
         }
         setRemittances([...remittances, newRemittance]);
-        setShowModal(false);
+        setShowAddModal(false);
+    };
+
+    const confirmDelete = async () => {
+        if (!recordToDelete) return; // Failsafe
+
+        try {
+            const res = await fetch(`/api/admin/remittances/${recordToDelete}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                // Remove the deleted record from the React state
+                setRemittances(prev => prev.filter(rem => rem._id !== recordToDelete));
+                setDeleteModalOpen(false); // Close the modal
+                setRecordToDelete(null); // Clear the ID from state
+            } else {
+                const data = await res.json();
+                window.alert(data.message || 'Failed to delete record');
+            }
+        } catch (err) {
+            console.error('Delete error:', err);
+            window.alert('Network error while deleting record.');
+        }
     };
 
     // Filters based on search, status tab, AND the date dropdown
@@ -178,6 +238,8 @@ function TaxRemittanceStatusTracker() {
         const matchesSearch = clientName.includes(search.toLowerCase());
         const matchesStatus = filter === 'All' || rem.status === filter;
         
+        const matchesTax = taxFilter === 'All' || rem.taxType === taxFilter;
+
         let matchesDate = true;
         if (dateFilter !== 'All') {
             const hasDate = !!rem.dueDate;
@@ -202,7 +264,7 @@ function TaxRemittanceStatusTracker() {
             if (dateFilter === 'No Due Date') matchesDate = !hasDate;
         }
 
-        return matchesSearch && matchesStatus && matchesDate;
+        return matchesSearch && matchesStatus && matchesDate && matchesTax;
     });
 
     return (
@@ -212,8 +274,8 @@ function TaxRemittanceStatusTracker() {
             <div className="dashboard-header">
                 <div className="labels">
                     <div className="labels-text">
-                        <h1>Tax Remittances</h1>
-                        <p>View, filter, and update client tax remittance records.</p>
+                        <h2>Tax Remittances</h2>
+                        <p>View, filter, create, update, and delete client tax remittance records.</p>
                     </div>
                 </div>
             </div>
@@ -241,10 +303,21 @@ function TaxRemittanceStatusTracker() {
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        
-                        {/* New Date Filter Dropdown */}
+                        {/* Tax Type Filter Dropdown */}
                         <select 
-                            className="date-filter-select"
+                            className="filter-select"
+                            value={taxFilter} 
+                            onChange={(e) => setTaxFilter(e.target.value)}
+                        >
+                            <option value="All">All Taxes</option>
+                            {Object.values(TAX_TYPES).map(tax => (
+                                <option key={tax} value={tax}>{tax}</option>
+                            ))}
+                        </select>
+                                            
+                        {/* Date Filter Dropdown */}
+                        <select 
+                            className="filter-select"
                             value={dateFilter} 
                             onChange={(e) => setDateFilter(e.target.value)}
                         >
@@ -254,7 +327,7 @@ function TaxRemittanceStatusTracker() {
                             <option value="No Due Date">No Due Date</option>
                         </select>
 
-                        <button type="button" className="add-btn" onClick={() => setShowModal(true)}>
+                        <button type="button" className="add-btn" onClick={() => setShowAddModal(true)}>
                             + Add Record
                         </button>
                     </div>
@@ -274,26 +347,37 @@ function TaxRemittanceStatusTracker() {
                     {error && <p className="empty-list">{error}</p>}
 
                     {!error && displayedRemittances.length === 0 && (
-                        <p className="empty-list">No remittance records found matching your criteria.</p>
+                        <p className="empty-list">No remittances on record.</p>
                     )}
 
                     {displayedRemittances.map(rem => (
                         <RemittanceRow 
                             key={rem._id} 
                             remittance={rem} 
-                            onStatusUpdate={handleStatusUpdate} 
+                            onStatusUpdate={handleStatusUpdate}
+                            onDelete={promptDelete} 
                         />
                     ))}
                 </div>
             </div>
 
-            {showModal && (
+            {showAddModal && (
                 <AddRemittanceModal 
                     clients={clients} 
-                    onClose={() => setShowModal(false)} 
+                    onClose={() => setShowAddModal(false)} 
                     onSuccess={handleRecordAdded} 
                 />
             )}
+            {deleteModalOpen && (
+                <DeleteConfirmModal 
+                    onClose={() => {
+                        setDeleteModalOpen(false);
+                        setRecordToDelete(null);
+                    }} 
+                    onConfirm={confirmDelete} 
+                />
+            )}
+
         </div>
     );
 }

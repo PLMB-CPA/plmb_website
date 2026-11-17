@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TAX_TYPES } from '../../util/constants';
 import useClickOutside from './useClickOutside';
-import './AddRemittanceModal.css';
+import './RemittanceTrackerModal.css';
 
 function AddRemittanceModal({ onClose, onSuccess, clients }) {
     const [formData, setFormData] = useState({
@@ -57,7 +57,7 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
             <div className="modal-content">
                 <h2>Add Tax Remittance</h2>
                 <form onSubmit={handleSubmit}>
-                    <label>Client</label>
+                    <label>Client <span style={{ color: '#d32f2f' }}>*</span></label>
                     
                     {/* Custom Searchable Dropdown */}
                     <div className="custom-select-container" ref={dropdownRef}>
@@ -103,7 +103,7 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
                         )}
                     </div>
 
-                    <label>Tax Type</label>
+                    <label>Tax Type <span style={{ color: '#d32f2f' }}>*</span></label>
                     <select
                         required
                         value={formData.taxType}
@@ -114,7 +114,7 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
                         ))}
                     </select>
 
-                    <label>Amount (PHP)</label>
+                    <label>Amount (PHP) <span style={{ color: '#d32f2f' }}>*</span></label>
                     <input
                         type="number"
                         min="0"
@@ -127,7 +127,6 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
                     <label>Due Date</label>
                     <input
                         type="date"
-                        required
                         value={formData.dueDate}
                         onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                     />

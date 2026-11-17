@@ -201,26 +201,6 @@
     font-weight: 600;
 }
 
-.remittance-page .status-badge.pending {
-    background: #fff4e5;
-    color: #b26a00;
-}
-
-.remittance-page .status-badge.processing {
-    background: #e3f2fd;
-    color: #1565c0;
-}
-
-.remittance-page .status-badge.remitted {
-    background: #f3e5f5;
-    color: #6a1b9a;
-}
-
-.remittance-page .status-badge.completed {
-    background: #edf8ed;
-    color: #2d8f3f;
-}
-
 /* Dropdown Menu */
 .remittance-page .dropdown-btn {
     position: relative;
@@ -256,7 +236,7 @@
     border: 1px solid #e5e5e5;
     top: 100%;
     z-index: 100;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .remittance-page .dropdown-content.show {
@@ -378,7 +358,7 @@
         margin-right: 8px;
     }
 
-    /* Stack card contents vertically using your actual class name */
+    /* Stack card contents vertically */
     .remittance-page .user-row {
         display: flex;
         flex-direction: column; 
@@ -413,8 +393,8 @@
     font-weight: 700;
 }
 
-/* Date Filter Dropdown */
-.date-filter-select {
+/* Filter Dropdown */
+.filter-select {
     font-family: "Inter", sans-serif;
     font-size: 13px;
     font-weight: 500;
@@ -429,16 +409,27 @@
     transition: 0.2s ease;
 }
 
-.date-filter-select:hover {
+.filter-select:hover {
     border-color: #d8d8d8;
 }
 
-.date-filter-select:focus {
+.filter-select:focus {
     border-color: #255f20;
 }
 
 @media (max-width: 850px) {
-    .date-filter-select {
+    .filter-select {
         width: 100%;
     }
+}
+
+/* Delete Option Styling */
+.remittance-page .delete-opt {
+    color: #d32f2f;
+    font-weight: 500;
+}
+
+.remittance-page .delete-opt:hover {
+    background-color: #fff0f0;
+    color: #c62828;
 }
