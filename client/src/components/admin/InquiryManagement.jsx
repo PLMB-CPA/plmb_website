@@ -56,14 +56,31 @@ function InquiryManagement() {
 
                 setStats(data.stats);
 
-            } catch (error) {
+            } catch {
                 setStatsError(
                     'Unable to load inquiry statistics.'
                 );
             }
         }
 
+        async function fetchInquiries() {
+            try {
+                const response = await fetch('/api/inquiries');
+
+                if (!response.ok) {
+                    throw new Error('Failed to load inquiries');
+                }
+
+                const data = await response.json();
+
+                setInquiries(data.inquiries || []);
+            } catch {
+                setLoadError('Unable to load inquiries.');
+            }
+        }
+
         fetchStats();
+        fetchInquiries();
     }, []);
 
     async function handleDelete(event, id) {
@@ -193,7 +210,7 @@ function InquiryManagement() {
                         <p>
                             {stats?.averageResponseTimeMinutes == null
                                 ? '—'
-                                : `${stats.averageResponseTimeMinutes} minutes`}
+                                : `${stats.averageResponseTimeMinutes} ${stats.averageResponseTimeMinutes === 1 ? 'minute' : 'minutes'}`}
                         </p>
                     </div>
                 </div>

@@ -12,10 +12,15 @@ function generateTempPassword() {
 // Admin create client
 exports.createClient = async (req, res) => {
   try {
-    const { email, firstName, lastName, phoneNumber, address, city, businessName, birthday, tin } = req.body;
-    if (!email || !firstName || !lastName || !phoneNumber || !address || !city || !businessName)
-        return res.status(400).json({error: 'Please recheck missing information.'})
-    if (await Client.findOne({email: email.toLowerCase().trim()}))
+    const { email, firstName, lastName, phoneNumber, address, city, businessName, birthday, tin } = req.body || {};
+    const required = ['email', 'firstName', 'lastName', 'phoneNumber', 'address', 'city', 'businessName'];
+    const missingField = required.find(k => typeof req.body?.[k] !== 'string' || !req.body[k].trim());
+    if (missingField)
+        return res.status(400).json({error: `Please recheck missing information: ${missingField} is required.`});
+    const normalizedEmail = email.toLowerCase().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail))
+        return res.status(400).json({error: 'Invalid email format.'});
+    if (await Client.findOne({email: normalizedEmail}))
         return res.status(409).json({error: 'Client account already exists.'});
 
     const tempPassword = generateTempPassword();
@@ -60,8 +65,8 @@ exports.getClients = async (req, res) => {
 // Client Login
 exports.loginClient = async (req, res) => {
   try {
-    const {email, password} = req.body;
-    if (!email || !password)
+    const {email, password} = req.body || {};
+    if (!email || !password || typeof email !== 'string' || typeof password !== 'string')
         return res.status(400).json({error: 'Email and password are required.'});
     const client = await Client.findOne({email: email.toLowerCase().trim()})
         if (!client || !(await bcrypt.compare(password, client.password))) {

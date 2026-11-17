@@ -2,13 +2,18 @@ const bcrypt = require('bcrypt');
 const Admin = require('../models/Admin');
 const { checkPasswordStrength } = require('../util/passwordStrength');
 
-exports.postAdminLogin =async (req, res) => {
+exports.postAdminLogin = async (req, res) => {
   try {
-    const admin = await Admin.findOne({username: req.body.username.toLowerCase().trim()});
-    if (!admin) return res.status(401).json({error: 'Invalid username'});
+    const { username, password } = req.body || {};
+    if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
 
-    const isMatch = await bcrypt.compare(req.body.password, admin.password);
-    if (!isMatch) return res.status(401).json({error: 'Invalid password'});
+    const admin = await Admin.findOne({ username: username.toLowerCase().trim() });
+    if (!admin) return res.status(401).json({ error: 'Invalid username or password' });
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid username or password' });
 
     req.session.isAdmin = true;
     req.session.adminId = admin._id;

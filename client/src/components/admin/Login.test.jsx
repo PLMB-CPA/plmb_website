@@ -97,12 +97,12 @@ describe('admin login form', () => {
   });
 
   //it.fails passes while the bug exists and goes red when it's fixed.
-  it.fails('inputs have accessible labels (not placeholder only)', () => {
+  it('inputs have accessible labels (not placeholder only)', () => {
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
   });
 
-  it.fails('the login error is announced to screen readers (role=alert)', async () => {
+  it('the login error is announced to screen readers (role=alert)', async () => {
     fetch.mockReturnValueOnce(respond({ error: 'Invalid password' }, false));
     const user = userEvent.setup();
     await user.type(usernameBox(), 'a');

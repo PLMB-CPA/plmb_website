@@ -128,7 +128,6 @@ test.describe('F05 AC3 · the confirmation email fails', () => {
   // SITUATION: same failure. CHECKS: the user is told the inquiry was sent AND the email failed.
   // passes while the bug exists, goes red when it's fixed (then delete the test.fail() line).
   test('the user is told the confirmation email failed', async ({ page }) => {
-    test.fail();
     await failNext(page, 'sendConfirmation');
     const res = await submit(page);
     const body = JSON.stringify(await res.json()).toLowerCase();
@@ -139,7 +138,6 @@ test.describe('F05 AC3 · the confirmation email fails', () => {
 // BUG: the phone number typed in the form is never saved (the Inquiry model has no `number` field),
 // so the firm's notification email shows "Phone Number: undefined".
 test('F05 · the phone number from the form is saved', async ({ page }) => {
-  test.fail();
   const subject = uniqueSubject();
   await submit(page, { subject });
   const saved = (await adminList(page)).find((i) => i.subject === subject);

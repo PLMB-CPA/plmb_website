@@ -115,18 +115,18 @@ describe('F03 · reply and notification emails', () => {
 // red when it's fixed (then delete the ".failing").
 describe('known bugs in the plain-text emails', () => {
   // the notification reads inquiry.name, but inquiries have firstName and lastName
-  test.failing('the notification shows who the inquiry is from', async () => {
+  test('the notification shows who the inquiry is from', async () => {
     await sendInquiryNotification(inquiry);
     expect(sentMail().text).not.toContain('undefined');
     expect(sentMail().text).toContain('Juan Dela Cruz');
   });
 
-  test.failing('the notification has no raw html tags', async () => {
+  test('the notification has no raw html tags', async () => {
     await sendInquiryNotification(inquiry);
     expect(sentMail().text).not.toMatch(/<\/?(p|b)>/);
   });
 
-  test.failing('the reply email has no raw html tags', async () => {
+  test('the reply email has no raw html tags', async () => {
     await sendReply(inquiry, 'Thank you for your inquiry.');
     expect(sentMail().text).not.toMatch(/<\/?p>/);
   });

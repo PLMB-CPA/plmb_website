@@ -6,24 +6,64 @@ const {inquiryStatus, responseTimeMinutes, isOverdue, serializeInquiry} = requir
 
 exports.createInquiry = async (req, res) => {
   try {
-    const emailCheck = await isValidInquiryEmail(req.body.email);
+    const {
+      firstName,
+      lastName,
+      businessName,
+      email,
+      number,
+      industrySector,
+      category,
+      subject,
+      message,
+    } = req.body || {};
+
+    const emailCheck = await isValidInquiryEmail(email);
     if (!emailCheck.valid) {
       return res.status(400).json({error: emailCheck.reason});
     }
 
-    const count = await Inquiry.countDocuments();
-    const ticketNumber = `INQ-${String(count + 1).padStart(4, '0')}`;
-    const inquiry = await Inquiry.create({...req.body, ticketNumber});
+    const existingTickets = await Inquiry.find({}, 'ticketNumber').lean();
+    const maxTicketNum = existingTickets.reduce((max, doc) => {
+      const match = /^INQ-(\d+)$/.exec(doc.ticketNumber || '');
+      return match ? Math.max(max, parseInt(match[1], 10)) : max;
+    }, 0);
+    const ticketNumber = `INQ-${String(maxTicketNum + 1).padStart(4, '0')}`;
+
+    const inquiry = await Inquiry.create({
+      firstName,
+      lastName,
+      businessName,
+      email,
+      ...(number !== undefined ? { number } : {}),
+      industrySector,
+      category,
+      subject,
+      message,
+      ticketNumber,
+    });
 
     sendInquiryNotification(inquiry)
       .then(() => console.log('Notification sent'))
       .catch(err => console.error('Inquiry saved, email failed', err));
-    
-    sendConfirmation(inquiry)
-        .then(() => console.log('Confirmation sent'))
-        .catch(err => console.error('Inquiry saved, confirmation email failed', err));
-    
-    res.status(201).json({message: 'Your inquiry has been recorded.', inquiry});
+
+    try {
+      await sendConfirmation(inquiry);
+      console.log('Confirmation sent');
+    } catch (err) {
+      console.error('Inquiry saved, confirmation email failed', err);
+      return res.status(201).json({
+        message: 'Your inquiry has been recorded, but the confirmation email failed to send.',
+        confirmationEmailSent: false,
+        inquiry,
+      });
+    }
+
+    res.status(201).json({
+      message: 'Your inquiry has been recorded.',
+      confirmationEmailSent: true,
+      inquiry,
+    });
   } catch (err) {
     res.status(400).json({error: err.message});
   }
@@ -54,7 +94,14 @@ exports.getInquiryById = async (req, res) => {
 
 exports.updateInquiry = async (req, res) => {
   try {
-    const inquiry = await Inquiry.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const allowedUpdates = {};
+    for (const key of ['isRead', 'isAnswered', 'isArchived']) {
+      if (req.body && req.body[key] !== undefined) {
+        allowedUpdates[key] = req.body[key];
+      }
+    }
+    const inquiry = await Inquiry.findByIdAndUpdate(req.params.id, allowedUpdates, {new: true});
+    if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
     res.status(200).json({message: 'Inquiry updated', inquiry});
   } catch (err) {
     res.status(400).json({error: err.message});

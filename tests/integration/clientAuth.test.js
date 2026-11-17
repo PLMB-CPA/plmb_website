@@ -213,7 +213,7 @@ describe('F01 AC2 · invalid input creates no account or session', () => {
 
       const res = await admin.post('/api/admin/clients').send(body);
       expect(res.status).toBe(400);
-      expect(res.body.error).toBe('Please recheck missing information.');
+      expect(res.body.error).toMatch(/Please recheck missing information/i);
       expect(await Client.countDocuments()).toBe(0);
       expect(sendClientWelcome).not.toHaveBeenCalled();
     });
@@ -399,38 +399,38 @@ describe('F01 AC3 · not logged in as a client', () => {
 
 // passes while the bug exists, goes red when it's fixed 
 describe('F01 · known bugs', () => {
-  test.failing('create rejects an email that is not an email (AC2 invalid format)', async () => {
+  test('create rejects an email that is not an email (AC2 invalid format)', async () => {
     const admin = await adminAgent();
     const res = await admin.post('/api/admin/clients').send({ ...CLIENT, email: 'not-an-email' });
     expect(res.status).toBe(400);
     expect(await Client.countDocuments()).toBe(0);
   });
 
-  test.failing('create rejects a first name that is only spaces', async () => {
+  test('create rejects a first name that is only spaces', async () => {
     const admin = await adminAgent();
     const res = await admin.post('/api/admin/clients').send({ ...CLIENT, firstName: '   ' });
     expect(res.status).toBe(400);
   });
 
-  test.failing('create answers 400, not 500, when the email is not a string', async () => {
+  test('create answers 400, not 500, when the email is not a string', async () => {
     const admin = await adminAgent();
     const res = await admin.post('/api/admin/clients').send({ ...CLIENT, email: 12345 });
     expect(res.status).toBe(400);
   });
 
-  test.failing('login answers 400 or 401, not 500, when the email is not a string', async () => {
+  test('login answers 400 or 401, not 500, when the email is not a string', async () => {
     const res = await request(app).post('/api/client/login').send({ email: 12345, password: 'x' });
     expect([400, 401]).toContain(res.status);
   });
 
-  test.failing('login answers 400 or 401, not 500, when the password is not a string', async () => {
+  test('login answers 400 or 401, not 500, when the password is not a string', async () => {
     const admin = await adminAgent();
     const { email } = await createClient(admin);
     const res = await request(app).post('/api/client/login').send({ email, password: 12345 });
     expect([400, 401]).toContain(res.status);
   });
 
-  test.failing('the missing-field error says which field is missing (AC2)', async () => {
+  test('the missing-field error says which field is missing (AC2)', async () => {
     const admin = await adminAgent();
     const body = { ...CLIENT };
     delete body.email;
@@ -439,7 +439,7 @@ describe('F01 · known bugs', () => {
   });
 
   // SPEC QUESTION first: should "+" count as a special character?
-  test.failing('"+" is accepted as a special character', async () => {
+  test('"+" is accepted as a special character', async () => {
     const admin = await adminAgent();
     const { email, tempPassword } = await createClient(admin);
     const { agent } = await loginAs(email, tempPassword);

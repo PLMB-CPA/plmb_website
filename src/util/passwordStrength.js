@@ -1,5 +1,5 @@
 function checkPasswordStrength(password) {
-  const specialChars = /[!@#$%^&*(),.?":{}|<>_-]/;
+  const specialChars = /[^A-Za-z0-9\s]/;
   const capitalChars = /[A-Z]/;
   const numberChars = /[0-9]/;
 

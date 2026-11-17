@@ -75,12 +75,12 @@ describe('client login form', () => {
   });
 
   // it.fails passes while the bug exists.
-  it.fails('inputs have accessible labels (not placeholder only)', () => {
+  it('inputs have accessible labels (not placeholder only)', () => {
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
   });
 
-  it.fails('the error is announced to screen readers (role=alert)', async () => {
+  it('the error is announced to screen readers (role=alert)', async () => {
     fetch.mockReturnValueOnce(respond({ error: 'Invalid email or password.' }, false));
     await fillAndSubmit(userEvent.setup());
     expect(await screen.findByRole('alert')).toHaveTextContent('Invalid email or password.');

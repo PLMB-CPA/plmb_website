@@ -134,7 +134,6 @@ test.describe('F03 AC2 · invalid reply', () => {
 // test.fail() = playwright expects this test to fail. it passes while the bug exists
 // and goes red once it's fixed (then delete the test.fail() line).
 test('F03 · the inquiry list shows a newly created inquiry', async ({ page }) => {
-  test.fail();
   await loginAsAdmin(page);
   const inquiry = await createInquiry(page);
 
