@@ -28,6 +28,11 @@ const remittanceSchema = new mongoose.Schema({
         default: REMITTANCE_STATUS.PENDING,
         enum: Object.values(REMITTANCE_STATUS)
     },
+    createdBy: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Admin', 
+        required: true 
+    },
     lastEditedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Admin',
