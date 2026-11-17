@@ -58,6 +58,8 @@ router.get('/admin/subscribers', requireAuth, subscriberController.getSubscriber
 router.get('/admin/remittances', requireAuth, remittanceController.getAdminRemittances);
 router.post('/admin/remittances', requireAuth, remittanceController.addRemittanceRecord);
 router.put('/admin/remittances/:id', requireAuth, remittanceController.updateRemittanceStatus);
+router.delete('/admin/remittances/:id', requireAuth, remittanceController.deleteRemittance);
+
 
 // Client: fetch only the logged-in client's remittances
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);

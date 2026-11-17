@@ -1,3 +1,12 @@
+// constants file for backend
+
+/**
+ * constants for backend and frontend are separate due to different module system 
+ * (ES Module for frontend and CommonJS for backend)
+ * IMPORTANT: If a constant is updated here, update client/src/util/constants.js 
+ * (frontend) as well
+ */
+
 const TAX_TYPES = {
     VAT: 'VAT',
     PERCENTAGE: 'Percentage Tax',

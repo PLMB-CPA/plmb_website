@@ -8,6 +8,14 @@ const addRemittanceRecord = async (req, res) => {
     try {
         const { client, taxType, amount, dueDate } = req.body;
 
+        // get admin ID from the session
+        const adminId = req.session && req.session.adminId ? req.session.adminId : null;
+
+        if (!adminId) {
+            return res.status(401).json({ message: 'Unauthorized: Admin session missing' });
+        }
+
+        // validate mandatory fields
         if (!client || !taxType || amount === undefined) {
             return res.status(400).json({ message: 'Client, tax type, and amount are required' });
         }
@@ -21,7 +29,7 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(400).json({ message: 'Amount must be a valid positive number' });
         }
 
-        const remittance = await Remittance.create({
+        const remittance = await Remittance.create({ 
             client,
             taxType,
             amount,
@@ -33,6 +41,7 @@ const addRemittanceRecord = async (req, res) => {
 
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
+        console.error('Error creating remittance:', err);
         res.status(400).json({ error: err.message });
     }
 };
@@ -48,6 +57,7 @@ const getAdminRemittances = async (req, res) => {
 
         res.status(200).json(remittances);
     } catch (err) {
+        console.error("Error fetching remittances:", err)
         res.status(500).json({ error: 'Failed to fetch remittances' });
     }
 };
@@ -88,11 +98,13 @@ const updateRemittanceStatus = async (req, res) => {
 
         res.status(200).json({ message: 'Remittance status updated', remittance });
     } catch (err) {
+        console.error('Error updating rremittance status:', err);
         res.status(400).json({ error: err.message });
     }
 };
 
 // get remittance records for a particular client (authenticated client-side page)
+// prevent Insecure Direct Object Reference (IDOR)
 const getClientRemittances = async (req, res) => {
     try {
         // Ensures clients can only read their own records
@@ -109,12 +121,11 @@ const getClientRemittances = async (req, res) => {
 
         res.status(200).json(remittances);
     } catch (err) {
-
+        console.error('Error fetching client remittances:', err)
         res.status(500).json({ error: 'Failed to fetch remittances' });
     }
 };
 
-/*
 const deleteRemittance = async (req, res) => {
   try {
     const remittance = await Remittance.findByIdAndDelete(req.params.id);
@@ -123,15 +134,16 @@ const deleteRemittance = async (req, res) => {
     }
     res.status(200).json({ message: 'Remittance record deleted successfully' });
   } catch (err) {
+    console.error('Error deleting remittance:', err)
     res.status(400).json({ error: err.message });
   }
 };
-*/
+
 
 module.exports = {
     addRemittanceRecord,
     getAdminRemittances,
     updateRemittanceStatus,
-    // deleteRemittance
+    deleteRemittance,
     getClientRemittances,
 };
