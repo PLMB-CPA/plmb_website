@@ -33,7 +33,9 @@ const addRemittanceRecord = async (req, res) => {
             client,
             taxType,
             amount,
-            dueDate: dueDate || null
+            dueDate: dueDate || null,
+            createdBy: adminId,
+            lastEditedBy: adminId
         });
 
         // Fetch the full client details before sending it back to the React frontend
