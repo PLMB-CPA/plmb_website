@@ -24,7 +24,7 @@ import ClientChangePassword from './components/client/ClientChangePassword.jsx';
 import ClientDashboard from './components/client/ClientDashboard';
 import SubscriberManagement from './components/admin/SubscriberManagement';
 import TaxRemittanceStatusTracker from './components/admin/TaxRemittanceStatusTracker.jsx';
-
+import ClientRemittanceTracker from './components/client/ClientRemittanceTracker';
 
 import NotFound from './components/public/NotFound';
 
@@ -62,6 +62,7 @@ function App() {
       <Route path="/client/change-password" element={<ClientChangePassword />} />
 
       <Route path="/client" element={<ClientDashboard />} />
+      <Route path="/client/remittances" element={<ClientRemittanceTracker />} />
     </Routes>
   );
 }
