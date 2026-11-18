@@ -4,17 +4,6 @@
     box-sizing: border-box;
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #f8faf8, #eef5ee);
