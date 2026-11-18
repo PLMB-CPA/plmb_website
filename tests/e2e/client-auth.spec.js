@@ -93,8 +93,8 @@ test.describe('F01 AC1 · admin adds a client, client logs in', () => {
     await page.getByPlaceholder('Confirm Password').fill(NEW_PASSWORD);
     await page.getByRole('button', { name: 'Save Password' }).click();
     await expect(page).toHaveURL(/\/client$/);
-    await expect(page.getByRole('heading', { name: /Client (Dashboard|Portal)/i })).toBeVisible();
-
+    await expect(page.getByRole('heading', { name: 'Dashboard', exact: true })).toBeVisible();
+    
     // logout through the api (the dashboard has no logout button yet, see the bug below)
     expect((await page.request.post('/api/client/logout')).ok()).toBeTruthy();
     expect((await page.request.get('/api/client/me')).status()).toBe(401);
