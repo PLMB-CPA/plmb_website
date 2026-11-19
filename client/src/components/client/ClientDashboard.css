@@ -302,14 +302,3 @@
 .deadline-date {
     color: #555;
 }
-
-.profile-incomplete {
-    color: #b26a00;
-    font-size: 0.9rem;
-    margin-top: 12px;
-}
-
-.profile-value.not-provided {
-    color: #666;
-    font-style: italic;
-}

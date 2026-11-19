@@ -6,10 +6,8 @@ const { TAX_TYPES, REMITTANCE_STATUS } = require('../util/constants');
 // TODO: confirm which fields are mandatory
 // TODO: confirm enum values
 
-
 const addRemittanceRecord = async (req, res) => {
     try {
-        
         const { client, taxType, amount, dueDate } = req.body;
 
         // get admin ID from the session
@@ -38,32 +36,39 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(400).json({ message: 'Invalid tax type selected' });
         }
 
-        if (isNaN(amount) || amount < 0) {
+        const parsedAmount = Number(amount);
+        if (typeof amount === 'boolean' || Number.isNaN(parsedAmount) || !Number.isFinite(parsedAmount) || parsedAmount < 0) {
             return res.status(400).json({ message: 'Amount must be a valid positive number' });
         }
 
+        // check if due date uses a valid date format
         if (dueDate && isNaN(new Date(dueDate))) {
             return res.status(400).json({ message: 'Invalid due date' });
         }
 
+        const clientExists = await Client.exists({ _id: client });
+        if (!clientExists) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
 
-        const remittance = await Remittance.create({ 
+        const remittance = await Remittance.create({
             client,
             taxType,
-            amount,
+            amount: parsedAmount,
             dueDate: dueDate || null,
             createdBy: adminId,
             lastEditedBy: adminId
         });
 
-        // never populate the whole Client document
-        // do not include password field
-        await remittance.populate('client', 'firstName lastName email');
+        await remittance.populate([
+            { path: 'client', select: 'firstName lastName email' },
+            { path: 'lastEditedBy', select: 'username' }
+        ]);
 
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
         console.error('Error creating remittance:', err);
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ message: 'Failed to create remittance record' });
     }
 };
 
@@ -79,15 +84,14 @@ const getAdminRemittances = async (req, res) => {
         res.status(200).json(remittances);
     } catch (err) {
         console.error("Error fetching remittances:", err)
-        res.status(500).json({ error: 'Failed to fetch remittances' });
+        res.status(500).json({ message: 'Failed to fetch remittances' });
     }
 };
 
 const updateRemittanceStatus = async (req, res) => {
     try {
-
         if (!mongoose.isValidObjectId(req.params.id)) {
-            return res.status(400).json({ message: 'Invalid record id' });
+            return res.status(400).json({ message: 'Invalid remittance ID' });
         }
 
         const { status } = req.body;
@@ -124,8 +128,8 @@ const updateRemittanceStatus = async (req, res) => {
 
         res.status(200).json({ message: 'Remittance status updated', remittance });
     } catch (err) {
-        console.error('Error updating rremittance status:', err);
-        res.status(400).json({ error: err.message });
+        console.error('Error updating remittance status:', err);
+        res.status(400).json({ message: 'Failed to update remittance status' });
     }
 };
 
@@ -148,7 +152,7 @@ const getClientRemittances = async (req, res) => {
         res.status(200).json(remittances);
     } catch (err) {
         console.error('Error fetching client remittances:', err)
-        res.status(500).json({ error: 'Failed to fetch remittances' });
+        res.status(500).json({ message: 'Failed to fetch remittances' });
     }
 };
 
@@ -165,7 +169,7 @@ const deleteRemittance = async (req, res) => {
     res.status(200).json({ message: 'Remittance record deleted successfully' });
   } catch (err) {
     console.error('Error deleting remittance:', err)
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: 'Failed to create remittance record ' });
   }
 };
 
