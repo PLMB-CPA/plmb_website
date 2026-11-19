@@ -1,14 +1,13 @@
-.client-dashboard {
-    min-height: 100vh;
-    background: #f5f5f5;
-    font-family: inherit;
-}
+/* Mirrors AdminLayout.css shell styles, scoped to .client-shell */
 
-.client-header {
+.client-shell {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    min-height: 100vh;
+    color: #2f2f2f;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 1rem 2rem;
     font-size: 14px;
 }
 
@@ -177,88 +176,123 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    animation: fadeUp 0.8s ease;
 }
 
 .client-shell .card {
     background: #fff;
-    border-bottom: 1px solid #e0e0e0;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.client-header h1 {
-    font-size: 1.25rem;
-    margin: 0;
+.client-shell .card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #255f20;
+    margin: 0 0 16px;
+    letter-spacing: -0.3px;
 }
 
-.logout-btn {
-    background: none;
-    border: 1px solid #c00;
-    color: #c00;
-    padding: 0.4rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background: #c00;
-    color: #fff;
-}
-
-.client-main {
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.profile-card,
-.deadlines-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-
-.profile-card h2,
-.deadlines-card h2 {
-    margin: 0 0 1rem;
-    font-size: 1.1rem;
-}
-
-.profile-fields {
+/* PROFILE FIELDS */
+.client-shell .profile-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem 1.5rem;
+    gap: 12px 24px;
 }
 
-.profile-field {
+.client-shell .profile-field {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 3px;
 }
 
-.profile-label {
-    font-size: 0.75rem;
-    color: #888;
+.client-shell .profile-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8a8a8a;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
 }
 
-.profile-value {
-    font-size: 0.95rem;
+.client-shell .profile-value {
+    font-size: 14px;
     color: #222;
 }
 
-.deadlines-empty {
-    color: #888;
-    font-size: 0.9rem;
+/* DEADLINES */
+.client-shell .deadlines-empty {
+    color: #8a8a8a;
+    font-size: 13px;
 }
 
-.profile-error,
-.profile-loading {
+/* STATE MESSAGES */
+.client-shell .state-msg {
     text-align: center;
     margin-top: 3rem;
+    color: #555;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .client-shell {
+        display: block;
+    }
+
+    .client-shell .bg-container {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        flex-direction: column;
+    }
+
+    .client-shell .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+    }
+
+    .client-shell .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .client-shell .page-header .divider {
+        display: none;
+    }
+
+    .client-shell .page-body {
+        padding: 16px;
+    }
+}
+
+/* UPCOMING DEADLINES */
+.upcoming-deadlines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-size: 13px;
+}
+
+/* Remove the border from the very last item so it looks cleaner */
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadline-type {
+    font-weight: 600;
+    color: #333;
+}
+
+.deadline-date {
     color: #555;
 }
