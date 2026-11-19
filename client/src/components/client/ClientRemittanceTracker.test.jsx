@@ -139,13 +139,15 @@ describe('F04 · client list', () => {
   });
 
   // SITUATION: the api row carries who last edited it.
-  // CHECKS: "Updated: ... (by username)" shows.
-  it('shows who last updated a record when the api provides it', async () => {
+  // CHECKS: the client page never shows the editor's name or an "Updated by" line.
+  it('never shows who last edited a record', async () => {
     setupApi({
       remittances: respond([{ ...RECORDS[0], lastEditedBy: { username: 'plmbadmin' }, updatedAt: new Date().toISOString() }]),
     });
     renderPage();
-    expect(await screen.findByText(/by plmbadmin/)).toBeInTheDocument();
+    await waitFor(() => expect(rows()).toHaveLength(1));
+    expect(screen.queryByText(/plmbadmin/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Updated:/)).not.toBeInTheDocument();
   });
 });
 
