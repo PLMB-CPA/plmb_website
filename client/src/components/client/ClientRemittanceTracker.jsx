@@ -49,10 +49,8 @@ function ClientRemittanceRow({ remittance }) {
                     <h3 className={isOverdue ? 'date-overdue' : ''}>
                         {formatDate(remittance.dueDate)} {isOverdue && ' (Overdue)'}
                     </h3>
-                    {remittance.lastEditedBy ? (
-                        <p>Updated: {lastUpdated} (by {editorName})</p>
-                    ) : (
-                        <p style={{ visibility: 'hidden' }}>No edits</p>
+                    {!remittance.dueDate && (
+                        <p className="incomplete-note">Incomplete record. Please contact the firm for updates.</p>
                     )}
                 </div>
             </div>

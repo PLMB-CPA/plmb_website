@@ -15,6 +15,7 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const dropdownRef = useClickOutside(() => setIsDropdownOpen(false));
+    const [error, setError] = useState('');
 
     // Filter clients based on the search input
     const filteredClients = clients.filter(c => {
@@ -29,9 +30,10 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
         
         // Prevent submission if a client hasn't been selected from the custom dropdown
         if (!formData.client) {
-            window.alert('Please select a client.');
+            setError('Please select a client.');
             return;
         }
+        setError('') // clear any old message
 
         try {
             const res = await fetch('/api/admin/remittances', {
@@ -102,6 +104,8 @@ function AddRemittanceModal({ onClose, onSuccess, clients }) {
                             </div>
                         )}
                     </div>
+
+                    {error && <p className="form-error" role="alert">{error}</p>}
 
                     <label>Tax Type <span style={{ color: '#d32f2f' }}>*</span></label>
                     <select
