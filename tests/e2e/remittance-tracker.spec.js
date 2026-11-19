@@ -107,10 +107,10 @@ test.describe('F04 · admin remittance page', () => {
     await page.getByRole('button', { name: '+ Add Record' }).click();
     await page.locator('.modal-content input[type=number]').fill('100');
 
-    let message = '';
-    page.once('dialog', async (d) => { message = d.message(); await d.accept(); });
     await page.getByRole('button', { name: 'Save Record' }).click();
-    await expect.poll(() => message).toBe('Please select a client.');
+    // used to expect a window.alert dialog. The error is now inline, so the test looks for an alert on
+    // the page instead of listening for a dialog
+    await expect(page.locator('.modal-content').getByRole('alert')).toHaveText('Please select a client.');
     await expect(page.getByRole('heading', { name: 'Add Tax Remittance' })).toBeVisible();
   });
 
