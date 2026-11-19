@@ -174,7 +174,7 @@ describe('F04 · AC2 gap on the add form', () => {
   // SITUATION: admin presses Save with no client selected.
   // CHECKS: AC2: the save is rejected with an error beside the invalid field (shown on the page).
   //         For now, it only fires a window.alert() popup and nothing appears in the form.
-  it.fails('GAP (AC2): shows the error inside the form, not as a popup alert', async () => {
+  it('shows the error inside the form, not as a popup alert', async () => {
     setup();
     await userEvent.type(amountInput(), '1500');
     await userEvent.click(screen.getByRole('button', { name: 'Save Record' }));

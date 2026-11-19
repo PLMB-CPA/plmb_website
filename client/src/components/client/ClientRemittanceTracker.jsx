@@ -5,9 +5,9 @@ import './ClientRemittanceTracker.css';
 import { REMITTANCE_STATUS, TAX_TYPES, STATUS_COLORS } from '../../util/constants';
 
 function formatDate(dateStr) {
-    if (!dateStr) return '—';
+    if (!dateStr) return 'Not provided';
     const d = new Date(dateStr);
-    if (isNaN(d)) return '—';
+    if (isNaN(d)) return 'Not provided';
     return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 

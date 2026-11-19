@@ -137,13 +137,13 @@ describe('F02 AC2 · missing or empty data', () => {
     renderPage();
     expect(await screen.findByText('Welcome, Juan')).toBeInTheDocument();
     ['Contact Number', 'Birthday', 'TIN', 'Associated Company', 'Address'].forEach((label) => {
-      expect(field(label)).toHaveTextContent('—');
+      expect(field(label)).toHaveTextContent('Not provided');
     });
   });
 
   // SITUATION: same empty profile.
   // CHECKS: AC2 says the placeholder is "Not provided". Rn, it is "—".
-  it.fails('GAP (AC2): an empty field shows "Not provided"', async () => {
+  it('an empty field shows "Not provided"', async () => {
     setupApi({ me: respond({ email: 'a@b.com', firstName: 'Juan', lastName: 'Dela Cruz' }) });
     renderPage();
     await screen.findByText('Welcome, Juan');
@@ -153,7 +153,7 @@ describe('F02 AC2 · missing or empty data', () => {
 
   // SITUATION: an incomplete profile (no TIN, no phone).
   // CHECKS: AC2 says incomplete fields are flagged with a prompt to contact the firm. Not implemented.
-  it.fails('GAP (AC2): an incomplete profile shows a "contact the firm" prompt', async () => {
+  it('an incomplete profile shows a "contact the firm" prompt', async () => {
     setupApi({ me: respond({ ...ME, tin: undefined, phoneNumber: undefined }) });
     renderPage();
     await screen.findByText('Welcome, Juan');
@@ -172,7 +172,7 @@ describe('F02 AC2 · missing or empty data', () => {
   // SITUATION: the profile api answers 404 (the client was deleted while logged in) or 500.
   // CHECKS: the page should show an error message. Today it shows an empty "Welcome, " page, because the
   //         error object from the api is treated as the client.
-  it.fails.each([[404], [500]])('GAP: a %i from the profile api does not render an empty profile', async (status) => {
+  it.each([[404], [500]])('GAP: a %i from the profile api does not render an empty profile', async (status) => {
     setupApi({ me: respond({ error: 'User not found, cannot retrieve information.' }, false, status) });
     renderPage();
     await waitFor(() => expect(fetch).toHaveBeenCalled());

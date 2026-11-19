@@ -247,7 +247,7 @@ describe('F04 · client navigation', () => {
 describe('F04 · AC2 gaps on the client page', () => {
   // SITUATION: a record has no due date (an empty field).
   // CHECKS: AC2 says empty fields show "Not provided". Today the page shows a dash "—".
-  it.fails('GAP (AC2): an empty due date shows "Not provided"', async () => {
+  it('an empty due date shows "Not provided"', async () => {
     setupApi({ remittances: respond([RECORDS[3]]) });   // no due date
     renderPage();
     await waitFor(() => expect(rows()).toHaveLength(1));
@@ -257,7 +257,7 @@ describe('F04 · AC2 gaps on the client page', () => {
   // SITUATION: an incomplete record (missing due date) is on the page.
   // CHECKS: AC2 says incomplete records are flagged with a prompt to contact the firm for updates.
   //         Rn, there is no such prompt anywhere on the page.
-  it.fails('GAP (AC2): an incomplete record is flagged with a "contact the firm" prompt', async () => {
+  it('an incomplete record is flagged with a "contact the firm" prompt', async () => {
     setupApi({ remittances: respond([RECORDS[3]]) });
     renderPage();
     await waitFor(() => expect(rows()).toHaveLength(1));
