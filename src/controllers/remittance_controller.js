@@ -1,11 +1,15 @@
+const mongoose = require('mongoose');
 const Remittance = require('../models/Remittance');
+const Client = require('../models/Client');
 const { TAX_TYPES, REMITTANCE_STATUS } = require('../util/constants');
 
 // TODO: confirm which fields are mandatory
 // TODO: confirm enum values
 
+
 const addRemittanceRecord = async (req, res) => {
     try {
+        
         const { client, taxType, amount, dueDate } = req.body;
 
         // get admin ID from the session
@@ -15,9 +19,18 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized: Admin session missing' });
         }
 
-        // validate mandatory fields
-        if (!client || !taxType || amount === undefined) {
+        // validate mandatory fields (null and "" count as missing)
+        if (!client || !taxType || amount === undefined || amount === null || amount === '') {
             return res.status(400).json({ message: 'Client, tax type, and amount are required' });
+        }
+
+        // check if client ID has a valid format 
+        if (!mongoose.isValidObjectId(client)) {
+            return res.status(400).json({ message: 'Invalid client id' });
+        }
+        // check if client ID actually exists
+        if (!(await Client.exists({ _id: client }))) {
+            return res.status(400).json({ message: 'Client not found' });
         }
 
         const validTaxTypes = Object.values(TAX_TYPES);
@@ -29,6 +42,11 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(400).json({ message: 'Amount must be a valid positive number' });
         }
 
+        if (dueDate && isNaN(new Date(dueDate))) {
+            return res.status(400).json({ message: 'Invalid due date' });
+        }
+
+
         const remittance = await Remittance.create({ 
             client,
             taxType,
@@ -38,8 +56,9 @@ const addRemittanceRecord = async (req, res) => {
             lastEditedBy: adminId
         });
 
-        // Fetch the full client details before sending it back to the React frontend
-        await remittance.populate('client');
+        // never populate the whole Client document
+        // do not include password field
+        await remittance.populate('client', 'firstName lastName email');
 
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
@@ -66,6 +85,11 @@ const getAdminRemittances = async (req, res) => {
 
 const updateRemittanceStatus = async (req, res) => {
     try {
+
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid record id' });
+        }
+
         const { status } = req.body;
 
         if (!status) {
@@ -130,6 +154,10 @@ const getClientRemittances = async (req, res) => {
 
 const deleteRemittance = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid record id' });
+        }
+
     const remittance = await Remittance.findByIdAndDelete(req.params.id);
     if (!remittance) {
       return res.status(404).json({ message: 'Remittance record not found' });
