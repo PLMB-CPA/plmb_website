@@ -163,7 +163,7 @@ describe('F02 · birthday and TIN when an admin creates a client', () => {
 
   // SITUATION: admin enters a nonsense TIN.
   // CHECKS: it should be refused (400). Today any text is accepted and saved.
-  test.failing('GAP (AC2): an invalid TIN is rejected', async () => {
+  test('an invalid TIN is rejected', async () => {
     const admin = await adminAgent();
     const res = await admin.post('/api/admin/clients').send(newClientBody({ tin: 'not-a-tin' }));
     expect(res.status).toBe(400);
@@ -172,7 +172,7 @@ describe('F02 · birthday and TIN when an admin creates a client', () => {
 
   // SITUATION: admin sends a birthday that is not a date.
   // CHECKS: should be a clean 400. Today it is a 500 "An error occurred" because mongoose fails to cast it.
-  test.failing('GAP: an invalid birthday gets a 400, not a 500', async () => {
+  test('an invalid birthday gets a 400, not a 500', async () => {
     const admin = await adminAgent();
     const res = await admin.post('/api/admin/clients').send(newClientBody({ birthday: 'not-a-date' }));
     expect(res.status).toBe(400);
