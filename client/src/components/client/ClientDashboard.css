@@ -273,3 +273,32 @@
         padding: 16px;
     }
 }
+
+/* UPCOMING DEADLINES */
+.upcoming-deadlines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-size: 13px;
+}
+
+/* Remove the border from the very last item so it looks cleaner */
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadline-type {
+    font-weight: 600;
+    color: #333;
+}
+
+.deadline-date {
+    color: #555;
+}
