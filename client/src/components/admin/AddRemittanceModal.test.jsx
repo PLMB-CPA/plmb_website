@@ -96,7 +96,9 @@ describe('F04 · saving a record', () => {
     setup();
     await userEvent.type(amountInput(), '1500');
     await userEvent.click(screen.getByRole('button', { name: 'Save Record' }));
-    expect(window.alert).toHaveBeenCalledWith('Please select a client.');
+    expect(screen.getByRole('alert')).toHaveTextContent('Please select a client.');
+    // expect(window.alert).toHaveBeenCalledWith('Please select a client.');
+    expect(window.alert).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
   });
 
