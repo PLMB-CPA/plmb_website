@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const Remittance = require('../models/Remittance');
+const Client = require('../models/Client');
 const { TAX_TYPES, REMITTANCE_STATUS } = require('../util/constants');
 
 // TODO: confirm which fields are mandatory
@@ -16,8 +18,12 @@ const addRemittanceRecord = async (req, res) => {
         }
 
         // validate mandatory fields
-        if (!client || !taxType || amount === undefined) {
+        if (!client || !taxType || amount === undefined || amount === null || amount === '') {
             return res.status(400).json({ message: 'Client, tax type, and amount are required' });
+        }
+
+        if (!mongoose.isValidObjectId(client)) {
+            return res.status(400).json({ message: 'Invalid client ID' });
         }
 
         const validTaxTypes = Object.values(TAX_TYPES);
@@ -25,26 +31,34 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(400).json({ message: 'Invalid tax type selected' });
         }
 
-        if (isNaN(amount) || amount < 0) {
+        const parsedAmount = Number(amount);
+        if (typeof amount === 'boolean' || Number.isNaN(parsedAmount) || !Number.isFinite(parsedAmount) || parsedAmount < 0) {
             return res.status(400).json({ message: 'Amount must be a valid positive number' });
         }
 
-        const remittance = await Remittance.create({ 
+        const clientExists = await Client.exists({ _id: client });
+        if (!clientExists) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        const remittance = await Remittance.create({
             client,
             taxType,
-            amount,
+            amount: parsedAmount,
             dueDate: dueDate || null,
             createdBy: adminId,
             lastEditedBy: adminId
         });
 
-        // Fetch the full client details before sending it back to the React frontend
-        await remittance.populate('client');
+        await remittance.populate([
+            { path: 'client', select: 'firstName lastName email' },
+            { path: 'lastEditedBy', select: 'username' }
+        ]);
 
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
         console.error('Error creating remittance:', err);
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 
@@ -66,6 +80,10 @@ const getAdminRemittances = async (req, res) => {
 
 const updateRemittanceStatus = async (req, res) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid remittance ID' });
+        }
+
         const { status } = req.body;
 
         if (!status) {
@@ -100,8 +118,8 @@ const updateRemittanceStatus = async (req, res) => {
 
         res.status(200).json({ message: 'Remittance status updated', remittance });
     } catch (err) {
-        console.error('Error updating rremittance status:', err);
-        res.status(400).json({ error: err.message });
+        console.error('Error updating remittance status:', err);
+        res.status(400).json({ message: err.message });
     }
 };
 
@@ -130,6 +148,10 @@ const getClientRemittances = async (req, res) => {
 
 const deleteRemittance = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid remittance ID' });
+    }
+
     const remittance = await Remittance.findByIdAndDelete(req.params.id);
     if (!remittance) {
       return res.status(404).json({ message: 'Remittance record not found' });
@@ -137,7 +159,7 @@ const deleteRemittance = async (req, res) => {
     res.status(200).json({ message: 'Remittance record deleted successfully' });
   } catch (err) {
     console.error('Error deleting remittance:', err)
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 

@@ -246,16 +246,16 @@ describe('F04 · admin adds a remittance record', () => {
   // SITUATION: the client does not exist (valid-looking id, e.g. client was removed meanwhile).
   // CHECKS: should be refused (400/404). Today it answers 201 and saves an orphan record.
   // WHY: an orphan shows as "Unknown Client" in the admin list and belongs to nobody.
-  test.failing('BUG: refuses a client id that does not exist', async () => {
+  test('refuses a client id that does not exist', async () => {
     const { agent: admin } = await adminAgent();
     const res = await addRemittance(admin, { client: GHOST_ID });
     expect([400, 404]).toContain(res.status);
   });
 
   // SITUATION: the client id is not even an ObjectId ("abc").
-  // CHECKS: 400 with a clean {message}. Today the 400 body is {error: "<raw mongoose text>"}.
+  // CHECKS: 400 with a clean {message}.
   // WHY: every other validation error here uses "message". The raw text exposes model internals.
-  test.failing('BUG: bad client id gets a clean {message} error, not a raw mongoose error', async () => {
+  test('bad client id gets a clean {message} error, not a raw mongoose error', async () => {
     const { agent: admin } = await adminAgent();
     const res = await addRemittance(admin, { client: 'abc' });
     expect(res.status).toBe(400);
@@ -264,9 +264,8 @@ describe('F04 · admin adds a remittance record', () => {
   });
 
   // SITUATION: amount is sent as null or "" (cleared field).
-  // CHECKS: 400 with the same {message} as a missing amount. Today it slips past the controller's
-  //         checks and fails inside mongoose with a raw {error}.
-  test.failing.each([[null], ['']])('BUG: amount %p gets the clean required-field message', async (amount) => {
+  // CHECKS: 400 with the same {message} as a missing amount.
+  test.each([[null], ['']])('amount %p gets the clean required-field message', async (amount) => {
     const { agent: admin } = await adminAgent();
     const c = await newClient(admin);
     const res = await addRemittance(admin, { client: c.id, amount });
@@ -276,10 +275,7 @@ describe('F04 · admin adds a remittance record', () => {
 
   // SECURITY. SITUATION: admin creates a record, api answers with the populated client.
   // CHECKS: the client's password hash must NOT be in the response.
-  // WHY: controller does populate('client') with no field list, so the whole Client document
-  //      (including the bcrypt hash) goes back to the browser. The list endpoint correctly
-  //      selects only firstName/lastName/email, so create is the odd one out.
-  test.failing('BUG (security): create response does not leak the client password hash', async () => {
+  test('create response does not leak the client password hash', async () => {
     const { agent: admin } = await adminAgent();
     const c = await newClient(admin);
     const res = await addRemittance(admin, { client: c.id });
@@ -393,7 +389,7 @@ describe('F04 · admin updates a status', () => {
 
   // SITUATION: the id in the url is not an ObjectId.
   // CHECKS: it should be a clean 4xx with {message}. Today: 400 with {error: "Cast to ObjectId failed..."}.
-  test.failing('BUG: malformed id gets a clean {message} error, not a raw mongoose error', async () => {
+  test('malformed id gets a clean {message} error, not a raw mongoose error', async () => {
     const { agent: admin } = await adminAgent();
     const res = await admin.put('/api/admin/remittances/not-an-id').send({ status: 'Completed' });
     expect(res.status).toBeGreaterThanOrEqual(400);
@@ -435,8 +431,8 @@ describe('F04 · admin deletes a record', () => {
   });
 
   // SITUATION: malformed id.
-  // CHECKS: clean {message}. Today the body is the raw mongoose {error}.
-  test.failing('BUG: malformed id gets a clean {message} error, not a raw mongoose error', async () => {
+  // CHECKS: clean {message}.
+  test('malformed id gets a clean {message} error, not a raw mongoose error', async () => {
     const { agent: admin } = await adminAgent();
     const res = await admin.delete('/api/admin/remittances/not-an-id');
     expect(res.status).toBeGreaterThanOrEqual(400);
