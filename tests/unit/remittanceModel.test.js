@@ -50,7 +50,7 @@ describe('F04 · Remittance model', () => {
 
   // SITUATION: someone saves a negative amount straight through the model (script, future endpoint).
   // CHECKS: should be rejected. Rn, only the controller blocks negatives; the model accepts -50.
-  test.failing('BUG (low): model itself rejects a negative amount', () => {
+  test('model itself rejects a negative amount', () => {
     expect(errorsOf(new Remittance(valid({ amount: -50 })))).toContain('amount');
   });
 });
