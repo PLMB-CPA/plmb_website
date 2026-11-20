@@ -1,157 +1,277 @@
-/* From src/styles/admin_creation.css, scoped under .admin-create-page
-   (body {} became .admin-create-page so the font doesn't leak onto other pages) */
-
-.admin-create-page {
-    font-family: "Red Hat Display", sans-serif;
-    color: #333;
+.admin-form-page {
+    font-family: "Inter", sans-serif;
+    color: #1f2a1e;
 }
 
-.admin-create-page .main {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: hsla(123, 33%, 36%, 1);
-    background: linear-gradient(0deg, hsla(123, 33%, 36%, 1) 1%, hsla(117, 45%, 54%, 1) 92%);
-}
-
-.admin-create-page form {
-    width: 90%;
-}
-
-.admin-create-page .admin_form {
-    max-width: 380px;
-}
-
-.admin-create-page .admin_inputs {
+.admin-form-page .form-wrap {
+    max-width: 880px;
+    padding: 32px 35px 48px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
+    gap: 24px;
 }
 
-.admin-create-page .admin_block {
-    background-color: #F5F5F2;
-    padding: 45px 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    box-sizing: border-box;
-    animation: fadeUp 0.8s ease forwards;
+.admin-form-page .breadcrumb {
+    font-size: 13px;
+    color: #5b6858;
+    margin-bottom: 6px;
 }
 
-.admin-create-page .admin_header {
-    text-align: center;
-    font-size: 26px;
-    font-weight: lighter;
-    color: #2C4A2E;
-    margin: 0 0 30px;
-}
-
-.admin-create-page .username input,
-.admin-create-page .password input {
-    width: 100%;
-    box-sizing: border-box;
-    height: 40px;
-    border-radius: 15px;
-    border: 1px solid #ccc;
-    padding-left: 40px;
-    font-family: "Red Hat Display", sans-serif;
-    font-size: 14px;
-}
-
-.admin-create-page .username input:focus,
-.admin-create-page .password input:focus {
-    outline: none;
-    box-shadow: 0 0 8px rgba(44, 74, 46, 0.4);
-}
-
-.admin-create-page #username {
-    background-image: url('/image/user-icon.png');
-    background-position: 12px center;
-    background-repeat: no-repeat;
-    background-size: 25px 25px;
-}
-
-.admin-create-page #password,
-.admin-create-page #confirm-password {
-    background-image: url('/image/password-icon.png');
-    background-position: 12px center;
-    background-repeat: no-repeat;
-    background-size: 25px 25px;
-}
-
-.admin-create-page .admin_action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.admin-create-page #submit_btn {
-    width: 100%;
-    height: 40px;
-    border-radius: 20px;
-    border: none;
-    font-weight: bold;
-    font-size: 15px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: hsla(108, 45%, 58%, 1);
-    background: linear-gradient(135deg, hsla(108, 45%, 58%, 1) 0%, hsla(132, 34%, 36%, 1) 100%);
-}
-
-.admin-create-page #submit_btn:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    background-color: #f5f5f5;
-    color: #2C4A2E;
-}
-
-.admin-create-page .admin_action .btn {
-    margin-top: 15px;
-    color: #2C4A2E;
-    font-size: 14px;
+.admin-form-page .breadcrumb a {
+    color: #255f20;
+    font-weight: 500;
     text-decoration: none;
 }
 
-.admin-create-page .admin_action .btn:hover {
+.admin-form-page .breadcrumb a:hover {
     text-decoration: underline;
 }
 
-.admin-create-page #pw-container-1,
-.admin-create-page #pw-container-2 {
+.admin-form-page .breadcrumb .sep {
+    padding: 0 6px;
+}
+
+.admin-form-page .form-title h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #1a2e18;
+}
+
+.admin-form-page .form-title p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4f5c4c;
+}
+
+.admin-form-page .form-card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(20, 40, 18, 0.08), 0 8px 24px rgba(20, 40, 18, 0.06);
     display: flex;
+    flex-direction: column;
+}
+
+.admin-form-page .form-section {
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.admin-form-page .form-section + .form-section {
+    border-top: 1px solid #e4ebe1;
+}
+
+.admin-form-page .form-section h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2e18;
+}
+
+.admin-form-page .section-hint {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #5b6858;
+}
+
+.admin-form-page .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 20px;
+    align-items: start;
+}
+
+.admin-form-page .field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.admin-form-page .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2f3a2d;
+}
+
+.admin-form-page .field.full {
+    grid-column: 1 / -1;
+}
+
+.admin-form-page .field input {
+    width: 100%;
+    height: 44px;
+    box-sizing: border-box;
+    border: 1px solid #c9d4c5;
+    border-radius: 8px;
+    padding: 0 14px;
+    font: inherit;
+    font-weight: 400;
+    color: #1f2a1e;
+    background: white;
+}
+
+.admin-form-page .field input::placeholder {
+    color: #7d8a7a;
+}
+
+.admin-form-page .field input:focus {
+    outline: 2px solid #255f20;
+    outline-offset: -1px;
+    border-color: #255f20;
+}
+
+.admin-form-page .field-hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: #5b6858;
+}
+
+.admin-form-page .password-input {
     position: relative;
-    align-items: center;
+    display: flex;
 }
 
-.admin-create-page .password input {
-    margin-bottom: 0px;
-    padding-right: 40px;
+.admin-form-page .password-input input {
+    padding-right: 48px;
 }
 
-.admin-create-page #pw-button,
-.admin-create-page #pw-button-confirm {
+.admin-form-page .pw-toggle {
     position: absolute;
-    right: 12px;
-    width: 18px;
-    height: 18px;
-    background-color: transparent;
-    background-image: url('/image/eye-closed.svg');
-    background-position: center;
-    background-size: 18px 18px;
-    border: 0;
+    right: 2px;
+    top: 2px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent url('/image/eye-closed.svg') center / 18px 18px no-repeat;
     cursor: pointer;
-    transition: transform .25s ease, background-image .25s ease;
 }
 
-.admin-create-page #pw-button.open,
-.admin-create-page #pw-button-confirm.open {
+.admin-form-page .pw-toggle.open {
     background-image: url('/image/eye-open.svg');
 }
 
-.admin-create-page .input-error {
-    color: red;
-    text-align: center;
-    margin-bottom: 24px;
+.admin-form-page .password-rules {
+    background: #f3f7f1;
+    border-radius: 10px;
+    padding: 18px 20px;
     font-size: 14px;
+    color: #3c4a39;
+}
+
+.admin-form-page .password-rules strong {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2f3a2d;
+}
+
+.admin-form-page .password-rules ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.admin-form-page .form-message {
+    margin: 0;
+    padding: 0 32px 18px;
+    font-size: 14px;
+}
+
+.admin-form-page .form-message.error {
+    color: #b42318;
+}
+
+.admin-form-page .form-message.success {
+    color: #1d6b26;
+}
+
+.admin-form-page .form-actions {
+    padding: 18px 32px;
+    border-top: 1px solid #e4ebe1;
+    background: #f7faf6;
+    border-radius: 0 0 14px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-form-page .btn-secondary,
+.admin-form-page .btn-primary {
+    height: 44px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.admin-form-page .btn-secondary {
+    padding: 0 20px;
+    border: 1px solid #c9d4c5;
+    background: white;
+    color: #2f3a2d;
+}
+
+.admin-form-page .btn-secondary:hover {
+    background: #f3f7f1;
+}
+
+.admin-form-page .btn-primary {
+    padding: 0 22px;
+    border: none;
+    background: #255f20;
+    color: white;
+}
+
+.admin-form-page .btn-primary:hover {
+    background: #1a4416;
+}
+
+.admin-form-page .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+@media (max-width: 640px) {
+    .admin-form-page .form-wrap {
+        padding: 24px 16px 40px;
+    }
+
+    .admin-form-page .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-form-page .form-section {
+        padding: 24px 20px;
+    }
+
+    .admin-form-page .form-message {
+        padding: 0 20px 16px;
+    }
+
+    .admin-form-page .form-actions {
+        padding: 16px 20px;
+    }
+
+    .admin-form-page .btn-secondary,
+    .admin-form-page .btn-primary {
+        flex: 1 1 auto;
+    }
 }

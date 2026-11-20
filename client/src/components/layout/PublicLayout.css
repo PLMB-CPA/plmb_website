@@ -1,6 +1,3 @@
-/* Header / nav / footer shared by every public page.
-   (Previously copy-pasted at the top of each *_styles.css file.) */
-
 .public-layout {
   min-height: 100vh;
   display: flex;
@@ -13,12 +10,34 @@
   flex: 1;
 }
 
-/* HEADER */
 .public-layout .header {
+  position: relative;
   background-color: #3D7A40;
   color: white;
   text-align: center;
   padding: 20px;
+}
+.public-layout .header-login {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: not-allowed;
+}
+.public-layout .header-login small {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+  font-weight: normal;
 }
 .public-layout .header h1 {
   font-size: 28px;
@@ -33,7 +52,6 @@
   width: 70px;
 }
 
-/* NAV */
 .public-layout nav {
   background: white;
   display: flex;
@@ -51,10 +69,9 @@
   font-weight: bold;
 }
 .public-layout nav a:hover { text-decoration: underline; }
-/* NavLink adds the "active" class automatically on the current page */
 .public-layout nav a.active { color: #3D7A40; }
 
-/* FOOTER */
+
 .public-layout .footer {
   background-color: #3D7A40;
   color: white;
@@ -67,4 +84,8 @@
 
 @media (max-width: 600px) {
   .public-layout nav { padding: 14px 16px; }
+  .public-layout .header-login {
+    position: static;
+    margin-top: 12px;
+  }
 }
