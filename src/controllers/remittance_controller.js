@@ -17,13 +17,18 @@ const addRemittanceRecord = async (req, res) => {
             return res.status(401).json({ message: 'Unauthorized: Admin session missing' });
         }
 
-        // validate mandatory fields
+        // validate mandatory fields (null and "" count as missing)
         if (!client || !taxType || amount === undefined || amount === null || amount === '') {
             return res.status(400).json({ message: 'Client, tax type, and amount are required' });
         }
 
+        // check if client ID has a valid format 
         if (!mongoose.isValidObjectId(client)) {
-            return res.status(400).json({ message: 'Invalid client ID' });
+            return res.status(400).json({ message: 'Invalid client id' });
+        }
+        // check if client ID actually exists
+        if (!(await Client.exists({ _id: client }))) {
+            return res.status(400).json({ message: 'Client not found' });
         }
 
         const validTaxTypes = Object.values(TAX_TYPES);
@@ -34,6 +39,11 @@ const addRemittanceRecord = async (req, res) => {
         const parsedAmount = Number(amount);
         if (typeof amount === 'boolean' || Number.isNaN(parsedAmount) || !Number.isFinite(parsedAmount) || parsedAmount < 0) {
             return res.status(400).json({ message: 'Amount must be a valid positive number' });
+        }
+
+        // check if due date uses a valid date format
+        if (dueDate && isNaN(new Date(dueDate))) {
+            return res.status(400).json({ message: 'Invalid due date' });
         }
 
         const clientExists = await Client.exists({ _id: client });
@@ -58,7 +68,7 @@ const addRemittanceRecord = async (req, res) => {
         res.status(201).json({ message: 'Remittance record created', remittance });
     } catch (err) {
         console.error('Error creating remittance:', err);
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: 'Failed to create remittance record' });
     }
 };
 
@@ -74,7 +84,7 @@ const getAdminRemittances = async (req, res) => {
         res.status(200).json(remittances);
     } catch (err) {
         console.error("Error fetching remittances:", err)
-        res.status(500).json({ error: 'Failed to fetch remittances' });
+        res.status(500).json({ message: 'Failed to fetch remittances' });
     }
 };
 
@@ -119,7 +129,7 @@ const updateRemittanceStatus = async (req, res) => {
         res.status(200).json({ message: 'Remittance status updated', remittance });
     } catch (err) {
         console.error('Error updating remittance status:', err);
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: 'Failed to update remittance status' });
     }
 };
 
@@ -142,15 +152,15 @@ const getClientRemittances = async (req, res) => {
         res.status(200).json(remittances);
     } catch (err) {
         console.error('Error fetching client remittances:', err)
-        res.status(500).json({ error: 'Failed to fetch remittances' });
+        res.status(500).json({ message: 'Failed to fetch remittances' });
     }
 };
 
 const deleteRemittance = async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).json({ message: 'Invalid remittance ID' });
-    }
+            return res.status(400).json({ message: 'Invalid record id' });
+        }
 
     const remittance = await Remittance.findByIdAndDelete(req.params.id);
     if (!remittance) {
@@ -159,7 +169,7 @@ const deleteRemittance = async (req, res) => {
     res.status(200).json({ message: 'Remittance record deleted successfully' });
   } catch (err) {
     console.error('Error deleting remittance:', err)
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Failed to create remittance record ' });
   }
 };
 

@@ -188,3 +188,10 @@
 .delete-btn:hover {
     background: #c62828;
 }
+
+/* styling for inline validation error under the client dropdown */
+.form-error {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin: 4px 0 0;
+}
