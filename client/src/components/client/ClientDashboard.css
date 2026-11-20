@@ -176,12 +176,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    animation: fadeUp 0.8s ease;
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
 }
 
 .client-shell .card {

@@ -30,7 +30,6 @@
   transition: .3s;
   position: relative;
   overflow: hidden;
-  animation: fadeUp 0.8s ease;
 }
 .newsletter-page .newsletter-card:hover {
   transform: translateY(-8px);

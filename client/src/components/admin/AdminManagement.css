@@ -184,7 +184,6 @@
 .manage-page .admin-list .user-row {
     gap: 18px;
     padding: 18px 24px;
-    animation: fadeUp 0.8s ease;
 }
 
 .manage-page .admin-list .user-info {

@@ -156,7 +156,6 @@
     cursor: pointer;
     transition: .2s ease;
     margin-bottom: 18px;
-    animation: fadeUp 0.8s ease;
     cursor: pointer;
 }
 
@@ -194,7 +193,6 @@
 
 .inquiries-page .filter-dropdown-content.show {
     display: block;
-    animation: fadeUp .18s ease;
 }
 
 .inquiries-page .filter-group-title {
@@ -263,7 +261,6 @@
     padding: 18px 22px;
     border-left: 4px solid transparent;
     transition: .2s ease;
-    animation: fadeUp 0.5s ease;
 }
 
 .inquiries-page .inquiry-container:hover {

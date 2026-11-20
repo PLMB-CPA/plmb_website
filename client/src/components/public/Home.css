@@ -12,7 +12,6 @@
   transition: .3s;
   position: relative;
   overflow: hidden;
-  animation: fadeUp 0.8s ease;
 }
 .home .container::before {
   content: "";

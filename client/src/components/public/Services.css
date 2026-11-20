@@ -29,7 +29,6 @@
   transition: .3s;
   position: relative;
   overflow: hidden;
-  animation: fadeUp 0.8s ease;
 }
 
 .service-container .container::before {

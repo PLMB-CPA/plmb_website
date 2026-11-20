@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/layout/AdminLayout';
 
@@ -9,7 +9,6 @@ import NewsletterList from './components/public/NewsletterList';
 import NewsletterDetail from './components/public/NewsletterDetail';
 import Contact from './components/public/Contact';
 
-import Dashboard from './components/admin/Dashboard';
 import AdminNewsletterList from './components/admin/AdminNewsletterList';
 import PostNewsletter from './components/admin/PostNewsletter';
 import InquiryManagement from './components/admin/InquiryManagement';
@@ -42,7 +41,7 @@ function App() {
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
+        <Route index element={<Navigate to="/admin/inquiries" replace />} />
         <Route path="newsletters" element={<AdminNewsletterList />} />
         <Route path="newsletters/new" element={<PostNewsletter />} />
         <Route path="newsletters/:id/edit" element={<PostNewsletter />} />
