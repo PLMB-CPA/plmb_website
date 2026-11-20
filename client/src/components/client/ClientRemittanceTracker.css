@@ -221,3 +221,10 @@
     color: #8a8a8a;
     margin: 0;
 }
+
+/* styling for ote shown under the due date when a record is incomplete */
+.incomplete-note {
+    color: #666;
+    font-size: 0.8rem;
+    margin: 2px 0 0;
+}

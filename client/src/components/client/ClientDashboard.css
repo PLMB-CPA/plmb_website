@@ -299,6 +299,19 @@
     color: #333;
 }
 
-.deadline-date {
+.client-shell .deadline-date {
     color: #555;
+}
+
+/* styling for "Contact the firm" prompt shown when profile details are missing */
+.client-shell .profile-incomplete {
+    color: #b26a00;
+    font-size: 0.9rem;
+    margin-top: 12px;
+}
+
+/* styling for "Not provided" to differentiate it from real data */
+.client-shell .profile-value.not-provided {
+    color: #767676;
+    font-style: italic;
 }
