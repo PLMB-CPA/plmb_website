@@ -189,3 +189,244 @@ it('shows the server message when the inquiry cannot be loaded', async () => {
   );
   expect(await screen.findByText('Inquiry not found')).toBeInTheDocument();
 });
+
+const respondWithStatus = (status, data, ok = status >= 200 && status < 300) =>
+  Promise.resolve({ ok, status, json: async () => data });
+
+describe('F10b AC1 · conversation history and follow-up replies', () => {
+  it('shows empty reply history and keeps reply form visible when conversation array is empty', async () => {
+    await renderDetail({
+      ...base,
+      firstName: 'Juan',
+      lastName: 'Dela Cruz',
+      businessName: 'JDC Corp',
+      number: '09171234567',
+      isOverdue: true,
+      conversation: [],
+    });
+
+    expect(screen.getByText('INQ-0001')).toBeInTheDocument();
+    expect(screen.getByText('Juan Dela Cruz')).toBeInTheDocument();
+    expect(screen.getByText('JDC Corp')).toBeInTheDocument();
+    expect(screen.getByText('Overdue')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Reply History' })).toBeInTheDocument();
+    expect(screen.getByText('No replies have been sent yet.')).toBeInTheDocument();
+    expect(box()).toBeInTheDocument();
+  });
+
+  it('displays existing conversation entries with timestamps and appends a follow-up reply', async () => {
+    const user = userEvent.setup();
+    const initialConversation = [
+      {
+        _id: 'msg-1',
+        sender: 'admin',
+        message: 'Thank you for reaching out.',
+        sentAt: '2026-11-19T02:00:00.000Z',
+      },
+    ];
+    const updatedInquiry = {
+      ...base,
+      isAnswered: true,
+      repliedAt: '2026-11-19T02:00:00.000Z',
+      responseTimeMinutes: 30,
+      conversation: [
+        ...initialConversation,
+        {
+          _id: 'msg-2',
+          sender: 'admin',
+          message: 'Here is our updated quote.',
+          sentAt: '2026-11-19T04:15:00.000Z',
+        },
+      ],
+    };
+
+    await renderDetail(
+      {
+        ...base,
+        isAnswered: true,
+        repliedAt: '2026-11-19T02:00:00.000Z',
+        responseTimeMinutes: 30,
+        conversation: initialConversation,
+      },
+      () => respond({ message: 'Reply sent successfully.', inquiry: updatedInquiry })
+    );
+
+    expect(screen.getByText('1 reply')).toBeInTheDocument();
+    expect(screen.getByText('Thank you for reaching out.')).toBeInTheDocument();
+    expect(box()).toBeInTheDocument();
+
+    await user.type(box(), 'Here is our updated quote.');
+    await user.click(sendBtn());
+
+    expect(await screen.findByRole('status')).toHaveTextContent('Reply sent successfully.');
+    expect(screen.getByText('2 replies')).toBeInTheDocument();
+    expect(screen.getByText('Here is our updated quote.')).toBeInTheDocument();
+    expect(box()).toHaveValue('');
+  });
+});
+
+describe('F10b AC2 · input limits and user-friendly errors', () => {
+  it('updates live character count and displays server validation errors without losing text', async () => {
+    const user = userEvent.setup();
+    await renderDetail(
+      { ...base, conversation: [] },
+      () => respondWithStatus(400, { error: 'Reply must not exceed 2000 characters.' }, false)
+    );
+
+    await user.type(box(), 'Draft message');
+    expect(screen.getByText('13 / 10,000 characters')).toBeInTheDocument();
+
+    await user.click(sendBtn());
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Reply must not exceed 2000 characters.'
+    );
+    expect(box()).toHaveValue('Draft message');
+  });
+
+  it('replaces raw technical stack errors with a friendly fallback message', async () => {
+    const user = userEvent.setup();
+    await renderDetail(
+      { ...base, conversation: [] },
+      () =>
+        respondWithStatus(
+          500,
+          { error: 'TypeError: Cannot read properties of undefined\n    at replyToInquiry (src/controllers/inquiry_controller.js:120:11)' },
+          false
+        )
+    );
+
+    await user.type(box(), 'Hello');
+    await user.click(sendBtn());
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('Could not send the reply. Please try again.');
+    expect(alert).not.toHaveTextContent('TypeError');
+  });
+});
+
+describe('F10b AC3 · email notification failure', () => {
+  it('saves and shows the reply while warning the admin when email notification fails', async () => {
+    const user = userEvent.setup();
+    const savedInquiry = {
+      ...base,
+      isAnswered: true,
+      repliedAt: '2026-11-20T03:00:00.000Z',
+      responseTimeMinutes: 20,
+      emailNotificationFailed: true,
+      conversation: [
+        {
+          _id: 'msg-1',
+          sender: 'admin',
+          message: 'Saved despite SMTP failure.',
+          sentAt: '2026-11-20T03:00:00.000Z',
+        },
+      ],
+    };
+
+    await renderDetail(
+      { ...base, conversation: [] },
+      () =>
+        respondWithStatus(200, {
+          message: 'Reply saved, but the email could not be sent.',
+          emailNotificationFailed: true,
+          inquiry: savedInquiry,
+        })
+    );
+
+    await user.type(box(), 'Saved despite SMTP failure.');
+    await user.click(sendBtn());
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Reply saved, but the email could not be sent.'
+    );
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Saved despite SMTP failure.')).toBeInTheDocument();
+    expect(box()).toHaveValue('');
+  });
+
+  it('shows a persistent email-not-sent badge on entries that failed email delivery', async () => {
+    await renderDetail({
+      ...base,
+      isAnswered: true,
+      repliedAt: '2026-11-20T03:00:00.000Z',
+      responseTimeMinutes: 15,
+      conversation: [
+        {
+          _id: 'msg-1',
+          sender: 'admin',
+          message: 'Reply saved in app only.',
+          sentAt: '2026-11-20T03:00:00.000Z',
+          emailNotificationFailed: true,
+        },
+      ],
+    });
+
+    expect(screen.getByText('Email not sent')).toBeInTheDocument();
+    expect(screen.getByText('Reply saved in app only.')).toBeInTheDocument();
+  });
+});
+
+describe('F10b AC4 · unauthorized access', () => {
+  it('redirects to /admin/login on 401 when loading an inquiry without exposing conversation data', async () => {
+    fetch.mockImplementation(() =>
+      respondWithStatus(401, { error: 'Unauthorized.' }, false)
+    );
+    render(
+      <MemoryRouter initialEntries={['/admin/inquiries/abc123']}>
+        <Routes><Route path="/admin/inquiries/:id" element={<InquiryDetail />} /></Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith('/admin/login', { replace: true })
+    );
+    expect(screen.queryByRole('heading', { name: 'Reply History' })).not.toBeInTheDocument();
+  });
+
+  it('blocks access on 403 when loading an inquiry without exposing inquiry details', async () => {
+    fetch.mockImplementation(() =>
+      respondWithStatus(403, { error: 'Forbidden' }, false)
+    );
+    render(
+      <MemoryRouter initialEntries={['/admin/inquiries/abc123']}>
+        <Routes><Route path="/admin/inquiries/:id" element={<InquiryDetail />} /></Routes>
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'You are not authorized to view this inquiry.'
+    );
+    expect(screen.queryByRole('heading', { name: base.subject })).not.toBeInTheDocument();
+  });
+
+  it('redirects to /admin/login if session expires (401) while submitting a reply', async () => {
+    const user = userEvent.setup();
+    await renderDetail(
+      { ...base, conversation: [] },
+      () => respondWithStatus(401, { error: 'Unauthorized.' }, false)
+    );
+
+    await user.type(box(), 'Attempt after expiry');
+    await user.click(sendBtn());
+
+    await waitFor(() =>
+      expect(mockNavigate).toHaveBeenCalledWith('/admin/login', { replace: true })
+    );
+  });
+
+  it('shows authorization error on 403 when submitting a reply', async () => {
+    const user = userEvent.setup();
+    await renderDetail(
+      { ...base, conversation: [] },
+      () => respondWithStatus(403, { error: 'Forbidden' }, false)
+    );
+
+    await user.type(box(), 'Unauthorized reply attempt');
+    await user.click(sendBtn());
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'You are not authorized to reply to this inquiry.'
+    );
+    expect(box()).toHaveValue('Unauthorized reply attempt');
+  });
+});
