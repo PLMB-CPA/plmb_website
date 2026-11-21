@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './ClientDashboard.css';
-import './ClientInquiries.css';
+import './ClientInquiryTracker.css';
 // Reused from the admin inquiry page so dates read the same on both sides
 // (Philippine time, same format).
 import { formatManilaTimestamp } from '../../util/inquiryReply';
@@ -49,7 +49,7 @@ function InquiryCard({ inquiry }) {
     );
 }
 
-function ClientInquiries() {
+function ClientInquiryTracker() {
     const navigate = useNavigate();
 
     // Auth state
@@ -180,4 +180,4 @@ function ClientInquiries() {
     );
 }
 
-export default ClientInquiries;
+export default ClientInquiryTracker;
