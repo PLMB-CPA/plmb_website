@@ -37,11 +37,22 @@ const inquirySchema = new mongoose.Schema({
   date: {type: Date, default: Date.now},
   reply: {type: String, default: null},
   repliedAt: {type: Date, default: null},
+  emailNotificationFailed: {type: Boolean, default: false},
+  // FUTURE CONSIDERATION: add conversation array if multi-reply mode is implemented
+  // for F10 (Reply to Client Inquiries)
+  // frontend implementation supports both single-reply and multiple-reply mode
+  // conversation: [{
+  //   senderName: {type: String, trim: true},
+  //   message: {type: String, required: true, trim: true},
+  //   sentAt: {type: Date, default: Date.now}, // fill in automatically when entry is created
+  //   emailNotificationFailed: {type: Boolean, default: false}
+  // }],
   isArchived: {type: Boolean, default: false},
   isRead: {type: Boolean, default: false},
   isAnswered: {type: Boolean, default: false},
   status: {type: String, enum:['new', 'in_progress', 'answered'], default: 'new'},
-  responseTimeMinutes:{type: Number, default: null, min: 0}
+  responseTimeMinutes:{type: Number, default: null, min: 0},
+
 });
 
 module.exports = mongoose.model('Inquiry', inquirySchema);
