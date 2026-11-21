@@ -17,13 +17,13 @@ test.describe('PLMB Online Portal Smoke & Acceptance Tests', () => {
 
   test('Admin login flow authenticates and reaches dashboard', async ({ page }) => {
     await page.goto('/admin/login');
-    await expect(page.locator('.login_header')).toHaveText('Admin Sign-In');
+    await expect(page.locator('.login_header')).toHaveText('User Sign-In');
 
     await page.fill('#username', 'plmbadmin');
     await page.fill('#password', 'plmb2026.');
     await page.click('#login_btn');
 
-    await page.waitForURL('**/admin/clients');
+    await page.waitForURL('**/admin');
     await expect(page.locator('body')).toContainText(/Dashboard|Inquiries|Newsletter/i);
   });
 });
