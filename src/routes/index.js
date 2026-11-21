@@ -64,6 +64,9 @@ router.delete('/admin/remittances/:id', requireAuth, remittanceController.delete
 // Client: fetch only the logged-in client's remittances
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
 
+// Client-Side Inquiries
+router.get('/client/inquiries', requireClient, inquiryController.getClientInquiries);
+
 //ADMIN DASHBOARD ROUTES
 router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 

@@ -201,24 +201,24 @@ describe('F03 AC2 · invalid replies change nothing', () => {
     expect(res.status).toBe(200);
   });
 
-  // SITUATION: gmail is down when the admin sends a valid reply.
-  // CHECKS: 500 with a retry message, and NOTHING is saved (still unanswered).
-  test('if the reply email fails, nothing is saved', async () => {
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    sendReplyEmail.mockRejectedValueOnce(new Error('smtp down'));
-    const agent = await createAdminAndLogin();
-    const inquiry = await makeInquiry();
+  // // SITUATION: gmail is down when the admin sends a valid reply.
+  // // CHECKS: 500 with a retry message, and NOTHING is saved (still unanswered).
+  // test('if the reply email fails, nothing is saved', async () => {
+  //   const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  //   sendReplyEmail.mockRejectedValueOnce(new Error('smtp down'));
+  //   const agent = await createAdminAndLogin();
+  //   const inquiry = await makeInquiry();
 
-    const res = await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Hello' });
+  //   const res = await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Hello' });
 
-    expect(res.status).toBe(500);
-    expect(res.body.error).toBe('Unable to send reply. Please try again.');
-    const inDb = await Inquiry.findById(inquiry._id);
-    expect(inDb.isAnswered).toBe(false);
-    expect(inDb.reply).toBeNull();
-    expect(inDb.repliedAt).toBeNull();
-    errSpy.mockRestore();
-  });
+  //   expect(res.status).toBe(500);
+  //   expect(res.body.error).toBe('Unable to send reply. Please try again.');
+  //   const inDb = await Inquiry.findById(inquiry._id);
+  //   expect(inDb.isAnswered).toBe(false);
+  //   expect(inDb.reply).toBeNull();
+  //   expect(inDb.repliedAt).toBeNull();
+  //   errSpy.mockRestore();
+  // });
 
   // SITUATION: a second admin (or a double click) replies to an inquiry that already has a reply.
   // CHECKS: 409, the first reply is kept, no second email.
@@ -327,5 +327,83 @@ describe('F03 · filters and known bugs', () => {
       .patch(`/api/inquiries/${new mongoose.Types.ObjectId()}`)
       .send({ isRead: true });
     expect(res.status).toBe(404);
+  });
+});
+describe('F10a AC3 · the reply is kept when the notification email fails', () => {
+
+  // SITUATION: gmail is down when the admin sends a valid reply.
+  // CHECKS: 200, the reply IS saved, the failure is recorded, no raw error leaks.
+    test.each([
+    ['EAUTH', 'the email service could not sign in'],
+    ['ECONNECTION', 'the mail server could not be reached'],
+    ['EENVELOPE', 'the email address was rejected'],
+    [undefined, 'of an unexpected email error'],
+  ])('if the email fails with code %s, the reply is saved and the reason is friendly', async (code, reason) => {
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    sendReplyEmail.mockRejectedValueOnce(Object.assign(new Error('smtp down'), { code }));
+    const agent = await createAdminAndLogin();
+    const inquiry = await makeInquiry();
+
+    const res = await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Hello' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.emailNotificationFailed).toBe(true);
+    expect(res.body.message).toBe(`Reply saved, but the email could not be sent because ${reason}.`);
+    expect(res.body.inquiry.reply).toBe('Hello');
+    expect(JSON.stringify(res.body)).not.toContain('smtp down');
+
+    const inDb = await Inquiry.findById(inquiry._id);
+    expect(inDb.reply).toBe('Hello');
+    expect(inDb.isAnswered).toBe(true);
+    expect(inDb.repliedAt).not.toBeNull();
+    expect(inDb.emailNotificationFailed).toBe(true);
+    errSpy.mockRestore();
+  });
+
+  // SITUATION: the email works. 
+  // CHECKS: success message and the flag stays false.
+  test('a successful reply does not flag an email failure', async () => {
+    const agent = await createAdminAndLogin();
+    const inquiry = await makeInquiry();
+
+    const res = await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Hello' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe('Reply sent successfully.');
+    expect(res.body.emailNotificationFailed).toBe(false);
+    expect((await Inquiry.findById(inquiry._id)).emailNotificationFailed).toBe(false);
+  });
+
+  // SITUATION: the email failed, then the admin tries again.
+  // CHECKS: still one reply only (409), the first reply is kept, no second email.
+  test('after an email failure a second reply is still rejected', async () => {
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    sendReplyEmail.mockRejectedValueOnce(new Error('smtp down'));
+    const agent = await createAdminAndLogin();
+    const inquiry = await makeInquiry();
+
+    await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'First' });
+    const second = await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Second' });
+
+    expect(second.status).toBe(409);
+    expect((await Inquiry.findById(inquiry._id)).reply).toBe('First');
+    expect(sendReplyEmail).toHaveBeenCalledTimes(1);
+    errSpy.mockRestore();
+  });
+
+  // SITUATION: the email failed and the admin reloads the inquiry page.
+  // CHECKS: GET still reports the failure, so the "Email not sent" badge survives a reload.
+  test('the failure is still reported when the inquiry is loaded again', async () => {
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    sendReplyEmail.mockRejectedValueOnce(new Error('smtp down'));
+    const agent = await createAdminAndLogin();
+    const inquiry = await makeInquiry();
+
+    await agent.post(`/api/inquiries/${inquiry._id}/reply`).send({ reply: 'Hello' });
+    const detail = await agent.get(`/api/inquiries/${inquiry._id}`);
+
+    expect(detail.body.inquiry.emailNotificationFailed).toBe(true);
+    expect(detail.body.inquiry.reply).toBe('Hello');
+    errSpy.mockRestore();
   });
 });

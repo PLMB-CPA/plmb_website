@@ -92,6 +92,10 @@ function ClientDashboard() {
                             <img className="menu-icon" src="/image/peso-icon.png" alt="Remittances" />
                             <span>Remittances</span>
                         </Link>
+                        <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                            <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
+                            <span>Inquiries</span>
+                        </Link>
                     </nav>
 
                     <button className="sidebar-link logout" onClick={handleLogout}>
