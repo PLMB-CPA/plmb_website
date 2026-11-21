@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 import './AdminCreation.css';
 
-function PasswordField({ label, value, onChange }) {
+export function PasswordField({ label, value, onChange }) {
     const [show, setShow] = useState(false);
     return (
         <label className="field">
