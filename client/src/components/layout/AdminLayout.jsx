@@ -1,18 +1,26 @@
-import { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, NavLink, useLocation } from "react-router-dom";
+import { saveLastAdminPage } from "../admin/lastAdminPage";
 import useAdminSession from "../admin/useAdminSession";
 import "./AdminLayout.css";
 
 function AdminLayout() {
     // null while checking the login; logged-out visitors get sent to /admin/login
-    const username = useAdminSession();
+    const [admin, setAdmin] = useAdminSession();
 
     // Phone screens only: whether the collapsed menu is open
     const [menuOpen, setMenuOpen] = useState(false);
     const closeMenu = () => setMenuOpen(false);
 
+    const location = useLocation();
+    const adminId = admin?.id;
+
+    useEffect(() => {
+        if (adminId) saveLastAdminPage(adminId, location.pathname + location.search);
+    }, [adminId, location.pathname, location.search]);
+
     // Don't flash the admin UI while the check is running
-    if (username === null) return null;
+    if (admin === null) return null;
 
     return (
         <div className="admin-shell">
@@ -37,18 +45,23 @@ function AdminLayout() {
 
                         {/* className="dash-side" + NavLink = "dash-side active" on the current page */}
                         <nav className="sidebar-nav">
-                            <NavLink to="/admin/newsletters" className="dash-side" onClick={closeMenu}>
-                                <img className="menu-icon" src="/image/newsletter-icon.png" alt="" />
-                                <span>Newsletters</span>
+                            <NavLink to="/admin/clients" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/user-icon.png" alt="" />
+                                <span>Manage Clients</span>
                             </NavLink>
                             <NavLink to="/admin/inquiries" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
                                 <span>Inquiries</span>
                             </NavLink>
+                            <NavLink to="/admin/newsletters" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/newsletter-icon.png" alt="" />
+                                <span>Newsletters</span>
+                            </NavLink>
                             <NavLink to="/admin/subscribers" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/subscriber.png" alt="" />
                                 <span>Subscribers</span>
                             </NavLink>
+<<<<<<< Updated upstream
                             <NavLink to="/admin/clients" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/user-icon.png" alt="" />
                                 <span>Manage Clients</span>
@@ -60,6 +73,17 @@ function AdminLayout() {
                             <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/user.png" alt="" />
                                 <span>Manage Admin</span>
+=======
+                            {admin.isMain && (
+                                <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
+                                    <img className="menu-icon" src="/image/user.png" alt="" />
+                                    <span>Manage Admin</span>
+                                </NavLink>
+                            )}
+                            <NavLink to="/admin/settings" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/settings.png" alt="" />
+                                <span>Settings</span>
+>>>>>>> Stashed changes
                             </NavLink>
                         </nav>
 
@@ -72,8 +96,7 @@ function AdminLayout() {
                     </aside>
 
                     <main className="main-content">
-                        {/* context hands username to every admin page (read it with useOutletContext) */}
-                        <Outlet context={{ username }} />
+                        <Outlet context={{ admin, setAdmin, username: admin.username }} />
                     </main>
                 </div>
             </div>

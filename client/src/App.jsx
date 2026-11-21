@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/layout/AdminLayout';
 
@@ -16,6 +16,9 @@ import InquiryDetail from './components/admin/InquiryDetail';
 import AdminManagement from './components/admin/AdminManagement';
 import Login from './components/admin/Login';
 import AdminCreation from './components/admin/AdminCreation';
+import AdminSettings from './components/admin/AdminSettings';
+import MainAdminOnly from './components/admin/MainAdminOnly';
+import AdminHome from './components/admin/AdminHome';
 import ClientCreation from './components/admin/ClientCreation';
 import ClientManagement from './components/admin/ClientManagement';
 import ClientLogin from './components/client/ClientLogin';
@@ -41,16 +44,24 @@ function App() {
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="/admin/inquiries" replace />} />
+        <Route index element={<AdminHome />} />
         <Route path="newsletters" element={<AdminNewsletterList />} />
         <Route path="newsletters/new" element={<PostNewsletter />} />
         <Route path="newsletters/:id/edit" element={<PostNewsletter />} />
         <Route path="inquiries" element={<InquiryManagement />} />
         <Route path="inquiries/:id" element={<InquiryDetail />} />
         <Route path="subscribers" element={<SubscriberManagement />} />
+<<<<<<< Updated upstream
         <Route path="remittances" element={<TaxRemittanceStatusTracker />} />
         <Route path="manage" element={<AdminManagement />} />
         <Route path="manage/create" element={<AdminCreation />} />
+=======
+        <Route element={<MainAdminOnly />}>
+          <Route path="manage" element={<AdminManagement />} />
+          <Route path="manage/create" element={<AdminCreation />} />
+        </Route>
+        <Route path="settings" element={<AdminSettings />} />
+>>>>>>> Stashed changes
         <Route path="clients" element={<ClientManagement />} />
         <Route path="clients/new" element={<ClientCreation />} />
       </Route>

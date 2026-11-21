@@ -13,9 +13,15 @@ async function seed() {
   const existing = await Admin.findOne({ username });
 
   if (existing) {
-    console.log('Admin already exists.');
+    if (!existing.isMain) {
+      existing.isMain = true;
+      await existing.save();
+      console.log(`Marked "${username}" as the main admin.`);
+    } else {
+      console.log('Admin already exists.');
+    }
   } else {
-    await Admin.create({ username, password: hashed });
+    await Admin.create({ username, password: hashed, isMain: true });
     console.log(`Created admin "${username}" / "${password}"`);
   }
 

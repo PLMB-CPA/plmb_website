@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 import useClickOutside from './useClickOutside';
 import './AdminManagement.css';
@@ -7,7 +7,7 @@ import './AdminManagement.css';
 // Replaces src/views/admin_management.html + public/js/admin_management.js
 
 // One admin in the list, with its own ⋮ menu
-function AdminRow({ admin, onDelete }) {
+function AdminRow({ admin, isSelf, onDelete, onToggleMain }) {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useClickOutside(() => setMenuOpen(false));
@@ -15,14 +15,15 @@ function AdminRow({ admin, onDelete }) {
     return (
         <div className="user-row">
             <div className="user-info">
-                <h3>{admin.username}</h3>
-                <p></p>
+                <h3>{admin.name || admin.username}</h3>
+                <p>{admin.name ? `@${admin.username}` : ''}{admin.email ? ` · ${admin.email}` : ''}</p>
             </div>
-            <div className="status active">
-                <p>● Active</p>
+            <div className={`status ${admin.isMain ? 'main' : 'active'}`}>
+                <p>{admin.isMain ? 'Main Admin' : '● Active'}</p>
             </div>
             {/* Per-admin stats (inquiries answered, newsletters reviewed/published)
                 go here once the backend tracks them */}
+            {isSelf ? <div className="dropdown-btn" /> : (
             <div className="dropdown-btn" ref={menuRef}>
                 <button type="button" className="more-btn" onClick={() => setMenuOpen(!menuOpen)}>⋮</button>
                 <div className={`dropdown-content ${menuOpen ? 'show' : ''}`}>
@@ -30,17 +31,25 @@ function AdminRow({ admin, onDelete }) {
                         onClick={() => navigate(`/admin/manage/create?mode=change&id=${admin._id}`)}>
                         Change Password
                     </button>
-                    <button type="button" className="delete-ad" onClick={() => onDelete(admin._id)}>
-                        Delete
+                    <button type="button" className="main-ad"
+                        onClick={() => { setMenuOpen(false); onToggleMain(admin); }}>
+                        {admin.isMain ? 'Remove Main Admin' : 'Make Main Admin'}
                     </button>
+                    {!admin.isMain && (
+                        <button type="button" className="delete-ad" onClick={() => onDelete(admin._id)}>
+                            Delete
+                        </button>
+                    )}
                 </div>
             </div>
+            )}
         </div>
     );
 }
 
 function AdminManagement() {
     const navigate = useNavigate();
+    const { admin: currentAdmin } = useOutletContext();
     const [admins, setAdmins] = useState([]);
     const [error, setError] = useState('');
 
@@ -53,6 +62,31 @@ function AdminManagement() {
             })
             .catch(() => setError('Failed to load admins.'));
     }, []);
+
+    async function handleToggleMain(target) {
+        const makeMain = !target.isMain;
+        const name = target.name || target.username;
+        const question = makeMain
+            ? `Make ${name} a main admin? They will be able to add, delete, and manage all admins.`
+            : `Remove main admin status from ${name}?`;
+        if (!window.confirm(question)) return;
+
+        try {
+            const res = await fetch(`/api/admin/users/${target._id}/main`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ isMain: makeMain }),
+            });
+            const data = await res.json();
+            if (data.error) {
+                window.alert(data.error);
+                return;
+            }
+            setAdmins(admins.map(a => a._id === target._id ? { ...a, isMain: data.admin.isMain } : a));
+        } catch {
+            window.alert('Failed to update admin.');
+        }
+    }
 
     async function handleDelete(id) {
         if (!window.confirm('Are you sure you want to delete this admin?')) return;
@@ -99,7 +133,9 @@ function AdminManagement() {
                     <div className="admin-list">
                         {error && <p>{error}</p>}
                         {admins.map(admin => (
-                            <AdminRow key={admin._id} admin={admin} onDelete={handleDelete} />
+                            <AdminRow key={admin._id} admin={admin}
+                                isSelf={admin._id === currentAdmin.id}
+                                onDelete={handleDelete} onToggleMain={handleToggleMain} />
                         ))}
                     </div>
                 </div>

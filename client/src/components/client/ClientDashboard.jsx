@@ -75,12 +75,38 @@ function ClientDashboard() {
 
 
     return (
+<<<<<<< Updated upstream
         <div className="client-shell">
             <div className="bg-container">
                 <aside className="sidebar">
                     <div className="sidebar-brand">
                         <img src="/image/logo.png" alt="Logo" />
                         <h1>PLMB</h1>
+=======
+        <div className="client-dashboard">
+            <header className="client-header">
+                <h1>Client Portal</h1>
+                <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+            </header>
+
+            <header className="client-settings">
+                <h2>Profile Settings</h2>
+                <button className="change-password-btn" onClick={() => navigate('/client/ClientChangePassword')}>Change Password</button>
+                <button className="send-inquiry-btn" onClick={() => navigate('/client/ClientInquiry')}>Send Inquiry</button>
+            </header>
+
+            <main className="client-main">
+                <section className="profile-card">
+                    <h2>{client.firstName} {client.lastName}</h2>
+
+                    <div className="profile-fields">
+                        <ProfileField label="Email" value={client.email} />
+                        <ProfileField label="Contact Number" value={client.phoneNumber} />
+                        <ProfileField label="Birthday" value={birthday} />
+                        <ProfileField label="TIN" value={client.tin} />
+                        <ProfileField label="Associated Company" value={client.businessName} />
+                        <ProfileField label="Address" value={client.address ? `${client.address}, ${client.city}` : null} />
+>>>>>>> Stashed changes
                     </div>
 
                     <nav className="sidebar-nav">

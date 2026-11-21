@@ -144,13 +144,6 @@
     color: #8b8b8b;
 }
 
-.manage-page #admin-pfp {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 /* USER LIST */
 
 .manage-page .admin-list {
@@ -174,6 +167,11 @@
 .manage-page .status.active {
     background: #edf8ed;
     color: #2d8f3f;
+}
+
+.manage-page .status.main {
+    background: #255f20;
+    color: #fff;
 }
 
 .manage-page .status.inactive {
@@ -297,6 +295,7 @@
 }
 
 .manage-page .change-pass-ad:hover,
+.manage-page .main-ad:hover,
 .manage-page .delete-ad:hover {
     background-color: #f5f5f5;
     cursor: pointer;
