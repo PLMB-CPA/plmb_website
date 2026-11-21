@@ -8,11 +8,7 @@ const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
-<<<<<<< Updated upstream
-const dashboardController = require('../controllers/dashboard_controller');
 const remittanceController = require('../controllers/remittance_controller');
-=======
->>>>>>> Stashed changes
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
@@ -55,7 +51,6 @@ router.get('/unsubscribe/:token', subscriberController.unsubscribe);
 // Admin: fetch all subscribers
 router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
 
-<<<<<<< Updated upstream
 // REMITTANCE ROUTES
 
 // Admin: fetch all remittances, create records, update statuses
@@ -68,11 +63,6 @@ router.delete('/admin/remittances/:id', requireAuth, remittanceController.delete
 // Client: fetch only the logged-in client's remittances
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
 
-//ADMIN DASHBOARD ROUTES
-router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
-
-=======
->>>>>>> Stashed changes
 //ADMIN LOGIN/LOGOUTROUTES
 router.post('/admin/login', adminController.postAdminLogin);
 router.get('/admin/logout', adminController.getAdminLogout);

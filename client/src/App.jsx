@@ -51,17 +51,12 @@ function App() {
         <Route path="inquiries" element={<InquiryManagement />} />
         <Route path="inquiries/:id" element={<InquiryDetail />} />
         <Route path="subscribers" element={<SubscriberManagement />} />
-<<<<<<< Updated upstream
         <Route path="remittances" element={<TaxRemittanceStatusTracker />} />
-        <Route path="manage" element={<AdminManagement />} />
-        <Route path="manage/create" element={<AdminCreation />} />
-=======
         <Route element={<MainAdminOnly />}>
           <Route path="manage" element={<AdminManagement />} />
           <Route path="manage/create" element={<AdminCreation />} />
         </Route>
         <Route path="settings" element={<AdminSettings />} />
->>>>>>> Stashed changes
         <Route path="clients" element={<ClientManagement />} />
         <Route path="clients/new" element={<ClientCreation />} />
       </Route>

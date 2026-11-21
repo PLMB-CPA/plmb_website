@@ -61,19 +61,10 @@ function AdminLayout() {
                                 <img className="menu-icon" src="/image/subscriber.png" alt="" />
                                 <span>Subscribers</span>
                             </NavLink>
-<<<<<<< Updated upstream
-                            <NavLink to="/admin/clients" className="dash-side" onClick={closeMenu}>
-                                <img className="menu-icon" src="/image/user-icon.png" alt="" />
-                                <span>Manage Clients</span>
-                            </NavLink>
                             <NavLink to="/admin/remittances" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/peso-icon.png" alt="" />
                                 <span>Remittances</span>
                             </NavLink>
-                            <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
-                                <img className="menu-icon" src="/image/user.png" alt="" />
-                                <span>Manage Admin</span>
-=======
                             {admin.isMain && (
                                 <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
                                     <img className="menu-icon" src="/image/user.png" alt="" />
@@ -83,7 +74,6 @@ function AdminLayout() {
                             <NavLink to="/admin/settings" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/settings.png" alt="" />
                                 <span>Settings</span>
->>>>>>> Stashed changes
                             </NavLink>
                         </nav>
 
