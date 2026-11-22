@@ -1,0 +1,311 @@
+/* Mirrors AdminLayout.css shell styles, scoped to .client-shell */
+
+.client-shell {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    min-height: 100vh;
+    color: #2f2f2f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+.client-shell .bg-container {
+    width: 95%;
+    height: 90vh;
+    background: #88bd73;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+}
+
+.client-shell .sidebar {
+    width: 185px;
+    min-width: 185px;
+    background: #255f20;
+    padding: 22px 12px;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.client-shell .menu-icon {
+    width: 17px;
+    height: 18px;
+    opacity: 0.8;
+    filter: brightness(0) invert(1);
+}
+
+.client-shell .sidebar-link.active .menu-icon {
+    opacity: 1;
+    filter: invert(27%) sepia(16%) saturate(1094%) hue-rotate(67deg);
+}
+
+.client-shell .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    margin-bottom: 30px;
+}
+
+.client-shell .sidebar-brand img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+.client-shell .sidebar-brand h1 {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.client-shell .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 20px;
+}
+
+.client-shell .sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.25s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.client-shell .sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.client-shell .sidebar-link.active {
+    background: white;
+    color: #255f20;
+    font-weight: 600;
+}
+
+.client-shell .sidebar-link.logout {
+    margin-top: auto;
+}
+
+/* MAIN CONTENT */
+.client-shell .main-content {
+    flex: 1;
+    min-width: 0;
+    background: #f3f6f4;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER BAR */
+.client-shell .page-header {
+    background: white;
+    padding: 20px 35px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.client-shell .page-header h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+    color: #255f20;
+}
+
+.client-shell .page-header .divider {
+    width: 1px;
+    height: 55px;
+    background: #d9d9d9;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.client-shell .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.client-shell .client-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.client-shell .client-info p {
+    margin-top: 3px;
+    font-size: 13px;
+    color: #8b8b8b;
+}
+
+/* PAGE BODY */
+.client-shell .page-body {
+    padding: 20px 30px;
+}
+
+.client-shell .page-body > h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #202020;
+    margin-bottom: 20px;
+    letter-spacing: -0.6px;
+}
+
+/* CARDS */
+.client-shell .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.client-shell .card {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.client-shell .card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #255f20;
+    margin: 0 0 16px;
+    letter-spacing: -0.3px;
+}
+
+/* PROFILE FIELDS */
+.client-shell .profile-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+}
+
+.client-shell .profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.client-shell .profile-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.client-shell .profile-value {
+    font-size: 14px;
+    color: #222;
+}
+
+/* DEADLINES */
+.client-shell .deadlines-empty {
+    color: #8a8a8a;
+    font-size: 13px;
+}
+
+/* STATE MESSAGES */
+.client-shell .state-msg {
+    text-align: center;
+    margin-top: 3rem;
+    color: #555;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .client-shell {
+        display: block;
+    }
+
+    .client-shell .bg-container {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        flex-direction: column;
+    }
+
+    .client-shell .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+    }
+
+    .client-shell .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .client-shell .page-header .divider {
+        display: none;
+    }
+
+    .client-shell .page-body {
+        padding: 16px;
+    }
+}
+
+/* UPCOMING DEADLINES */
+.upcoming-deadlines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.deadline-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-size: 13px;
+}
+
+/* Remove the border from the very last item so it looks cleaner */
+.deadline-item:last-child {
+    border-bottom: none;
+}
+
+.deadline-type {
+    font-weight: 600;
+    color: #333;
+}
+
+.client-shell .deadline-date {
+    color: #555;
+}
+
+/* styling for "Contact the firm" prompt shown when profile details are missing */
+.client-shell .profile-incomplete {
+    color: #b26a00;
+    font-size: 0.9rem;
+    margin-top: 12px;
+}
+
+/* styling for "Not provided" to differentiate it from real data */
+.client-shell .profile-value.not-provided {
+    color: #767676;
+    font-style: italic;
+}

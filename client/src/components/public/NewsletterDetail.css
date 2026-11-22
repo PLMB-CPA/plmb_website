@@ -4,7 +4,6 @@
 .newsletter-detail {
   padding: 24px;
   padding-bottom: 10px;
-  animation: fadeUp 0.8s ease forwards;
 }
 
 .newsletter-detail > h1 {

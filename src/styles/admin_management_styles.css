@@ -4,17 +4,6 @@
     box-sizing: border-box;
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 body {
     font-family: "Inter", sans-serif;
     background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);

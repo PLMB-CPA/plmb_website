@@ -44,12 +44,12 @@ function Login() {
 
                         <div className="login_inputs">
                             <div className="username">
-                                <input type="text" id="username" placeholder="Username" autoComplete="username"
+                                <input type="text" id="username" placeholder="Username" aria-label="Username" autoComplete="username"
                                     value={username} onChange={e => setUsername(e.target.value)} required />
                             </div>
 
                             <div className="password" id="pw-container">
-                                <input type={showPw ? 'text' : 'password'} id="password" placeholder="Password"
+                                <input type={showPw ? 'text' : 'password'} id="password" placeholder="Password" aria-label="Password"
                                     autoComplete="current-password"
                                     value={password} onChange={e => setPassword(e.target.value)} required />
                                 <button type="button" id="pw-button"
@@ -67,7 +67,7 @@ function Login() {
                             </label>
                         </div>
 
-                        {error && <p className="login-error">{error}</p>}
+                        {error && <p className="login-error" role="alert">{error}</p>}
 
                         <div className="login_action">
                             <button type="submit" id="login_btn">Log-in</button>

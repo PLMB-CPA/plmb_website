@@ -37,10 +37,6 @@ function AdminLayout() {
 
                         {/* className="dash-side" + NavLink = "dash-side active" on the current page */}
                         <nav className="sidebar-nav">
-                            <NavLink to="/admin" end className="dash-side" onClick={closeMenu}>
-                                <img className="menu-icon" src="/image/menu.png" alt="" />
-                                <span>Dashboard</span>
-                            </NavLink>
                             <NavLink to="/admin/newsletters" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/newsletter-icon.png" alt="" />
                                 <span>Newsletters</span>
@@ -49,10 +45,21 @@ function AdminLayout() {
                                 <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
                                 <span>Inquiries</span>
                             </NavLink>
-                            {/* Clients: to be implemented when the client accounts are open */}
+                            <NavLink to="/admin/subscribers" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/subscriber.png" alt="" />
+                                <span>Subscribers</span>
+                            </NavLink>
+                            <NavLink to="/admin/clients" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/user-icon.png" alt="" />
+                                <span>Manage Clients</span>
+                            </NavLink>
+                            <NavLink to="/admin/remittances" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/peso-icon.png" alt="" />
+                                <span>Remittances</span>
+                            </NavLink>
                             <NavLink to="/admin/manage" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/user.png" alt="" />
-                                <span>Manage</span>
+                                <span>Manage Admin</span>
                             </NavLink>
                         </nav>
 

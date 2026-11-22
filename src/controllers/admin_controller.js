@@ -1,13 +1,19 @@
 const bcrypt = require('bcrypt');
 const Admin = require('../models/Admin');
+const { checkPasswordStrength } = require('../util/passwordStrength');
 
-exports.postAdminLogin =async (req, res) => {
+exports.postAdminLogin = async (req, res) => {
   try {
-    const admin = await Admin.findOne({username: req.body.username.toLowerCase().trim()});
-    if (!admin) return res.status(401).json({error: 'Invalid username'});
+    const { username, password } = req.body || {};
+    if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
 
-    const isMatch = await bcrypt.compare(req.body.password, admin.password);
-    if (!isMatch) return res.status(401).json({error: 'Invalid password'});
+    const admin = await Admin.findOne({ username: username.toLowerCase().trim() });
+    if (!admin) return res.status(401).json({ error: 'Invalid username or password' });
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid username or password' });
 
     req.session.isAdmin = true;
     req.session.adminId = admin._id;
@@ -28,22 +34,6 @@ exports.getAdminLogout = (req, res) => {
         res.redirect('/admin/login');
     });
 };
-
-function checkPasswordStrength(password) {
-  const specialChars = /[!@#$%^&*(),.?":{}|<>_-]/;
-  const capitalChars = /[A-Z]/;
-
-  if (password.length < 8)
-    return 'Password must be at least 8 characters long';
-
-  if (!specialChars.test(password))
-    return 'Password must have at least one (1) special character';
-
-  if (!capitalChars.test(password))
-    return 'Password must have at least one (1) capitalized letter';
-
-  return null; 
-}
 
 exports.addAdmin = async (req, res) => {
   try {
