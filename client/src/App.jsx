@@ -19,6 +19,7 @@ import AdminCreation from './components/admin/AdminCreation';
 import AdminSettings from './components/admin/AdminSettings';
 import MainAdminOnly from './components/admin/MainAdminOnly';
 import AdminHome from './components/admin/AdminHome';
+import AdminDashboard from './components/admin/AdminDashboard';
 import ClientCreation from './components/admin/ClientCreation';
 import ClientManagement from './components/admin/ClientManagement';
 import ClientLogin from './components/client/ClientLogin';
@@ -45,6 +46,7 @@ function App() {
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminHome />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="newsletters" element={<AdminNewsletterList />} />
         <Route path="newsletters/new" element={<PostNewsletter />} />
         <Route path="newsletters/:id/edit" element={<PostNewsletter />} />

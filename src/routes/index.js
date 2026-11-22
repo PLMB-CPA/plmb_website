@@ -9,6 +9,7 @@ const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
 const remittanceController = require('../controllers/remittance_controller');
+const dashboardController = require('../controllers/dashboard_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
@@ -62,6 +63,9 @@ router.delete('/admin/remittances/:id', requireAuth, remittanceController.delete
 
 // Client: fetch only the logged-in client's remittances
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
+
+// ADMIN DASHBOARD ROUTES
+router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
 
 //ADMIN LOGIN/LOGOUTROUTES
 router.post('/admin/login', adminController.postAdminLogin);
