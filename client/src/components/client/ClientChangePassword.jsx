@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../admin/Login.css';
+import { useNavigate, Link } from 'react-router-dom';
+import './ClientDashboard.css';
 
 function ClientChangePassword() {
     const navigate = useNavigate();
+    const [client, setClient] = useState(null);
+    const [forced, setForced] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        fetch('/api/client/me').then(res => {
-            if (res.status === 401) navigate('/client/login', { replace: true });
-        });
+        fetch('/api/client/me')
+            .then(res => {
+                if (res.status === 401) { navigate('/client/login', { replace: true }); return null; }
+                // 403 means mustChangePassword — still allow access to this page
+                if (res.status === 403) { setForced(true); return res.json(); }
+                if (!res.ok) throw new Error();
+                return res.json();
+            })
+            .then(data => { if (data) setClient(data); })
+            .catch(() => navigate('/client/login', { replace: true }));
     }, [navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         setError('');
+        setSuccess('');
 
         if (newPassword !== confirmPassword) {
             setError('New passwords do not match.');
@@ -38,7 +49,15 @@ function ClientChangePassword() {
                 setError(data.error || 'Something went wrong, please try again.');
                 return;
             }
-            navigate('/client');
+
+            if (forced) {
+                navigate('/client', { replace: true });
+            } else {
+                setSuccess('Password updated successfully.');
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            }
         } catch {
             setError('Could not reach the server.');
         } finally {
@@ -46,50 +65,116 @@ function ClientChangePassword() {
         }
     }
 
+    async function handleLogout() {
+        await fetch('/api/client/logout', { method: 'POST' });
+        navigate('/client/login', { replace: true });
+    }
+
+    if (!client) return <p className="state-msg">Loading…</p>;
+
     return (
-        <div className="login-page">
-            <div className="main">
-                <form className="login_form" onSubmit={handleSubmit}>
-                    <div className="login_block">
-                        <h2 className="login_header">Set a New Password</h2>
-                        <p>Please replace the temporary password from your welcome email.</p>
+        <div className="client-shell">
+            <div className="bg-container">
+                <aside className="sidebar">
+                    <div className="sidebar-brand">
+                        <img src="/image/logo.png" alt="Logo" />
+                        <h1>PLMB</h1>
+                    </div>
 
-                        <div className="login_inputs">
-                            <div className="password">
-                                <input type="password" placeholder="Temporary / Current Password"
-                                    autoComplete="current-password"
-                                    value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
-                            </div>
-                            
-                            <div className = "password">
-                                <input type = "password" placeholder="New Password" 
-                                autoComplete="new-password"
-                                value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-                            </div>
+                    <nav className="sidebar-nav">
+                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                            <img className="menu-icon" src="/image/menu.png" alt="" />
+                            <span>Dashboard</span>
+                        </Link>
+                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                            <img className="menu-icon" src="/image/peso-icon.png" alt="" />
+                            <span>Remittances</span>
+                        </Link>
+                        <div className="sidebar-link active">
+                            <img className="menu-icon" src="/image/password-icon.png" alt="" />
+                            <span>Change Password</span>
+                        </div>
+                    </nav>
 
-                            <div className = "password">
-                                <input type = "password" placeholder="Confirm Password" 
-                                autoComplete="new-password"
-                                value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+                    <button className="sidebar-link logout" onClick={handleLogout}>
+                        <img className="menu-icon" src="/image/logout.png" alt="" />
+                        <span>Logout</span>
+                    </button>
+                </aside>
+
+                <div className="main-content">
+                    <header className="page-header">
+                        <div>
+                            <h1>Welcome, {client.firstName}</h1>
+                        </div>
+                        <div className="divider" />
+                        <div className="header-right">
+                            <div className="client-info">
+                                <h3>{client.firstName} {client.lastName}</h3>
+                                <p>Client</p>
                             </div>
                         </div>
+                    </header>
 
-                        <ul>
-                            <li>At least 10 characters</li>
-                            <li>At least 1 uppercase letter</li>
-                            <li>At least 1 special character</li>
-                            <li>At least 1 number</li>
-                        </ul>
+                    <div className="page-body">
+                        <h1>Change Password</h1>
 
-                        {error && <p className="login-error">{error}</p>}
+                        <div className="card change-password-card">
+                            {forced && (
+                                <p className="forced-notice">
+                                    You must set a new password before continuing. Please replace the temporary password from your welcome email.
+                                </p>
+                            )}
 
-                        <div className="login_action">
-                            <button type="submit" id="login_btn" disabled={submitting}>
-                                {submitting ? 'Saving...' : 'Save Password'}
-                            </button>
+                            <form onSubmit={handleSubmit} className="change-password-form">
+                                <div className="cp-field">
+                                    <label>Current Password</label>
+                                    <input
+                                        type="password"
+                                        autoComplete="current-password"
+                                        value={currentPassword}
+                                        onChange={e => setCurrentPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="cp-field">
+                                    <label>New Password</label>
+                                    <input
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={newPassword}
+                                        onChange={e => setNewPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="cp-field">
+                                    <label>Confirm New Password</label>
+                                    <input
+                                        type="password"
+                                        autoComplete="new-password"
+                                        value={confirmPassword}
+                                        onChange={e => setConfirmPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <ul className="cp-rules">
+                                    <li>At least 10 characters</li>
+                                    <li>At least 1 uppercase letter</li>
+                                    <li>At least 1 special character</li>
+                                    <li>At least 1 number</li>
+                                </ul>
+
+                                {error && <p className="cp-error">{error}</p>}
+                                {success && <p className="cp-success">{success}</p>}
+
+                                <button type="submit" className="cp-submit" disabled={submitting}>
+                                    {submitting ? 'Saving…' : 'Save Password'}
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
