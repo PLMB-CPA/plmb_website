@@ -1,6 +1,5 @@
 /* Sidebar + container shell shared by every admin page.
-   From the top of src/styles/admin_dashboard_styles.css (the same block was
-   copy-pasted into each admin_*.css). The old `body {}` rules now live on
+   The old `body {}` rules now live on
    .admin-shell so they don't leak into the public pages. */
 
 .admin-shell {
@@ -161,12 +160,6 @@
     font-size: 13px;
     color: #8b8b8b;
 }
-.admin-shell #admin-pfp {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    object-fit: cover;
-}
 
 /* Hamburger button: hidden on desktop, shown in the media query below */
 .admin-shell .menu-toggle {
@@ -264,11 +257,6 @@
     .admin-shell .main-content .welcome-right {
         margin-left: auto;
         gap: 10px;
-    }
-
-    .admin-shell .main-content #admin-pfp {
-        width: 36px;
-        height: 36px;
     }
 
     .admin-shell .main-content .admin-info h3 {

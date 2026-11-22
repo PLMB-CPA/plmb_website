@@ -65,7 +65,7 @@ function SubscriberManagement() {
 
     return (
         <div className="subscribers-page">
-            <AdminHeader title="Admin Dashboard" />
+            <AdminHeader />
 
             <div className="dashboard-header">
                 <div className="labels">

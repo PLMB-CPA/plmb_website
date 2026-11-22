@@ -94,13 +94,6 @@
     color: #8b8b8b;
 }
 
-.inquiries-page #admin-pfp {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 /* SEARCH + FILTER */
 
 .inquiries-page .header-actions {

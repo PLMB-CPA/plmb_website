@@ -24,7 +24,7 @@ describe('Frontend Component Unit Tests', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('User Sign-In')).toBeInTheDocument();
+    expect(screen.getByText('Admin Sign-In')).toBeInTheDocument();
     const usernameInput = screen.getByPlaceholderText('Username');
     const passwordInput = screen.getByPlaceholderText('Password');
     expect(usernameInput).toBeInTheDocument();
