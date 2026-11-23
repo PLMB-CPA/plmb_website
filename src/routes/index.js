@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const { requireAuth, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
+const { requireAuth, requireMainAdmin, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
 
 const adminController = require('../controllers/admin_controller');
 const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
-const dashboardController = require('../controllers/dashboard_controller');
 const remittanceController = require('../controllers/remittance_controller');
 
 router.post('/inquiries', inquiryController.createInquiry);
@@ -49,7 +48,7 @@ router.post('/subscribers', subscriberController.createSubscriber);
 //Subscriber: unsubscribe from newsletter
 router.get('/unsubscribe/:token', subscriberController.unsubscribe);
 
-// Admin: fetch all subscribers for the dashboard tab
+// Admin: fetch all subscribers
 router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
 
 // REMITTANCE ROUTES
@@ -67,18 +66,19 @@ router.get('/client/remittances', requireClient, remittanceController.getClientR
 // Client-Side Inquiries
 router.get('/client/inquiries', requireClient, inquiryController.getClientInquiries);
 
-//ADMIN DASHBOARD ROUTES
-router.get('/admin/stats', requireAuth, dashboardController.getAdminStat);
-
 //ADMIN LOGIN/LOGOUTROUTES
 router.post('/admin/login', adminController.postAdminLogin);
 router.get('/admin/logout', adminController.getAdminLogout);
-router.get('/admin/username', requireAuth, adminController.getAdminUsername);
+router.get('/admin/me', requireAuth, adminController.getCurrentAdmin);
+router.put('/admin/me', requireAuth, adminController.updateCurrentAdmin);
+router.put('/admin/me/password', requireAuth, adminController.changeOwnPassword);
+router.put('/admin/me/preferences', requireAuth, adminController.updatePreferences);
 // ADMIN MANAGEMENT ROUTES
-router.post('/admin/users', requireAuth, adminController.addAdmin);
-router.get('/admin/users', requireAuth, adminController.getAdmins);
-router.delete('/admin/users/:id', requireAuth, adminController.deleteAdmin);
-router.put('/admin/users/:id/password', requireAuth, adminController.changeAdminPassword);
+router.post('/admin/users', requireMainAdmin, adminController.addAdmin);
+router.get('/admin/users', requireMainAdmin, adminController.getAdmins);
+router.delete('/admin/users/:id', requireMainAdmin, adminController.deleteAdmin);
+router.put('/admin/users/:id/password', requireMainAdmin, adminController.changeAdminPassword);
+router.put('/admin/users/:id/main', requireMainAdmin, adminController.setMainAdmin);
 
 // CLIENT ROUTES
 router.post('/admin/clients', requireAuth, clientController.createClient);

@@ -6,13 +6,13 @@ const ADMIN = {
 };
 
 // SITUATION: admin types the right credentials into the real form.
-// CHECKS: ends up on /admin. WHY: every admin feature (F03 included) starts here.
+// CHECKS: ends up on /admin/inquiries. WHY: every admin feature (F03 included) starts here.
 test('admin logs in through the form', async ({ page }) => {
   await page.goto('/admin/login');
   await page.getByPlaceholder('Username').fill(ADMIN.username);
   await page.getByPlaceholder('Password').fill(ADMIN.password);
   await page.getByRole('button', { name: 'Log-in' }).click();
-  await expect(page).toHaveURL(/\/admin$/);
+  await expect(page).toHaveURL(/\/admin\/clients$/);
 });
 
 // SITUATION: wrong password. 

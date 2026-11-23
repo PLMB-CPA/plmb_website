@@ -5,9 +5,9 @@ import './ClientRemittanceTracker.css';
 import { REMITTANCE_STATUS, TAX_TYPES, STATUS_COLORS } from '../../util/constants';
 
 function formatDate(dateStr) {
-    if (!dateStr) return '—';
+    if (!dateStr) return 'Not provided';
     const d = new Date(dateStr);
-    if (isNaN(d)) return '—';
+    if (isNaN(d)) return 'Not provided';
     return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
@@ -49,10 +49,8 @@ function ClientRemittanceRow({ remittance }) {
                     <h3 className={isOverdue ? 'date-overdue' : ''}>
                         {formatDate(remittance.dueDate)} {isOverdue && ' (Overdue)'}
                     </h3>
-                    {remittance.lastEditedBy ? (
-                        <p>Updated: {lastUpdated} (by {editorName})</p>
-                    ) : (
-                        <p style={{ visibility: 'hidden' }}>No edits</p>
+                    {!remittance.dueDate && (
+                        <p className="incomplete-note">Incomplete record. Please contact the firm for updates.</p>
                     )}
                 </div>
             </div>

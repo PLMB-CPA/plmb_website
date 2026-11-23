@@ -6,7 +6,9 @@ function ProfileField({ label, value }) {
     return (
         <div className="profile-field">
             <span className="profile-label">{label}</span>
-            <span className="profile-value">{value || '—'}</span>
+            <span className={`profile-value${value ? '': ' not-provided'}`}>
+                {value || 'Not provided'}
+            </span>
         </div>
     );
 }
@@ -22,6 +24,7 @@ function ClientDashboard() {
             .then(res => {
                 if (res.status === 401) { navigate('/client/login', { replace: true }); return null; }
                 if (res.status === 403) { navigate('/client/change-password', { replace: true }); return null; }
+                if (!res.ok) throw new Error('load failed'); // throw an error to send to .catch() 
                 return res.json();
             })
             .then(data => { if (data) setClient(data); })
@@ -67,6 +70,10 @@ function ClientDashboard() {
         ? new Date(client.birthday).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })
         : null;
 
+    const incomplete = !client.phoneNumber || !client.birthday || !client.tin
+        || !client.businessName || !client.address;
+
+
     return (
         <div className="client-shell">
             <div className="bg-container">
@@ -88,6 +95,9 @@ function ClientDashboard() {
                         <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }}>
                             <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
                             <span>Inquiries</span>
+                        <Link to="/client/change-password" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                            <img className="menu-icon" src="/image/password-icon.png" alt="" />
+                            <span>Change Password</span>
                         </Link>
                     </nav>
 
@@ -125,6 +135,11 @@ function ClientDashboard() {
                                     <ProfileField label="Associated Company" value={client.businessName} />
                                     <ProfileField label="Address" value={client.address ? `${client.address}, ${client.city}` : null} />
                                 </div>
+                                {incomplete && (
+                                    <p className="profile-incomplete">
+                                        Some of your details are missing. Please contact the firm to update them.
+                                    </p>
+                                )}
                             </div>
 
                             <div className="card">

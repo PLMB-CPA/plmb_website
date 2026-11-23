@@ -26,6 +26,14 @@ exports.createClient = async (req, res) => {
     const tempPassword = generateTempPassword();
     const tempPasswordHash = await bcrypt.hash(tempPassword, 10);
 
+    // PH TIN: 9 digits + optional 3-digit branch code, dashes optional
+    if (tin && !/^\d{3}-?\d{3}-?\d{3}(-?\d{3})?$/.test(tin.trim()))
+      return res.status(400).json({ error: 'Invalid TIN format.' });
+    // check if birthday is valid
+    if (birthday && isNaN(new Date(birthday)))
+      return res.status(400).json({ error: 'Invalid birthday.' });
+
+
     const client = await Client.create({
         email, firstName, lastName, phoneNumber, address, city, businessName,
         birthday: birthday || undefined,
@@ -127,6 +135,7 @@ exports.logoutClient = (req, res) => {
             res.json({message: 'Logged out'});
         });
     } catch (err) {
+        console.error(err);
         res.status(500).json({error: 'An error has occurred'})
     }
 };
