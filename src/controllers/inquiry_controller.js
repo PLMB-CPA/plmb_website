@@ -1,6 +1,7 @@
 const Inquiry = require('../models/Inquiry');
 const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer');
 const {isValidInquiryEmail} = require('../util/emailValidator');
+const {verifyTurnstile} = require('../util/turnstile');
 const mongoose = require('mongoose');
 const {inquiryStatus, responseTimeMinutes, isOverdue, serializeInquiry} = require('../util/inquiryMetrics');
 
@@ -16,7 +17,17 @@ exports.createInquiry = async (req, res) => {
       category,
       subject,
       message,
+      website,
+      turnstileToken,
     } = req.body || {};
+
+    if (website) {
+      return res.status(201).json({message: 'Your inquiry has been recorded.'});
+    }
+
+    if (!(await verifyTurnstile(turnstileToken, req.ip))) {
+      return res.status(400).json({error: 'Verification failed. Please try again.'});
+    }
 
     const emailCheck = await isValidInquiryEmail(email);
     if (!emailCheck.valid) {

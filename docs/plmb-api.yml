@@ -25,11 +25,11 @@ tags:
   - name: Subscribers
     description: Newsletter subscriptions
   - name: Admin Auth
-    description: Admin login, logout and current user
-  - name: Admin Dashboard
-    description: Dashboard statistics
+    description: Admin login and logout
+  - name: Admin Settings
+    description: The logged-in admin's own profile and password
   - name: Admin Management
-    description: Admin account management
+    description: Admin account management (main administrator only)
   - name: Fallback
     description: Behaviour for unmatched /api paths
 
@@ -551,24 +551,20 @@ paths:
                 type: string
                 example: /admin/login
 
-  /api/admin/username:
+  /api/admin/me:
     get:
-      tags: [Admin Auth]
-      summary: Get the logged-in admin's username
-      operationId: getAdminUsername
+      tags: [Admin Settings]
+      summary: Get the logged-in admin's profile
+      operationId: getCurrentAdmin
       security:
         - sessionCookie: []
       responses:
         '200':
-          description: Current username
+          description: Current admin
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  username:
-                    type: string
-                    example: plmbadmin
+                $ref: '#/components/schemas/AdminProfile'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -579,37 +575,142 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           $ref: '#/components/responses/ServerError'
-
-  # ADMIN DASHBOARD
-  /api/admin/stats:
-    get:
-      tags: [Admin Dashboard]
-      summary: Dashboard counts
-      operationId: getAdminStats
+    put:
+      tags: [Admin Settings]
+      summary: Update the logged-in admin's username, name and email
+      description: Username 8-24 characters, unique, stored lower-cased. Name up to 60 characters. Email optional.
+      operationId: updateCurrentAdmin
       security:
         - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username]
+              properties:
+                username:
+                  type: string
+                  example: mreyesadmin
+                name:
+                  type: string
+                  example: Maria Reyes
+                email:
+                  type: string
+                  format: email
+                  example: mreyes@plmb.com
       responses:
         '200':
-          description: Counts
+          description: Profile updated
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  totalAdmins:
-                    type: integer
-                    example: 1
-                  publishedNewsletters:
-                    type: integer
-                    example: 1
-                  pendingNewsletters:
-                    type: integer
-                    description: Unpublished (draft) newsletters
-                    example: 1
-                  pendingInquiries:
-                    type: integer
-                    description: Inquiries that are neither answered nor archived
-                    example: 1
+                  message:
+                    type: string
+                    example: Profile updated
+                  admin:
+                    $ref: '#/components/schemas/AdminProfile'
+        '400':
+          description: Invalid username, name or email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/me/preferences:
+    put:
+      tags: [Admin Settings]
+      summary: Update the logged-in admin's preferences
+      operationId: updatePreferences
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [openLastPage]
+              properties:
+                openLastPage:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Preferences updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Preferences updated
+                  admin:
+                    $ref: '#/components/schemas/AdminProfile'
+        '400':
+          description: openLastPage missing or not a boolean
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/me/password:
+    put:
+      tags: [Admin Settings]
+      summary: Change the logged-in admin's own password
+      operationId: changeOwnPassword
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword]
+              properties:
+                currentPassword:
+                  type: string
+                  format: password
+                newPassword:
+                  type: string
+                  format: password
+                  example: Newpass123.
+      responses:
+        '200':
+          description: Password updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Password updated
+        '400':
+          description: Missing fields, wrong current password, same password, or weak password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -694,7 +795,7 @@ paths:
     delete:
       tags: [Admin Management]
       summary: Delete an admin account
-      description: Cannot delete yourself, and cannot delete the last remaining admin.
+      description: Cannot delete yourself, a main administrator (remove main status first), or the last remaining admin.
       operationId: deleteAdmin
       security:
         - sessionCookie: []
@@ -719,6 +820,63 @@ paths:
                 $ref: '#/components/schemas/Error'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /api/admin/users/{id}/main:
+    put:
+      tags: [Admin Management]
+      summary: Make an admin a main admin, or remove their main admin status
+      description: You cannot change your own status, so at least one main admin always remains.
+      operationId: setMainAdmin
+      security:
+        - sessionCookie: []
+      parameters:
+        - $ref: '#/components/parameters/ObjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [isMain]
+              properties:
+                isMain:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Admin is now a main admin
+                  admin:
+                    $ref: '#/components/schemas/Admin'
+        '400':
+          description: isMain missing or not a boolean, or changing your own status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Not a main admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Admin not found
           content:
@@ -851,6 +1009,28 @@ components:
             $ref: '#/components/schemas/Error'
 
   schemas:
+    AdminProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 665f1c2e9b1e8a0012345678
+        username:
+          type: string
+          example: plmbadmin
+        name:
+          type: string
+          example: Maria Reyes
+        email:
+          type: string
+          example: mreyes@plmb.com
+        isMain:
+          type: boolean
+          example: true
+        openLastPage:
+          type: boolean
+          description: Open the admin panel on the last visited page instead of Manage Clients
+          example: false
     Error:
       type: object
       properties:

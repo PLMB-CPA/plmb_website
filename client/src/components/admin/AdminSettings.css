@@ -1,0 +1,61 @@
+.admin-form-page .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+.admin-form-page .toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-form-page .toggle-text strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a2e18;
+}
+
+.admin-form-page .toggle-text span {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4f5c4c;
+}
+
+.admin-form-page .toggle {
+    flex: 0 0 auto;
+    position: relative;
+    width: 44px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: #cfd6cc;
+    cursor: pointer;
+}
+
+.admin-form-page .toggle.on {
+    background: #255f20;
+}
+
+.admin-form-page .toggle:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.admin-form-page .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.admin-form-page .toggle.on .toggle-knob {
+    left: 23px;
+}

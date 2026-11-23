@@ -83,11 +83,11 @@ describe('PLMB API & Database Integration Tests', () => {
   });
 
   test('Protected admin routes reject unauthenticated requests with 401', async () => {
-    const res = await request(app).get('/api/admin/stats');
+    const res = await request(app).get('/api/admin/me');
     expect(res.status).toBe(401);
   });
 
-  test('Admin can log in, view dashboard stats, and manage newsletters', async () => {
+  test('Admin can log in, view their profile, and manage newsletters', async () => {
     const hashedPassword = await bcrypt.hash('plmb2026.', 10);
     await Admin.create({ username: 'plmbadmin', password: hashedPassword });
 
@@ -109,14 +109,97 @@ describe('PLMB API & Database Integration Tests', () => {
     expect(createNewsRes.status).toBe(201);
     expect(createNewsRes.body.newsletter.content).toBe('<p>Important deadline reminder</p>');
 
-    const statsRes = await agent.get('/api/admin/stats');
-    expect(statsRes.status).toBe(200);
-    expect(statsRes.body).toEqual({
-      totalAdmins: 1,
-      publishedNewsletters: 1,
-      pendingNewsletters: 0,
-      pendingInquiries: 0,
-    });
+    const meRes = await agent.get('/api/admin/me');
+    expect(meRes.status).toBe(200);
+    expect(meRes.body).toMatchObject({ username: 'plmbadmin', name: '', email: '', isMain: false, openLastPage: false });
+  });
+
+  test('Only the main admin can manage admins', async () => {
+    const hashedPassword = await bcrypt.hash('Plmb2026.', 10);
+    const main = await Admin.create({ username: 'plmbadmin', password: hashedPassword, isMain: true });
+    const other = await Admin.create({ username: 'staffadmin', password: hashedPassword });
+
+    const mainAgent = request.agent(app);
+    await mainAgent.post('/api/admin/login').send({ username: 'plmbadmin', password: 'Plmb2026.' });
+    const otherAgent = request.agent(app);
+    await otherAgent.post('/api/admin/login').send({ username: 'staffadmin', password: 'Plmb2026.' });
+
+    expect((await otherAgent.get('/api/admin/users')).status).toBe(403);
+    expect((await otherAgent.post('/api/admin/users').send({ username: 'newadmin1', password: 'Newpass12.' })).status).toBe(403);
+    expect((await otherAgent.delete(`/api/admin/users/${main._id}`)).status).toBe(403);
+
+    expect((await mainAgent.get('/api/admin/users')).status).toBe(200);
+    expect((await mainAgent.delete(`/api/admin/users/${other._id}`)).status).toBe(200);
+  });
+
+  test('Main admin can make or remove other main admins, but not themselves', async () => {
+    const hashedPassword = await bcrypt.hash('Plmb2026.', 10);
+    const main = await Admin.create({ username: 'plmbadmin', password: hashedPassword, isMain: true });
+    const other = await Admin.create({ username: 'staffadmin', password: hashedPassword });
+
+    const mainAgent = request.agent(app);
+    await mainAgent.post('/api/admin/login').send({ username: 'plmbadmin', password: 'Plmb2026.' });
+    const otherAgent = request.agent(app);
+    await otherAgent.post('/api/admin/login').send({ username: 'staffadmin', password: 'Plmb2026.' });
+
+    expect((await otherAgent.put(`/api/admin/users/${main._id}/main`).send({ isMain: false })).status).toBe(403);
+    expect((await mainAgent.put(`/api/admin/users/${main._id}/main`).send({ isMain: false })).status).toBe(400);
+    expect((await mainAgent.put(`/api/admin/users/${other._id}/main`).send({ isMain: 'yes' })).status).toBe(400);
+
+    const promote = await mainAgent.put(`/api/admin/users/${other._id}/main`).send({ isMain: true });
+    expect(promote.status).toBe(200);
+    expect(promote.body.admin.isMain).toBe(true);
+    expect((await otherAgent.get('/api/admin/users')).status).toBe(200);
+
+    expect((await otherAgent.delete(`/api/admin/users/${main._id}`)).status).toBe(400);
+    expect((await otherAgent.put(`/api/admin/users/${main._id}/main`).send({ isMain: false })).status).toBe(200);
+    expect((await mainAgent.get('/api/admin/users')).status).toBe(403);
+    expect((await otherAgent.delete(`/api/admin/users/${main._id}`)).status).toBe(200);
+  });
+
+  test('Admin can toggle the open last visited page preference', async () => {
+    const hashedPassword = await bcrypt.hash('Plmb2026.', 10);
+    await Admin.create({ username: 'plmbadmin', password: hashedPassword });
+
+    const agent = request.agent(app);
+    await agent.post('/api/admin/login').send({ username: 'plmbadmin', password: 'Plmb2026.' });
+
+    expect((await request(app).put('/api/admin/me/preferences').send({ openLastPage: true })).status).toBe(401);
+    expect((await agent.put('/api/admin/me/preferences').send({ openLastPage: 'on' })).status).toBe(400);
+
+    const on = await agent.put('/api/admin/me/preferences').send({ openLastPage: true });
+    expect(on.status).toBe(200);
+    expect(on.body.admin.openLastPage).toBe(true);
+    expect((await agent.get('/api/admin/me')).body.openLastPage).toBe(true);
+  });
+
+  test('Admin can update their own profile and password', async () => {
+    const hashedPassword = await bcrypt.hash('Plmb2026.', 10);
+    await Admin.create({ username: 'plmbadmin', password: hashedPassword });
+    await Admin.create({ username: 'takenname', password: hashedPassword });
+
+    const agent = request.agent(app);
+    await agent.post('/api/admin/login').send({ username: 'plmbadmin', password: 'Plmb2026.' });
+
+    expect((await agent.put('/api/admin/me').send({ username: 'takenname' })).status).toBe(409);
+    expect((await agent.put('/api/admin/me').send({ username: 'plmbadmin', email: 'not-an-email' })).status).toBe(400);
+
+    const update = await agent.put('/api/admin/me')
+      .send({ username: 'MReyesAdmin ', name: 'Maria Reyes', email: 'MReyes@plmb.com' });
+    expect(update.status).toBe(200);
+    expect(update.body.admin).toMatchObject({ username: 'mreyesadmin', name: 'Maria Reyes', email: 'mreyes@plmb.com' });
+
+    const wrongCurrent = await agent.put('/api/admin/me/password')
+      .send({ currentPassword: 'Wrongpass1.', newPassword: 'Newpass123.' });
+    expect(wrongCurrent.status).toBe(400);
+
+    const change = await agent.put('/api/admin/me/password')
+      .send({ currentPassword: 'Plmb2026.', newPassword: 'Newpass123.' });
+    expect(change.status).toBe(200);
+
+    const relogin = await request(app).post('/api/admin/login')
+      .send({ username: 'mreyesadmin', password: 'Newpass123.' });
+    expect(relogin.status).toBe(200);
   });
 
   test('Session cookie is HttpOnly and SameSite=Lax', async () => {
