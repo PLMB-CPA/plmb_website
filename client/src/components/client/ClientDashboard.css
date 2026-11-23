@@ -39,6 +39,17 @@
     filter: brightness(0) invert(1);
 }
 
+.client-shell .change-password-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 -11.5px;
+}
+
+.client-shell .sidebar-link.change-password-link {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
 .client-shell .sidebar-link.active .menu-icon {
     opacity: 1;
     filter: invert(27%) sepia(16%) saturate(1094%) hue-rotate(67deg);
@@ -234,6 +245,10 @@
     font-size: 14px;
 }
 
+.client-shell .menu-toggle {
+    display: none;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .client-shell {
@@ -246,6 +261,7 @@
         min-height: 100vh;
         border-radius: 0;
         box-shadow: none;
+        overflow: visible;
         flex-direction: column;
     }
 
@@ -253,14 +269,69 @@
         width: 100%;
         min-width: 0;
         padding: 12px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
     }
 
-    .client-shell .cards-grid {
-        grid-template-columns: 1fr;
+    .client-shell .sidebar-brand {
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .client-shell .menu-toggle {
+        display: block;
+        margin-left: auto;
+        background: none;
+        border: 0;
+        color: white;
+        font-size: 24px;
+        line-height: 1;
+        padding: 6px 8px;
+        cursor: pointer;
+    }
+
+    .client-shell .sidebar-nav,
+    .client-shell .sidebar .logout {
+        display: none;
+    }
+
+    .client-shell .sidebar.open .sidebar-nav,
+    .client-shell .sidebar.open .logout {
+        display: flex;
+    }
+
+    .client-shell .sidebar.open .sidebar-nav {
+        padding-top: 14px;
+    }
+
+    .client-shell .sidebar.open .logout {
+        margin-top: 6px;
+    }
+
+    .client-shell .main-content {
+        overflow-y: visible;
+    }
+
+    .client-shell .page-header {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .client-shell .page-header h1 {
+        font-size: 20px;
     }
 
     .client-shell .page-header .divider {
         display: none;
+    }
+
+    .client-shell .header-right {
+        margin-left: auto;
+    }
+
+    .client-shell .cards-grid {
+        grid-template-columns: 1fr;
     }
 
     .client-shell .page-body {
@@ -345,20 +416,49 @@
     letter-spacing: 0.05em;
 }
 
-.client-shell .cp-field input {
+.client-shell .cp-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.client-shell .cp-input-wrap input {
+    flex: 1;
     height: 40px;
     border: 1px solid #d0d0d0;
     border-radius: 8px;
-    padding: 0 12px;
+    padding: 0 40px 0 12px;
     font-size: 14px;
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s;
+    width: 100%;
 }
 
-.client-shell .cp-field input:focus {
+.client-shell .cp-input-wrap input:focus {
     border-color: #255f20;
     box-shadow: 0 0 0 3px rgba(37, 95, 32, 0.1);
+}
+
+.client-shell .cp-eye {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.client-shell .cp-eye img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+}
+
+.client-shell .cp-eye:hover img {
+    opacity: 0.85;
 }
 
 .client-shell .cp-rules {

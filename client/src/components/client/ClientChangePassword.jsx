@@ -6,9 +6,13 @@ function ClientChangePassword() {
     const navigate = useNavigate();
     const [client, setClient] = useState(null);
     const [forced, setForced] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showCurrent, setShowCurrent] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [submitting, setSubmitting] = useState(false);
@@ -75,23 +79,26 @@ function ClientChangePassword() {
     return (
         <div className="client-shell">
             <div className="bg-container">
-                <aside className="sidebar">
+                <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
                     <div className="sidebar-brand">
                         <img src="/image/logo.png" alt="Logo" />
                         <h1>PLMB</h1>
+                        <button type="button" className="menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                            {menuOpen ? '✕' : '☰'}
+                        </button>
                     </div>
 
                     <nav className="sidebar-nav">
-                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/menu.png" alt="" />
                             <span>Dashboard</span>
                         </Link>
-                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/peso-icon.png" alt="" />
                             <span>Remittances</span>
                         </Link>
-                        <div className="sidebar-link active">
-                            <img className="menu-icon" src="/image/password-icon.png" alt="" />
+                        <div className="sidebar-link active change-password-link">
+                            <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
                             <span>Change Password</span>
                         </div>
                     </nav>
@@ -129,33 +136,48 @@ function ClientChangePassword() {
                             <form onSubmit={handleSubmit} className="change-password-form">
                                 <div className="cp-field">
                                     <label>Current Password</label>
-                                    <input
-                                        type="password"
-                                        autoComplete="current-password"
-                                        value={currentPassword}
-                                        onChange={e => setCurrentPassword(e.target.value)}
-                                        required
-                                    />
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            type={showCurrent ? 'text' : 'password'}
+                                            autoComplete="current-password"
+                                            value={currentPassword}
+                                            onChange={e => setCurrentPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowCurrent(v => !v)} aria-label={showCurrent ? 'Hide password' : 'Show password'}>
+                                            <img src={showCurrent ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="cp-field">
                                     <label>New Password</label>
-                                    <input
-                                        type="password"
-                                        autoComplete="new-password"
-                                        value={newPassword}
-                                        onChange={e => setNewPassword(e.target.value)}
-                                        required
-                                    />
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            type={showNew ? 'text' : 'password'}
+                                            autoComplete="new-password"
+                                            value={newPassword}
+                                            onChange={e => setNewPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowNew(v => !v)} aria-label={showNew ? 'Hide password' : 'Show password'}>
+                                            <img src={showNew ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="cp-field">
                                     <label>Confirm New Password</label>
-                                    <input
-                                        type="password"
-                                        autoComplete="new-password"
-                                        value={confirmPassword}
-                                        onChange={e => setConfirmPassword(e.target.value)}
-                                        required
-                                    />
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            type={showConfirm ? 'text' : 'password'}
+                                            autoComplete="new-password"
+                                            value={confirmPassword}
+                                            onChange={e => setConfirmPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowConfirm(v => !v)} aria-label={showConfirm ? 'Hide password' : 'Show password'}>
+                                            <img src={showConfirm ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <ul className="cp-rules">

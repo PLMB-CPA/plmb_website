@@ -77,6 +77,7 @@ function ClientRemittanceTracker() {
     // Auth State
     const [client, setClient] = useState(null);
     const [authError, setAuthError] = useState('');
+    const [menuOpen, setMenuOpen] = useState(false);
 
     // Data State
     const [remittances, setRemittances] = useState([]);
@@ -154,24 +155,26 @@ function ClientRemittanceTracker() {
         <div className="client-shell">
             <div className="bg-container">
                 
-                <aside className="sidebar">
+                <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
                     <div className="sidebar-brand">
                         <img src="/image/logo.png" alt="Logo" />
                         <h1>PLMB</h1>
+                        <button type="button" className="menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                            {menuOpen ? '✕' : '☰'}
+                        </button>
                     </div>
 
                     <nav className="sidebar-nav">
-                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/menu.png" alt="Dashboard" />
                             <span>Dashboard</span>
                         </Link>
-                        {/* Remittances is active on this page */}
                         <div className="sidebar-link active">
                             <img className="menu-icon" src="/image/peso-icon.png" alt="Remittances" />
                             <span>Remittances</span>
                         </div>
-                        <Link to="/client/change-password" className="sidebar-link" style={{ textDecoration: 'none' }}>
-                            <img className="menu-icon" src="/image/password-icon.png" alt="" />
+                        <Link to="/client/change-password" className="sidebar-link change-password-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                            <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
                             <span>Change Password</span>
                         </Link>
                     </nav>
