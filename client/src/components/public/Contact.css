@@ -1,4 +1,3 @@
-/* From src/styles/inquiry_styles.css, scoped under .contact-page */
 
 .contact-page .inquiry-nav {
   text-align: center;
@@ -137,4 +136,12 @@
   .contact-page .inquiry-form { padding: 20px; }
   .contact-page .inquiry-name-row { flex-direction: column; }
   .contact-page .inquiry-submit { align-self: stretch; width: 100%; }
+}
+
+.contact-page .inquiry-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
