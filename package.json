@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "build": "npm install --prefix client && npm run build --prefix client",
+    "build": "npm install --prefix client --include=dev && npm run build --prefix client",
     "client": "npm run dev --prefix client",
     "lint": "npm run lint --prefix client",
     "test:unit": "jest --selectProjects unit",
@@ -19,6 +19,7 @@
     "disposable-email-domains": "^1.0.62",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.19.0",
     "mongoose": "^8.5.0",
     "nodemailer": "^10.5.0"

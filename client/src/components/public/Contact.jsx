@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './Contact.css';
+import Turnstile from './Turnstile';
 
-// Ported from src/views/inquiry-page.html + src/public/js/inquiry.js
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 const emptyForm = {
     firstName: '',
@@ -17,11 +18,13 @@ const emptyForm = {
 function Contact() {
     const [form, setForm] = useState(emptyForm);
     const [status, setStatus] = useState('');
-    const [ticket, setTicket] = useState(null); // non-null = show success modal
+    const [ticket, setTicket] = useState(null);
     const [emailFailed, setEmailFailed] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [website, setWebsite] = useState('');
+    const [captchaToken, setCaptchaToken] = useState('');
+    const [captchaReset, setCaptchaReset] = useState(0);
 
-    // One handler for every field: uses the input's name="" to pick which key to update
     function handleChange(e) {
         setForm({ ...form, [e.target.name]: e.target.value });
     }
@@ -39,12 +42,21 @@ function Contact() {
             return;
         }
 
+        if (TURNSTILE_SITE_KEY && !captchaToken) {
+            setStatus('Please complete the verification.');
+            return;
+        }
+
         setSubmitting(true);
         try {
             const res = await fetch('/api/inquiries', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({
+                    ...form,
+                    ...(website ? { website } : {}),
+                    ...(captchaToken ? { turnstileToken: captchaToken } : {}),
+                }),
             });
             const data = await res.json();
 
@@ -59,6 +71,10 @@ function Contact() {
             setStatus('Could not reach the server. Please try again later.');
         } finally {
             setSubmitting(false);
+            if (TURNSTILE_SITE_KEY) {
+                setCaptchaToken('');
+                setCaptchaReset(n => n + 1);
+            }
         }
     }
 
@@ -113,6 +129,15 @@ function Contact() {
                         <input type="email" id="inquiry-email" name="email" placeholder="name@email.com"
                             value={form.email} onChange={handleChange} required />
                     </div>
+
+                    <div className="inquiry-hp" aria-hidden="true">
+                        <input type="text" name="website" tabIndex={-1} autoComplete="off"
+                            value={website} onChange={e => setWebsite(e.target.value)} />
+                    </div>
+
+                    {TURNSTILE_SITE_KEY && (
+                        <Turnstile siteKey={TURNSTILE_SITE_KEY} onToken={setCaptchaToken} resetSignal={captchaReset} />
+                    )}
 
                     {status && <div className="form-status">{status}</div>}
 
