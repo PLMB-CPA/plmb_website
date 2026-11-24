@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
 const { requireAuth, requireMainAdmin, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
-const { inquiryLimiter, subscriberLimiter } = require('../middleware/rateLimit');
-
+const { inquiryLimiter, subscriberLimiter,adminRecoveryLimiter, adminResetLimiter} = require('../middleware/rateLimit');
 const adminController = require('../controllers/admin_controller');
+const adminRecoveryController = require('../controllers/admin_recovery_controller');
 const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
@@ -65,6 +64,10 @@ router.delete('/admin/remittances/:id', requireAuth, remittanceController.delete
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
 
 //ADMIN LOGIN/LOGOUTROUTES
+router.post('/admin/recovery/request', adminRecoveryLimiter, adminRecoveryController.requestRecovery);
+
+// F08 - Reset password using recovery token
+router.post('/admin/recovery/reset', adminResetLimiter, adminRecoveryController.resetPassword);
 router.post('/admin/login', adminController.postAdminLogin);
 router.get('/admin/logout', adminController.getAdminLogout);
 router.get('/admin/me', requireAuth, adminController.getCurrentAdmin);

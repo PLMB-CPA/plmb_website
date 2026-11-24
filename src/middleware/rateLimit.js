@@ -14,7 +14,31 @@ function publicFormLimiter() {
   });
 }
 
+const adminRecoveryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test',
+  message: {
+    error: 'Too many recovery requests. Please try again later.'
+  }
+});
+
+const adminResetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test',
+  message: {
+    error: 'Too many reset attempts. Please try again later.'
+  }
+});
+
 module.exports = {
   inquiryLimiter: publicFormLimiter(),
   subscriberLimiter: publicFormLimiter(),
+  adminRecoveryLimiter,
+  adminResetLimiter
 };
