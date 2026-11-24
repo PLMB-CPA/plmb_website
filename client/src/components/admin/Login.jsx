@@ -71,6 +71,7 @@ function Login() {
 
                         <div className="login_action">
                             <button type="submit" id="login_btn">Log-in</button>
+                            <Link to="/admin/forgot-password" className="btn">Forgot Password?</Link>
                             <Link to="/" className="btn">Return to Main Page</Link>
                         </div>
                     </div>
