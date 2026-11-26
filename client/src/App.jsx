@@ -15,6 +15,8 @@ import InquiryManagement from './components/admin/InquiryManagement';
 import InquiryDetail from './components/admin/InquiryDetail';
 import AdminManagement from './components/admin/AdminManagement';
 import Login from './components/admin/Login';
+import ForgotPassword from './components/admin/ForgotPassword';
+import ResetPassword from './components/admin/ResetPassword';
 import AdminCreation from './components/admin/AdminCreation';
 import AdminSettings from './components/admin/AdminSettings';
 import MainAdminOnly from './components/admin/MainAdminOnly';
@@ -63,6 +65,8 @@ function App() {
       </Route>
 
       <Route path="/admin/login" element={<Login />} />
+      <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+      <Route path="/admin/reset-password" element={<ResetPassword />} />
       
       <Route path="/client/login" element={<ClientLogin />} />
       <Route path="/client/change-password" element={<ClientChangePassword />} />

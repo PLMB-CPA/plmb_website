@@ -209,7 +209,19 @@ exports.updateCurrentAdmin = async (req, res) => {
     const taken = await Admin.findOne({username: cleanUsername, _id: {$ne: req.session.adminId}});
     if (taken)
       return res.status(409).json({error: 'Username is already taken'});
+    
+    if (cleanEmail) {
+    const emailTaken = await Admin.findOne({
+      email: cleanEmail,
+      _id: {$ne: req.session.adminId}
+    });
 
+    if (emailTaken) {
+      return res.status(409).json({
+        error: 'This email address is already registered to another administrator.'
+      });
+    }}
+    
     const admin = await Admin.findByIdAndUpdate(
       req.session.adminId,
       {username: cleanUsername, name: cleanName, email: cleanEmail},
