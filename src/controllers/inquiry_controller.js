@@ -1,9 +1,31 @@
 const Inquiry = require('../models/Inquiry');
+const Client = require('../models/Client');
 const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer');
 const {isValidInquiryEmail} = require('../util/emailValidator');
 const {verifyTurnstile} = require('../util/turnstile');
 const mongoose = require('mongoose');
 const {inquiryStatus, responseTimeMinutes, isOverdue, serializeInquiry} = require('../util/inquiryMetrics');
+
+// helper function for replyToInquiry
+// Turns a Nodemailer error into a short reason an admin can understand.
+function describeEmailFailure(error) {
+  switch (error && error.code) {
+    case 'EAUTH':
+      return 'the email service could not sign in';
+    case 'ECONNECTION':
+    case 'ETIMEDOUT':
+    case 'ESOCKET':
+    case 'EDNS':
+    case 'ECONNREFUSED':
+    case 'ENOTFOUND':
+    case 'ECONNRESET':
+      return 'the mail server could not be reached';
+    case 'EENVELOPE':
+      return 'the email address was rejected';
+    default:
+      return 'of an unexpected email error'; // fallback for any code not listed above
+  }
+}
 
 exports.createInquiry = async (req, res) => {
   try {
@@ -155,27 +177,40 @@ exports.replyToInquiry = async (req, res) => {
         error: 'This inquiry already has a sent reply.'
       });
     }
-    await sendReplyEmail(inquiry, reply.trim());
-
+    
+    const trimmedReply = reply.trim();
     const repliedAt = new Date();
 
-    inquiry.reply = reply.trim();
+    inquiry.reply = trimmedReply;
     inquiry.repliedAt = repliedAt;
-
     inquiry.responseTimeMinutes = Math.max(
       0,
       Math.round(
         (repliedAt - inquiry.date) / 60000
       )
     );
-
     inquiry.isAnswered = true;
     inquiry.status = 'answered';
 
     await inquiry.save();
 
+    let emailNotificationFailed = false;
+    let emailFailureReason = null;
+    try {
+        await sendReplyEmail(inquiry, trimmedReply);
+    } catch (emailError) {
+      console.error('Reply email failed: ', emailError);
+      emailFailureReason = describeEmailFailure(emailError);
+      emailNotificationFailed = true; // record the failure
+      inquiry.emailNotificationFailed = true;
+      await inquiry.save();
+    }
+
     return res.status(200).json({
-      message: 'Reply sent successfully.',
+      message: emailNotificationFailed
+        ? `Reply saved, but the email could not be sent because ${emailFailureReason}.`
+        : 'Reply sent successfully.',
+      emailNotificationFailed,
       inquiry: serializeInquiry(inquiry)
     });
 
@@ -260,5 +295,28 @@ exports.getInquiryStats = async (req, res) => {
     return res.status(500).json({
       error: 'Unable to retrieve inquiry statistics.'
     });
+  }
+};
+
+exports.getClientInquiries = async (req, res) => {
+  try {
+    // identify the client from the session to prevent IDOR
+    const client = await Client.findById(req.session.clientId).select('email');
+    if (!client) {
+      return res.status(401).json({error: 'Unauthorized.'});
+    }
+
+    // Inquiries store only an email, not a client id, so match on email.
+    // collation makes the email comparison case-insentive
+    const inquiries = await Inquiry.find({email: client.email})
+      .collation({locale: 'en', strength: 2})
+      .select('ticketNumber subject message date reply repliedAt isAnswered')
+      .sort({date: -1}) // newest first
+      .lean(); // plain objects, faster and enough for read-only data
+
+    return res.status(200).json({inquiries});
+  } catch (error) {
+    console.error('Client inquiries error:', error);
+    return res.status(500).json({error: 'Failed to load your inquiries.'});
   }
 };
