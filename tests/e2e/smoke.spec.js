@@ -23,7 +23,7 @@ test.describe('PLMB Online Portal Smoke & Acceptance Tests', () => {
     await page.fill('#password', 'plmb2026.');
     await page.click('#login_btn');
 
-    await page.waitForURL('**/admin/clients');
+    await page.waitForURL('**/admin/dashboard');
     await expect(page.locator('body')).toContainText(/Dashboard|Inquiries|Newsletter/i);
   });
 });
