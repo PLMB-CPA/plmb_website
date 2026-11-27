@@ -175,7 +175,7 @@
 
 .admin-form-page .password-rules ul {
     margin: 0;
-    padding-left: 18px;
+    padding-left: 0;
     display: flex;
     flex-direction: column;
     gap: 6px;

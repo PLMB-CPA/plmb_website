@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PasswordChecklist from '../PasswordChecklist';
 import '../admin/Login.css';
 
 function ClientChangePassword() {
@@ -7,6 +8,9 @@ function ClientChangePassword() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showCurrent, setShowCurrent] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
@@ -55,31 +59,38 @@ function ClientChangePassword() {
                         <p>Please replace the temporary password from your welcome email.</p>
 
                         <div className="login_inputs">
-                            <div className="password">
-                                <input type="password" placeholder="Temporary / Current Password"
+                            <div className="password pw-field">
+                                <input type={showCurrent ? 'text' : 'password'} placeholder="Temporary / Current Password"
                                     autoComplete="current-password"
                                     value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
-                            </div>
-                            
-                            <div className = "password">
-                                <input type = "password" placeholder="New Password" 
-                                autoComplete="new-password"
-                                value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
+                                <button type="button"
+                                    className={`pw-toggle-btn ${showCurrent ? 'open' : ''}`}
+                                    onClick={() => setShowCurrent(!showCurrent)}
+                                    aria-label={showCurrent ? 'Hide current password' : 'Show current password'} />
                             </div>
 
-                            <div className = "password">
-                                <input type = "password" placeholder="Confirm Password" 
-                                autoComplete="new-password"
-                                value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+                            <div className="password pw-field">
+                                <input type={showNew ? 'text' : 'password'} placeholder="New Password"
+                                    autoComplete="new-password"
+                                    value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
+                                <button type="button"
+                                    className={`pw-toggle-btn ${showNew ? 'open' : ''}`}
+                                    onClick={() => setShowNew(!showNew)}
+                                    aria-label={showNew ? 'Hide new password' : 'Show new password'} />
+                            </div>
+
+                            <div className="password pw-field">
+                                <input type={showConfirm ? 'text' : 'password'} placeholder="Confirm Password"
+                                    autoComplete="new-password"
+                                    value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+                                <button type="button"
+                                    className={`pw-toggle-btn ${showConfirm ? 'open' : ''}`}
+                                    onClick={() => setShowConfirm(!showConfirm)}
+                                    aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'} />
                             </div>
                         </div>
 
-                        <ul>
-                            <li>At least 10 characters</li>
-                            <li>At least 1 uppercase letter</li>
-                            <li>At least 1 special character</li>
-                            <li>At least 1 number</li>
-                        </ul>
+                        <PasswordChecklist password={newPassword} />
 
                         {error && <p className="login-error">{error}</p>}
 

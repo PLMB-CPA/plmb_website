@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
+import PasswordChecklist from '../PasswordChecklist';
 import { PasswordField } from './AdminCreation';
 import './AdminCreation.css';
 import './AdminSettings.css';
@@ -126,15 +127,7 @@ function PasswordForm() {
                             value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
                     </div>
 
-                    <div className="password-rules">
-                        <strong>Password must have</strong>
-                        <ul>
-                            <li>At least 10 characters</li>
-                            <li>One capital letter</li>
-                            <li>One number</li>
-                            <li>One special character</li>
-                        </ul>
-                    </div>
+                    <PasswordChecklist className="password-rules" password={newPassword} />
                 </div>
             </section>
 
