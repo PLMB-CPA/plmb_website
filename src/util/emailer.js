@@ -126,4 +126,25 @@ async function sendClientWelcome(client, tempPassword) {
     });
 }
 
-module.exports = { sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation, sendClientWelcome};
+async function sendAdminRecoveryEmail(email, resetUrl) {
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'PLMB Admin Account Recovery',
+        text: `
+            Hello,
+
+            We received a request to reset your PLMB administrator password.
+
+            Use the following link to reset your password: ${resetUrl}
+
+            This link will expire in 30 minutes and can only be used once.
+
+            If you did not request a password reset, you can ignore this email.
+
+            Best regards,
+            The PLMB Team
+        `
+    });
+}
+module.exports = { sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation, sendClientWelcome, sendAdminRecoveryEmail};
