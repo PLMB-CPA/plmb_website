@@ -89,14 +89,18 @@ function ClientChangePassword() {
                     </div>
 
                     <nav className="sidebar-nav">
-                        <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                            <img className="menu-icon" src="/image/menu.png" alt="" />
-                            <span>Dashboard</span>
-                        </Link>
-                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                            <img className="menu-icon" src="/image/peso-icon.png" alt="" />
-                            <span>Remittances</span>
-                        </Link>
+                        {!forced && (
+                            <>
+                                <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/menu.png" alt="" />
+                                    <span>Dashboard</span>
+                                </Link>
+                                <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/peso-icon.png" alt="" />
+                                    <span>Remittances</span>
+                                </Link>
+                            </>
+                        )}
                         <div className="sidebar-link active change-password-link">
                             <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
                             <span>Change Password</span>
@@ -112,15 +116,19 @@ function ClientChangePassword() {
                 <div className="main-content">
                     <header className="page-header">
                         <div>
-                            <h1>Welcome, {client.firstName}</h1>
+                            <h1>{forced ? 'Password change required' : client.firstName ? `Welcome, ${client.firstName}` : 'Client Portal'}</h1>
                         </div>
-                        <div className="divider" />
-                        <div className="header-right">
-                            <div className="client-info">
-                                <h3>{client.firstName} {client.lastName}</h3>
-                                <p>Client</p>
-                            </div>
-                        </div>
+                        {!forced && client.firstName && (
+                            <>
+                                <div className="divider" />
+                                <div className="header-right">
+                                    <div className="client-info">
+                                        <h3>{client.firstName} {client.lastName}</h3>
+                                        <p>Client</p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </header>
 
                     <div className="page-body">
@@ -135,10 +143,12 @@ function ClientChangePassword() {
 
                             <form onSubmit={handleSubmit} className="change-password-form">
                                 <div className="cp-field">
-                                    <label>Current Password</label>
+                                    <label htmlFor="current-password">Current Password</label>
                                     <div className="cp-input-wrap">
                                         <input
+                                            id="current-password"
                                             type={showCurrent ? 'text' : 'password'}
+                                            placeholder="Temporary / Current Password"
                                             autoComplete="current-password"
                                             value={currentPassword}
                                             onChange={e => setCurrentPassword(e.target.value)}
@@ -150,10 +160,12 @@ function ClientChangePassword() {
                                     </div>
                                 </div>
                                 <div className="cp-field">
-                                    <label>New Password</label>
+                                    <label htmlFor="new-password">New Password</label>
                                     <div className="cp-input-wrap">
                                         <input
+                                            id="new-password"
                                             type={showNew ? 'text' : 'password'}
+                                            placeholder="New Password"
                                             autoComplete="new-password"
                                             value={newPassword}
                                             onChange={e => setNewPassword(e.target.value)}
@@ -165,10 +177,12 @@ function ClientChangePassword() {
                                     </div>
                                 </div>
                                 <div className="cp-field">
-                                    <label>Confirm New Password</label>
+                                    <label htmlFor="confirm-password">Confirm New Password</label>
                                     <div className="cp-input-wrap">
                                         <input
+                                            id="confirm-password"
                                             type={showConfirm ? 'text' : 'password'}
+                                            placeholder="Confirm Password"
                                             autoComplete="new-password"
                                             value={confirmPassword}
                                             onChange={e => setConfirmPassword(e.target.value)}

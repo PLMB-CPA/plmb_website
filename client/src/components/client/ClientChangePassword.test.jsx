@@ -13,11 +13,9 @@ vi.mock('react-router-dom', async () => {
 const respond = (data, ok = true, status = ok ? 200 : 400) =>
   Promise.resolve({ ok, status, json: async () => data });
 
-const defaultClient = { firstName: 'Jane', lastName: 'Doe' };
-
 // fake api: /api/client/me answers `me` (403 = "must change password", 401 = "not logged in")
 function api({
-  me = respond(defaultClient, false, 403),
+  me = respond({ mustChangePassword: true }, false, 403),
   onPut = () => respond({ message: 'Password updated.' }),
 } = {}) {
   fetch.mockImplementation((url, opts = {}) =>
@@ -70,6 +68,13 @@ describe('client change password page', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/client/me'));
     await waitFor(() => expect(current()).toBeInTheDocument());
     expect(mockNavigate).not.toHaveBeenCalled();
+    expect(screen.getByRole('heading', { name: 'Password change required' })).toBeInTheDocument();
+    expect(screen.queryByText(/Welcome,/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Dashboard/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Remittances/ })).not.toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Temporary / Current Password')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('New Password')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Confirm Password')).toBeInTheDocument();
     [
       'At least 10 characters',
       'At least 1 uppercase letter',
