@@ -96,6 +96,10 @@ function ClientDashboard() {
                             <img className="menu-icon" src="/image/peso-icon.png" alt="Remittances" />
                             <span>Remittances</span>
                         </Link>
+                        <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                            <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
+                            <span>Inquiries</span>
+                        </Link>
                         <Link to="/client/change-password" className="sidebar-link change-password-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
                             <span>Change Password</span>

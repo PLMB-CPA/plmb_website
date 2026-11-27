@@ -15,6 +15,8 @@ import InquiryManagement from './components/admin/InquiryManagement';
 import InquiryDetail from './components/admin/InquiryDetail';
 import AdminManagement from './components/admin/AdminManagement';
 import Login from './components/admin/Login';
+import ForgotPassword from './components/admin/ForgotPassword';
+import ResetPassword from './components/admin/ResetPassword';
 import AdminCreation from './components/admin/AdminCreation';
 import AdminSettings from './components/admin/AdminSettings';
 import MainAdminOnly from './components/admin/MainAdminOnly';
@@ -27,6 +29,7 @@ import ClientDashboard from './components/client/ClientDashboard';
 import SubscriberManagement from './components/admin/SubscriberManagement';
 import TaxRemittanceStatusTracker from './components/admin/TaxRemittanceStatusTracker.jsx';
 import ClientRemittanceTracker from './components/client/ClientRemittanceTracker';
+import ClientInquiryTracker from './components/client/ClientInquiryTracker.jsx';
 
 import NotFound from './components/public/NotFound';
 
@@ -62,12 +65,15 @@ function App() {
       </Route>
 
       <Route path="/admin/login" element={<Login />} />
+      <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+      <Route path="/admin/reset-password" element={<ResetPassword />} />
       
       <Route path="/client/login" element={<ClientLogin />} />
       <Route path="/client/change-password" element={<ClientChangePassword />} />
 
       <Route path="/client" element={<ClientDashboard />} />
       <Route path="/client/remittances" element={<ClientRemittanceTracker />} />
+      <Route path="/client/inquiries" element={<ClientInquiryTracker />} />
     </Routes>
   );
 }

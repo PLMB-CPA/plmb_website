@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-
 const { requireAuth, requireMainAdmin, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
-
+const { inquiryLimiter, subscriberLimiter,adminRecoveryLimiter, adminResetLimiter} = require('../middleware/rateLimit');
 const adminController = require('../controllers/admin_controller');
+const adminRecoveryController = require('../controllers/admin_recovery_controller');
 const clientController = require('../controllers/client_controller');
 const inquiryController = require('../controllers/inquiry_controller');
 const newsletterController = require('../controllers/newsletter_controller');
 const subscriberController = require('../controllers/subscriber_controller');
 const remittanceController = require('../controllers/remittance_controller');
 
-router.post('/inquiries', inquiryController.createInquiry);
+router.post('/inquiries', inquiryLimiter, inquiryController.createInquiry);
 router.post('/inquiries/:id/reply', requireAuth, inquiryController.replyToInquiry);
 router.get('/inquiries', requireAuth, inquiryController.getInquiries);
 router.get('/inquiries/stats', requireAuth, inquiryController.getInquiryStats);
@@ -43,7 +43,7 @@ router.delete('/announcements/:id', requireAuth, newsletterController.deleteNews
 // SUBSCRIBER ROUTES
 
 //Subscriber: subscribe to newsletter
-router.post('/subscribers', subscriberController.createSubscriber);
+router.post('/subscribers', subscriberLimiter, subscriberController.createSubscriber);
 
 //Subscriber: unsubscribe from newsletter
 router.get('/unsubscribe/:token', subscriberController.unsubscribe);
@@ -63,7 +63,14 @@ router.delete('/admin/remittances/:id', requireAuth, remittanceController.delete
 // Client: fetch only the logged-in client's remittances
 router.get('/client/remittances', requireClient, remittanceController.getClientRemittances);
 
+// Client-Side Inquiries
+router.get('/client/inquiries', requireClient, inquiryController.getClientInquiries);
+
 //ADMIN LOGIN/LOGOUTROUTES
+router.post('/admin/recovery/request', adminRecoveryLimiter, adminRecoveryController.requestRecovery);
+
+// F08 - Reset password using recovery token
+router.post('/admin/recovery/reset', adminResetLimiter, adminRecoveryController.resetPassword);
 router.post('/admin/login', adminController.postAdminLogin);
 router.get('/admin/logout', adminController.getAdminLogout);
 router.get('/admin/me', requireAuth, adminController.getCurrentAdmin);

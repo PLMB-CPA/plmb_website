@@ -72,6 +72,7 @@ describe('client change password page', () => {
     expect(screen.queryByText(/Welcome,/)).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /Dashboard/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /Remittances/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Inquiries/ })).not.toBeInTheDocument();
     expect(screen.getByPlaceholderText('Temporary / Current Password')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('New Password')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Confirm Password')).toBeInTheDocument();
@@ -142,5 +143,15 @@ describe('client change password page', () => {
     await fill(user);
     await user.click(save());
     expect(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled();
+  });
+
+  it('shows the inquiries link for clients who are not forced to change their password', async () => {
+    api({ me: respond({ firstName: 'Juan', lastName: 'Dela Cruz' }) });
+    renderPage();
+
+    expect(await screen.findByRole('link', { name: /Inquiries/ })).toHaveAttribute(
+      'href',
+      '/client/inquiries'
+    );
   });
 });

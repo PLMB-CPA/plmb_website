@@ -99,6 +99,10 @@ function ClientChangePassword() {
                                     <img className="menu-icon" src="/image/peso-icon.png" alt="" />
                                     <span>Remittances</span>
                                 </Link>
+                                <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
+                                    <span>Inquiries</span>
+                                </Link>
                             </>
                         )}
                         <div className="sidebar-link active change-password-link">
