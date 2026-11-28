@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import './Login.css';
 import './PasswordRecovery.css';
 
 function ResetPassword() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-    const [token] = useState(() => {
-        return new URLSearchParams(window.location.search).get('token') || '';
-    });
+    const [token] = useState(() => searchParams.get('token') || '');
 
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,13 +23,9 @@ function ResetPassword() {
 
     useEffect(() => {
         if (token) {
-            window.history.replaceState(
-                window.history.state,
-                '',
-                window.location.pathname
-            );
+            navigate('/admin/reset-password', { replace: true });
         }
-    }, [token]);
+    }, [token, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();

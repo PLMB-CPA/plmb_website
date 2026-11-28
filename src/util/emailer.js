@@ -147,4 +147,35 @@ async function sendAdminRecoveryEmail(email, resetUrl) {
         `
     });
 }
-module.exports = { sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation, sendClientWelcome, sendAdminRecoveryEmail};
+function unsubscribeUrl(token) {
+    return new URL(`/unsubscribe/${encodeURIComponent(token)}`, process.env.PUBLIC_BASE_URL).href;
+}
+
+async function sendSubscriptionWelcome(email, token) {
+    const link = unsubscribeUrl(token);
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        replyTo: process.env.PLMB_EMAIL,
+        to: email,
+        subject: 'You are subscribed to PLMB newsletters',
+        text: `Thank you for subscribing to the PLMB newsletter.\n\nYou will receive our latest announcements at this email address.\nTo stop receiving them, unsubscribe here: ${link}\n\nBest regards,\nThe PLMB Team`,
+        html: `<p>Thank you for subscribing to the PLMB newsletter.</p><p>You will receive our latest announcements at this email address.</p><p>To stop receiving them, <a href="${esc(link)}">unsubscribe here</a>.</p><p>Best regards,<br>The PLMB Team</p>`
+    });
+}
+
+async function sendNewsletterToSubscriber(newsletter, subscriber) {
+    const link = unsubscribeUrl(subscriber.unsubscribeToken);
+    const readUrl = new URL(`/newsletter/${newsletter._id}`, process.env.PUBLIC_BASE_URL).href;
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        replyTo: process.env.PLMB_EMAIL,
+        to: subscriber.email,
+        subject: newsletter.title,
+        text: `${newsletter.title}\n\nRead it on our website: ${readUrl}\n\nTo stop receiving these emails, unsubscribe here: ${link}`,
+        html: `<h2>${esc(newsletter.title)}</h2>${newsletter.content}<p><a href="${esc(readUrl)}">Read it on our website</a></p><hr><p style="font-size:12px;color:#666">You are receiving this because you subscribed to PLMB newsletters. <a href="${esc(link)}">Unsubscribe</a></p>`
+    });
+}
+
+module.exports = {
+    sendSubscriptionWelcome,
+    sendNewsletterToSubscriber, sendInquiryNotification, sendReply, sendReplyEmail: sendReply, sendConfirmation, sendClientWelcome, sendAdminRecoveryEmail};

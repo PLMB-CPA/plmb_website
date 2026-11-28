@@ -18,6 +18,9 @@ function ClientDashboard() {
     const [error, setError] = useState('');
     const [client, setClient] = useState(null);
     const [upcomingDeadlines, setUpcomingDeadlines] = useState([]);
+    const [subscribed, setSubscribed] = useState(null);
+    const [subSaving, setSubSaving] = useState(false);
+    const [subError, setSubError] = useState('');
 
     useEffect(() => {
         fetch('/api/client/me')
@@ -57,6 +60,35 @@ function ClientDashboard() {
             })
             .catch(err => console.error(err));
     }, []);
+
+    useEffect(() => {
+        fetch('/api/client/subscription')
+            .then(res => res.ok ? res.json() : null)
+            .then(data => { if (data) setSubscribed(data.isSubscribed); })
+            .catch(() => {});
+    }, []);
+
+    async function toggleSubscription() {
+        setSubError('');
+        setSubSaving(true);
+        try {
+            const res = await fetch('/api/client/subscription', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subscribed: !subscribed }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setSubError(data.error || 'Something went wrong, please try again.');
+                return;
+            }
+            setSubscribed(data.isSubscribed);
+        } catch {
+            setSubError('Could not reach the server.');
+        } finally {
+            setSubSaving(false);
+        }
+    }
 
     async function handleLogout() {
         await fetch('/api/client/logout', { method: 'POST' });
@@ -141,6 +173,21 @@ function ClientDashboard() {
                                         Some of your details are missing. Please contact the firm to update them.
                                     </p>
                                 )}
+                            </div>
+
+                            <div className="card">
+                                <h2>Newsletter</h2>
+                                <p className="subscription-text">
+                                    {subscribed
+                                        ? `You are subscribed to PLMB newsletters at ${client.email}.`
+                                        : `Subscribe to receive PLMB newsletters at ${client.email}.`}
+                                </p>
+                                {subError && <p className="subscription-error">{subError}</p>}
+                                <button type="button" className="subscription-btn"
+                                    onClick={toggleSubscription}
+                                    disabled={subSaving || subscribed === null}>
+                                    {subSaving ? 'Saving...' : subscribed ? 'Unsubscribe' : 'Subscribe'}
+                                </button>
                             </div>
 
                             <div className="card">

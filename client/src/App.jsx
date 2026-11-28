@@ -31,6 +31,7 @@ import TaxRemittanceStatusTracker from './components/admin/TaxRemittanceStatusTr
 import ClientRemittanceTracker from './components/client/ClientRemittanceTracker';
 import ClientInquiryTracker from './components/client/ClientInquiryTracker.jsx';
 
+import Unsubscribe from './components/public/Unsubscribe';
 import NotFound from './components/public/NotFound';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/newsletter" element={<NewsletterList />} />
         <Route path="/newsletter/:id" element={<NewsletterDetail />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/unsubscribe/:token" element={<Unsubscribe />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

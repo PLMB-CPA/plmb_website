@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth, requireMainAdmin, requireAdminPage, requireClient, requireClientLogin } = require('../middleware/auth');
-const { inquiryLimiter, subscriberLimiter,adminRecoveryLimiter, adminResetLimiter} = require('../middleware/rateLimit');
+const { inquiryLimiter, subscriberLimiter, clientSubscriptionLimiter, unsubscribeLimiter,adminRecoveryLimiter, adminResetLimiter} = require('../middleware/rateLimit');
 const adminController = require('../controllers/admin_controller');
 const adminRecoveryController = require('../controllers/admin_recovery_controller');
 const clientController = require('../controllers/client_controller');
@@ -37,6 +37,9 @@ router.post('/announcements', requireAuth, newsletterController.createNewsletter
 // Admin: edit/publish/unpublish
 router.patch('/announcements/:id', requireAuth, newsletterController.updateNewsletter);
 
+// Admin: email a published newsletter to all subscribers (once)
+router.post('/announcements/:id/blast', requireAuth, newsletterController.blastNewsletter);
+
 // Admin: delete a newsltter
 router.delete('/announcements/:id', requireAuth, newsletterController.deleteNewsletter);
 
@@ -46,7 +49,7 @@ router.delete('/announcements/:id', requireAuth, newsletterController.deleteNews
 router.post('/subscribers', subscriberLimiter, subscriberController.createSubscriber);
 
 //Subscriber: unsubscribe from newsletter
-router.get('/unsubscribe/:token', subscriberController.unsubscribe);
+router.post('/unsubscribe', unsubscribeLimiter, subscriberController.unsubscribe);
 
 // Admin: fetch all subscribers
 router.get('/admin/subscribers', requireAuth, subscriberController.getSubscribers);
@@ -90,6 +93,8 @@ router.get('/admin/clients', requireAuth, clientController.getClients);
 
 router.post('/client/login', clientController.loginClient);
 router.post('/client/logout', clientController.logoutClient);
+router.get('/client/subscription', requireClient, clientSubscriptionLimiter, subscriberController.getClientSubscription);
+router.put('/client/subscription', requireClient, clientSubscriptionLimiter, subscriberController.updateClientSubscription);
 router.put('/client/password', requireClientLogin, clientController.changeClientPassword);
 router.get('/client/me', requireClient, clientController.getCurrentClient);
 

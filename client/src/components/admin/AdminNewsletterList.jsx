@@ -68,7 +68,7 @@ function PendingRow({ news, onApprove, onDelete }) {
     );
 }
 
-function PublishedRow({ news, onUnpublish, onDelete }) {
+function PublishedRow({ news, onUnpublish, onDelete, onBlast }) {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useClickOutside(() => setMenuOpen(false));
@@ -85,6 +85,9 @@ function PublishedRow({ news, onUnpublish, onDelete }) {
                 <button type="button" className="more-btn" onClick={() => setMenuOpen(!menuOpen)}>&#8942;</button>
                 <div className={`dropdown-content ${menuOpen ? 'show' : ''}`}>
                     <button type="button" onClick={() => pick(() => navigate(`/admin/newsletters/${news._id}/edit`))}>Edit</button>
+                    {!news.isBlasted && (
+                        <button type="button" onClick={() => pick(() => onBlast(news._id))}>Send to subscribers</button>
+                    )}
                     <button type="button" onClick={() => pick(() => onUnpublish(news._id))}>Unpublish</button>
                     <button type="button" onClick={() => pick(() => onDelete(news._id))}>Delete</button>
                 </div>
@@ -134,6 +137,10 @@ function AdminNewsletterList() {
 
     const approve = id => act(() => patch(id, { isPublished: true, date: new Date().toISOString() }), 'Failed to publish newsletter.');
     const unpublish = id => act(() => patch(id, { isPublished: false }), 'Failed to unpublish newsletter.');
+    const blast = id => {
+        if (!window.confirm('Email this newsletter to all subscribers? This can only be done once.')) return;
+        act(() => fetch(`/api/announcements/${id}/blast`, { method: 'POST' }), 'Failed to send newsletter.');
+    };
     const remove = id => {
         if (!window.confirm('Are you sure you want to delete this newsletter?')) return;
         act(() => fetch(`/api/announcements/${id}`, { method: 'DELETE' }), 'Failed to delete newsletter.');
@@ -195,7 +202,7 @@ function AdminNewsletterList() {
                     <div className="newsletter-list">
                         {!loadError && published.length === 0 && <p className="empty-list">No published newsletters yet.</p>}
                         {publishedShown.map(n => (
-                            <PublishedRow key={n._id} news={n} onUnpublish={unpublish} onDelete={remove} />
+                            <PublishedRow key={n._id} news={n} onUnpublish={unpublish} onDelete={remove} onBlast={blast} />
                         ))}
                     </div>
                 </div>

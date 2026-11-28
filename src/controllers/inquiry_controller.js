@@ -1,3 +1,4 @@
+const { sendError } = require('../util/apiError');
 const Inquiry = require('../models/Inquiry');
 const Client = require('../models/Client');
 const {sendInquiryNotification, sendConfirmation, sendReplyEmail} = require('../util/emailer');
@@ -98,7 +99,7 @@ exports.createInquiry = async (req, res) => {
       inquiry,
     });
   } catch (err) {
-    res.status(400).json({error: err.message});
+    sendError(res, err);
   }
 }
 
@@ -111,7 +112,7 @@ exports.getInquiries = async (req, res) => {
     const inquiries = await Inquiry.find(filter).sort({date: 1});
    res.status(200).json({message: 'Inquiries found', inquiries: inquiries.map(serializeInquiry)});
   } catch (err) {
-    res.status(400).json({error: err.message});
+    sendError(res, err);
   }
 };
 
@@ -121,7 +122,7 @@ exports.getInquiryById = async (req, res) => {
     if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
     res.status(200).json({message: 'Inquiry found', inquiry: serializeInquiry(inquiry)});
   } catch (err) {
-    res.status(400).json({error: err.message});
+    sendError(res, err);
   }
 };
 
@@ -137,7 +138,7 @@ exports.updateInquiry = async (req, res) => {
     if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
     res.status(200).json({message: 'Inquiry updated', inquiry});
   } catch (err) {
-    res.status(400).json({error: err.message});
+    sendError(res, err);
   }
 };
 
@@ -229,7 +230,7 @@ exports.deleteInquiry = async (req, res) => {
     if (!inquiry) return res.status(404).json({error: 'Inquiry not found'});
     res.status(200).json({message: 'Inquiry deleted', inquiry});
   } catch (err) {
-    res.status(400).json({error: err.message});
+    sendError(res, err);
   }
 };
 

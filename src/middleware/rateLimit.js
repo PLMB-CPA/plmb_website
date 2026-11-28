@@ -36,7 +36,32 @@ const adminResetLimiter = rateLimit({
   }
 });
 
+const clientSubscriptionLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  keyGenerator: (req) => String(req.session.clientId),
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test',
+  message: {
+    error: 'Too many requests. Please try again later.'
+  }
+});
+
+const unsubscribeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test',
+  message: {
+    error: 'Too many requests. Please try again later.'
+  }
+});
+
 module.exports = {
+  clientSubscriptionLimiter,
+  unsubscribeLimiter,
   inquiryLimiter: publicFormLimiter(),
   subscriberLimiter: publicFormLimiter(),
   adminRecoveryLimiter,
