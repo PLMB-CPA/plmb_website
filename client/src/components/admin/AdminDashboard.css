@@ -1,0 +1,234 @@
+/* PAGE SHELL */
+.dash-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* PAGE HEADER — matches .inquiries-page .dashboard-header */
+.dash-page-header {
+    width: 100%;
+    background: #fff;
+    padding: 22px 35px;
+    border-bottom: 1px solid #eee;
+}
+
+.dash-page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #202020;
+    letter-spacing: -0.6px;
+    margin-bottom: 4px;
+}
+
+.dash-page-header p {
+    font-size: 13px;
+    color: #8a8a8a;
+}
+
+.dash-error {
+    padding: 16px 35px;
+    color: #d32f2f;
+    font-size: 13px;
+}
+
+/* BODY */
+.dash-body {
+    padding: 24px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* SECTION LABELS */
+.dash-section-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #255f20;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+/* KPI GRID — matches .inquiry-stats-grid */
+.dash-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 1800px;
+}
+
+/* KPI CARD — matches .inquiry-stat exactly */
+.dash-kpi-card {
+    min-width: 0;
+    background: white;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+
+.dash-kpi-card h3 {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.dash-kpi-card p {
+    font-size: 26px;
+    font-weight: 700;
+    color: #255f20;
+    overflow-wrap: anywhere;
+}
+
+/* ACCENT CARD — overdue / urgent */
+.dash-kpi-card--accent {
+    border-color: #fcd5d5;
+    background: #fff8f8;
+}
+
+.dash-kpi-card--accent p {
+    color: #d32f2f;
+}
+
+/* NEEDS ATTENTION GRID */
+.dash-attention-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ATTENTION PANEL — matches .inquiry-container card style */
+.dash-attention-panel {
+    background: white;
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.dash-attention-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #255f20;
+}
+
+.dash-attention-count {
+    font-size: 12px;
+    font-weight: 700;
+    background: #e9f5e6;
+    color: #255f20;
+    padding: 2px 10px;
+    border-radius: 999px;
+}
+
+.dash-attention-empty {
+    padding: 28px 20px;
+    font-size: 13px;
+    color: #9a9a9a;
+    text-align: center;
+}
+
+/* ATTENTION ROW — matches .inquiry-container */
+.dash-attention-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.dash-attention-row:last-child {
+    border-bottom: none;
+}
+
+.dash-attention-row:hover {
+    background: #f9faf9;
+}
+
+.dash-row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.dash-ticket {
+    font-size: 12px;
+    font-weight: 700;
+    color: #255f20;
+    white-space: nowrap;
+}
+
+.dash-row-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dash-row-sub {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dash-row-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.dash-row-date {
+    font-size: 11px;
+    color: #999;
+}
+
+/* BADGES */
+.dash-badge {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.dash-badge--red {
+    background: #fdeaea;
+    color: #d32f2f;
+}
+
+.dash-badge--amber {
+    background: #fff3e0;
+    color: #e07b39;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+    .dash-kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dash-attention-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .dash-page-header { padding: 18px 16px; }
+    .dash-body { padding: 16px; }
+    .dash-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
+
+@media (max-width: 375px) {
+    .dash-kpi-card { padding: 12px; }
+    .dash-kpi-card h3 { font-size: 12px; }
+    .dash-kpi-card p { font-size: 20px; }
+}

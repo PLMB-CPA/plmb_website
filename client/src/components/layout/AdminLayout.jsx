@@ -45,6 +45,10 @@ function AdminLayout() {
 
                         {/* className="dash-side" + NavLink = "dash-side active" on the current page */}
                         <nav className="sidebar-nav">
+                            <NavLink to="/admin/dashboard" className="dash-side" onClick={closeMenu}>
+                                <img className="menu-icon" src="/image/menu.png" alt="" />
+                                <span>Dashboard</span>
+                            </NavLink>
                             <NavLink to="/admin/clients" className="dash-side" onClick={closeMenu}>
                                 <img className="menu-icon" src="/image/user-icon.png" alt="" />
                                 <span>Manage Clients</span>

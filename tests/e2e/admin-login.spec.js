@@ -12,7 +12,7 @@ test('admin logs in through the form', async ({ page }) => {
   await page.getByPlaceholder('Username').fill(ADMIN.username);
   await page.getByPlaceholder('Password').fill(ADMIN.password);
   await page.getByRole('button', { name: 'Log-in' }).click();
-  await expect(page).toHaveURL(/\/admin\/clients$/);
+  await expect(page).toHaveURL(/\/admin\/dashboard$/);
 });
 
 // SITUATION: wrong password. 

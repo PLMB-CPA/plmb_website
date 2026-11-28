@@ -14,7 +14,7 @@ const adminSchema = new mongoose.Schema({
 
 adminSchema.index(
   {email: 1},
-  {unique: true,partialFilterExpression: {email: {$gt: ''}}
-});
+  {unique: true, partialFilterExpression: {email: {$gt: ''}}}
+);
 
 module.exports = mongoose.model('Admin', adminSchema);

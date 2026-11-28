@@ -1,7 +1,7 @@
 import { Navigate, useOutletContext } from 'react-router-dom';
 import { getLastAdminPage } from './lastAdminPage';
 
-const DEFAULT_PAGE = '/admin/clients';
+const DEFAULT_PAGE = '/admin/dashboard';
 
 function AdminHome() {
     const { admin } = useOutletContext();
