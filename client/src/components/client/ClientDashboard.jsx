@@ -17,6 +17,7 @@ function ClientDashboard() {
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const [client, setClient] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
     const [upcomingDeadlines, setUpcomingDeadlines] = useState([]);
 
     useEffect(() => {
@@ -77,27 +78,30 @@ function ClientDashboard() {
     return (
         <div className="client-shell">
             <div className="bg-container">
-                <aside className="sidebar">
+                <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
                     <div className="sidebar-brand">
                         <img src="/image/logo.png" alt="Logo" />
                         <h1>PLMB</h1>
+                        <button type="button" className="menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                            {menuOpen ? '✕' : '☰'}
+                        </button>
                     </div>
 
                     <nav className="sidebar-nav">
-                        <span className="sidebar-link active">
+                        <span className="sidebar-link active" onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/menu.png" alt="" />
                             <span>Dashboard</span>
                         </span>
-                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                        <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/peso-icon.png" alt="Remittances" />
                             <span>Remittances</span>
                         </Link>
-                        <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }}>
+                        <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
                             <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
                             <span>Inquiries</span>
-                        </Link>    
-                        <Link to="/client/change-password" className="sidebar-link" style={{ textDecoration: 'none' }}>
-                            <img className="menu-icon" src="/image/password-icon.png" alt="" />
+                        </Link>
+                        <Link to="/client/change-password" className="sidebar-link change-password-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                            <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
                             <span>Change Password</span>
                         </Link>
                     </nav>

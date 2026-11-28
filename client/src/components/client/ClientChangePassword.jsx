@@ -1,24 +1,39 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../admin/Login.css';
+import { useNavigate, Link } from 'react-router-dom';
+import './ClientDashboard.css';
 
 function ClientChangePassword() {
     const navigate = useNavigate();
+    const [client, setClient] = useState(null);
+    const [forced, setForced] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showCurrent, setShowCurrent] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        fetch('/api/client/me').then(res => {
-            if (res.status === 401) navigate('/client/login', { replace: true });
-        });
+        fetch('/api/client/me')
+            .then(res => {
+                if (res.status === 401) { navigate('/client/login', { replace: true }); return null; }
+                // 403 means mustChangePassword — still allow access to this page
+                if (res.status === 403) { setForced(true); return res.json(); }
+                if (!res.ok) throw new Error();
+                return res.json();
+            })
+            .then(data => { if (data) setClient(data); })
+            .catch(() => navigate('/client/login', { replace: true }));
     }, [navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         setError('');
+        setSuccess('');
 
         if (newPassword !== confirmPassword) {
             setError('New passwords do not match.');
@@ -38,7 +53,15 @@ function ClientChangePassword() {
                 setError(data.error || 'Something went wrong, please try again.');
                 return;
             }
-            navigate('/client');
+
+            if (forced) {
+                navigate('/client', { replace: true });
+            } else {
+                setSuccess('Password updated successfully.');
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+            }
         } catch {
             setError('Could not reach the server.');
         } finally {
@@ -46,50 +69,152 @@ function ClientChangePassword() {
         }
     }
 
+    async function handleLogout() {
+        await fetch('/api/client/logout', { method: 'POST' });
+        navigate('/client/login', { replace: true });
+    }
+
+    if (!client) return <p className="state-msg">Loading…</p>;
+
     return (
-        <div className="login-page">
-            <div className="main">
-                <form className="login_form" onSubmit={handleSubmit}>
-                    <div className="login_block">
-                        <h2 className="login_header">Set a New Password</h2>
-                        <p>Please replace the temporary password from your welcome email.</p>
+        <div className="client-shell">
+            <div className="bg-container">
+                <aside className={`sidebar ${menuOpen ? 'open' : ''}`}>
+                    <div className="sidebar-brand">
+                        <img src="/image/logo.png" alt="Logo" />
+                        <h1>PLMB</h1>
+                        <button type="button" className="menu-toggle" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                            {menuOpen ? '✕' : '☰'}
+                        </button>
+                    </div>
 
-                        <div className="login_inputs">
-                            <div className="password">
-                                <input type="password" placeholder="Temporary / Current Password"
-                                    autoComplete="current-password"
-                                    value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
-                            </div>
-                            
-                            <div className = "password">
-                                <input type = "password" placeholder="New Password" 
-                                autoComplete="new-password"
-                                value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-                            </div>
-
-                            <div className = "password">
-                                <input type = "password" placeholder="Confirm Password" 
-                                autoComplete="new-password"
-                                value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
-                            </div>
+                    <nav className="sidebar-nav">
+                        {!forced && (
+                            <>
+                                <Link to="/client" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/menu.png" alt="" />
+                                    <span>Dashboard</span>
+                                </Link>
+                                <Link to="/client/remittances" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/peso-icon.png" alt="" />
+                                    <span>Remittances</span>
+                                </Link>
+                                <Link to="/client/inquiries" className="sidebar-link" style={{ textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
+                                    <img className="menu-icon" src="/image/inquiries-icon.png" alt="" />
+                                    <span>Inquiries</span>
+                                </Link>
+                            </>
+                        )}
+                        <div className="sidebar-link active change-password-link">
+                            <img className="menu-icon change-password-icon" src="/image/password-icon.png" alt="" />
+                            <span>Change Password</span>
                         </div>
+                    </nav>
 
-                        <ul>
-                            <li>At least 10 characters</li>
-                            <li>At least 1 uppercase letter</li>
-                            <li>At least 1 special character</li>
-                            <li>At least 1 number</li>
-                        </ul>
+                    <button className="sidebar-link logout" onClick={handleLogout}>
+                        <img className="menu-icon" src="/image/logout.png" alt="" />
+                        <span>Logout</span>
+                    </button>
+                </aside>
 
-                        {error && <p className="login-error">{error}</p>}
+                <div className="main-content">
+                    <header className="page-header">
+                        <div>
+                            <h1>{forced ? 'Password change required' : client.firstName ? `Welcome, ${client.firstName}` : 'Client Portal'}</h1>
+                        </div>
+                        {!forced && client.firstName && (
+                            <>
+                                <div className="divider" />
+                                <div className="header-right">
+                                    <div className="client-info">
+                                        <h3>{client.firstName} {client.lastName}</h3>
+                                        <p>Client</p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </header>
 
-                        <div className="login_action">
-                            <button type="submit" id="login_btn" disabled={submitting}>
-                                {submitting ? 'Saving...' : 'Save Password'}
-                            </button>
+                    <div className="page-body">
+                        <h1>Change Password</h1>
+
+                        <div className="card change-password-card">
+                            {forced && (
+                                <p className="forced-notice">
+                                    You must set a new password before continuing. Please replace the temporary password from your welcome email.
+                                </p>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="change-password-form">
+                                <div className="cp-field">
+                                    <label htmlFor="current-password">Current Password</label>
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            id="current-password"
+                                            type={showCurrent ? 'text' : 'password'}
+                                            placeholder="Temporary / Current Password"
+                                            autoComplete="current-password"
+                                            value={currentPassword}
+                                            onChange={e => setCurrentPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowCurrent(v => !v)} aria-label={showCurrent ? 'Hide password' : 'Show password'}>
+                                            <img src={showCurrent ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="cp-field">
+                                    <label htmlFor="new-password">New Password</label>
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            id="new-password"
+                                            type={showNew ? 'text' : 'password'}
+                                            placeholder="New Password"
+                                            autoComplete="new-password"
+                                            value={newPassword}
+                                            onChange={e => setNewPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowNew(v => !v)} aria-label={showNew ? 'Hide password' : 'Show password'}>
+                                            <img src={showNew ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="cp-field">
+                                    <label htmlFor="confirm-password">Confirm New Password</label>
+                                    <div className="cp-input-wrap">
+                                        <input
+                                            id="confirm-password"
+                                            type={showConfirm ? 'text' : 'password'}
+                                            placeholder="Confirm Password"
+                                            autoComplete="new-password"
+                                            value={confirmPassword}
+                                            onChange={e => setConfirmPassword(e.target.value)}
+                                            required
+                                        />
+                                        <button type="button" className="cp-eye" onClick={() => setShowConfirm(v => !v)} aria-label={showConfirm ? 'Hide password' : 'Show password'}>
+                                            <img src={showConfirm ? '/image/eye-open.svg' : '/image/eye-closed.svg'} alt="" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <ul className="cp-rules">
+                                    <li>At least 10 characters</li>
+                                    <li>At least 1 uppercase letter</li>
+                                    <li>At least 1 special character</li>
+                                    <li>At least 1 number</li>
+                                </ul>
+
+                                {error && <p className="cp-error">{error}</p>}
+                                {success && <p className="cp-success">{success}</p>}
+
+                                <button type="submit" className="cp-submit" disabled={submitting}>
+                                    {submitting ? 'Saving…' : 'Save Password'}
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
